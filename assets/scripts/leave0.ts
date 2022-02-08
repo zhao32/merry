@@ -5,6 +5,8 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { gameContext } from "./utils/GameTools";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -16,9 +18,21 @@ export default class NewClass extends cc.Component {
     @property
     text: string = 'hello';
 
+    @property({type:cc.Prefab})
+    heroPfb: cc.Prefab = null;
+
+
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+
+        let hero = cc.instantiate(this.heroPfb)
+        hero.setPosition(-400,0)
+        this.node.getChildByName('gameUI').addChild(hero)
+        gameContext.player = hero.getComponent('hero')
+
+
+    }
 
     start () {
 

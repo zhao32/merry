@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "jumpRight",
+  "_name": "standLeft",
   "_objFlags": 0,
   "_native": "",
   "_duration": 0.016666666666666666,
@@ -14,7 +14,7 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "ec75f86a-f420-44eb-ba15-2ed36c5c1678"
+              "__uuid__": "33909d88-4437-4407-a678-d1b21c233820"
             }
           }
         ]
