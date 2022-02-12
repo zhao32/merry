@@ -1,7 +1,6 @@
 import PoolUtil from "./PoolUtil";
 
 export interface itemInfo {
-
   idx: number,
   value: number,
   name: string
@@ -13,7 +12,6 @@ export interface resultData {
   rank: string,
   percent: number,
   errTipList: string[]
-
 }
 
 var gameContext = {
@@ -21,12 +19,12 @@ var gameContext = {
   volume: 1, //音量调节
   toastPool: [],
   prefabs: {},
-  GameUI: null,
-  player:null,
-  score: 0,//得分
+  player: null,
 
-  isPlayMusic:true,
-  isPause:false,
+  isPlayMusic: true,
+  isPause: false,
+
+
 
   getPrefabByResName(resName: string, callback?: Function) {
     if (!gameContext.prefabs[resName]) {
@@ -46,118 +44,63 @@ var gameContext = {
   },
 
 
-  showStartTel(data?: itemInfo, callback?: Function) {
-    var resName = "prefabs/startTel"
+  showStartUI(data?: any, callback?: Function) {
+    var resName = "prefabs/startUI"
     gameContext.getPrefabByResName(resName, (prefab) => {
       PoolUtil.getItemShowNode(prefab, (node) => {
-        node.getComponent('startTel').init(data, callback)
-        gameContext.GameUI.node.getChildByName('otherPanel').addChild(node);
+        node.getComponent('startUI').init(data, callback)
+        let UIPanel = cc.director.getScene()
+          .getChildByName("Canvas")
+          .getChildByName("UIPanel");
+        UIPanel.addChild(node);
       })
     });
   },
 
-  showStartWeCat(data?: itemInfo, callback?: Function, removeOther?: boolean) {
-    var resName = "prefabs/startWeCat"
+  showLevelUI(data?: any, callback?: Function) {
+    var resName = "prefabs/levelUI"
     gameContext.getPrefabByResName(resName, (prefab) => {
       PoolUtil.getItemShowNode(prefab, (node) => {
-        node.getComponent('startWeCat').init(data, callback)
-        if (removeOther) {
-          gameContext.GameUI.node.getChildByName('otherPanel').removeAllChildren()
-        }
-
-        gameContext.GameUI.node.getChildByName('otherPanel').addChild(node);
+        node.getComponent('levelUI').init(data, callback)
+        let UIPanel = cc.director.getScene()
+          .getChildByName("Canvas")
+          .getChildByName("UIPanel");
+        UIPanel.addChild(node);
       })
     });
   },
 
-  showPrizeWnd(data?: itemInfo, callback?: Function) {
-    var resName = "prefabs/prizeWnd"
+  showOperateUI(data?: any, callback?: Function) {
+    var resName = "prefabs/operateUI"
     gameContext.getPrefabByResName(resName, (prefab) => {
       PoolUtil.getItemShowNode(prefab, (node) => {
-        node.getComponent('prizeWnd').init(data, callback)
-        gameContext.GameUI.node.getChildByName('otherPanel').addChild(node);
+        node.getComponent('operateUI').init(data, callback)
+        let otherPanel = cc.director.getScene()
+          .getChildByName("Canvas")
+          .getChildByName("otherPanel");
+        otherPanel.addChild(node);
       })
     });
   },
 
-  showRankWnd(data?: itemInfo, callback?: Function) {
-    var resName = "prefabs/rankWnd"
+  showLevel(idx: number, callback?: Function) {
+    var resName = `prefabs/level${idx}`
     gameContext.getPrefabByResName(resName, (prefab) => {
-      PoolUtil.getItemShowNode(prefab, (node) => {
-        node.getComponent('rankWnd').init(data, callback)
-        gameContext.GameUI.node.getChildByName('otherPanel').addChild(node);
+      PoolUtil.getItemShowNode(prefab, (node: cc.Node) => {
+        node.getComponent(`level${idx}`).init(callback)
+        let gameUI = cc.director.getScene()
+          .getChildByName("Canvas")
+          .getChildByName("gameUI");
+        gameUI.addChild(node);
+     
       })
     });
   },
 
-
-
-  showResultWnd(data?: resultData, callback?: Function) {
-    var resName = "prefabs/resultWnd"
-    gameContext.getPrefabByResName(resName, (prefab) => {
-      PoolUtil.getItemShowNode(prefab, (node) => {
-        node.getComponent('resultWnd').init(data, callback)
-        gameContext.GameUI.node.getChildByName('otherPanel').addChild(node);
-      })
-    });
-  },
-
-  showRuleWnd(data?: itemInfo, callback?: Function) {
-    var resName = "prefabs/ruleWnd"
-    gameContext.getPrefabByResName(resName, (prefab) => {
-      PoolUtil.getItemShowNode(prefab, (node) => {
-        node.getComponent('ruleWnd').init(data, callback)
-        gameContext.GameUI.node.getChildByName('otherPanel').addChild(node);
-      })
-    });
-  },
-
-  showTelWnd(data?: itemInfo, callback?: Function) {
-    var resName = "prefabs/telWnd"
-    gameContext.getPrefabByResName(resName, (prefab) => {
-      PoolUtil.getItemShowNode(prefab, (node) => {
-        node.getComponent('telWnd').init(data, callback)
-        gameContext.GameUI.node.getChildByName('otherPanel').addChild(node);
-      })
-    });
-  },
-
-  showZhuliUI(data?: any, callback?: Function) {
-    var resName = "prefabs/zuliUI"
-    gameContext.getPrefabByResName(resName, (prefab) => {
-      PoolUtil.getItemShowNode(prefab, (node) => {
-        node.getComponent('zuliUI').init(data, callback)
-        gameContext.GameUI.node.getChildByName('otherPanel').addChild(node);
-      })
-    });
-  },
-
-  // showStartPage(data?: itemInfo, callback?: Function) {
-  //   var resName = "prefabs/startPage"
-  //   gameContext.getPrefabByResName(resName, (prefab) => {
-  //     PoolUtil.getItemShowNode(prefab, (node) => {
-  //       node.getComponent('startPage').init(data, callback)
-  //       gameContext.GameUI.node.getChildByName('otherPanel').removeAllChildren()
-  //       gameContext.GameUI.node.getChildByName('otherPanel').addChild(node);
-  //     })
-  //   });
-  // },
-
-  showUI(name: string, data?: itemInfo, callback?: Function) {
-    var resName = `prefabs/${name}`
-    gameContext.getPrefabByResName(resName, (prefab) => {
-      PoolUtil.getItemShowNode(prefab, (node) => {
-        node.getComponent(name).init(data, callback)
-        gameContext.GameUI.node.getChildByName('otherPanel').removeAllChildren()
-        gameContext.GameUI.node.getChildByName('otherPanel').addChild(node);
-      })
-    });
-  },
 
   showToast(msg, showTime = undefined, pos: cc.Vec2 = undefined) {
     var resName = "prefabs/toastLayer"
     gameContext.getPrefabByResName(resName, (prefab) => {
-
       PoolUtil.getItemShowNode(prefab, (node) => {
         gameContext.toastPool.forEach(toastNode => {
           if (cc.isValid(toastNode)) {
@@ -165,7 +108,7 @@ var gameContext = {
           }
         });
         if (pos == undefined) {
-          node.setPosition(cc.v2(0, 200));
+          node.setPosition(cc.v2(0, 0));
         } else {
           node.setPosition(pos);
         }
@@ -178,22 +121,14 @@ var gameContext = {
         );
         var toastLayer = node.getComponent("ToastLayer")
         toastLayer.showToast(msg, showTime, callfunc);
-        // gameContext.GameUI.node.getChildByName('otherPanel').removeAllChildren()
-        gameContext.GameUI.node.getChildByName('otherPanel').addChild(node);
+        let otherPanel = cc.director.getScene()
+          .getChildByName("Canvas")
+          .getChildByName("otherPanel");
+        otherPanel.addChild(node)
         gameContext.toastPool.push(node);
       })
     });
   },
-
-  // showTipUI(data: string, callback: Function) {
-  //   var resName = "prefabs/tipUI"
-  //   gameContext.getPrefabByResName(resName, (prefab) => {
-  //     PoolUtil.getItemShowNode(prefab, (node) => {
-  //       node.getComponent('tipUI').init(data, callback)
-  //       gameContext.GameUI.node.getChildByName('otherPanel').addChild(node);
-  //     })
-  //   });
-  // },
 
 
 };
@@ -202,11 +137,40 @@ export { gameContext };
 
 var gameConfig = {
 
-  foodsData: null,
+  levelData: null,
+  currLevel: 0,
+
+
+  get maxLevel() {
+    return localStorage.getItem('MAXLEVEL') ? parseInt(localStorage.getItem('MAXLEVEL')) : 0
+  },
+
+  set maxLevel(value: number) {
+    localStorage.setItem('MAXLEVEL', String(value))
+  },
+
+  openPhysics(open: boolean) {
+    cc.director.getPhysicsManager().enabled = open;
+  },
+
+  /**重力加速度，+ 向下  */
+  setGravity(value: number) {
+    cc.director.getPhysicsManager().gravity = cc.v2(0, -cc.PhysicsManager.PTM_RATIO * value);
+  },
+
+  openPhysicsDebug() {
+    cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
+      cc.PhysicsManager.DrawBits.e_jointBit |
+      cc.PhysicsManager.DrawBits.e_shapeBit
+      ;
+  },
 }
 export { gameConfig };
 
 var GameTools = {
+
+
+
   /**
    * 声效管理
    * @param soundPath
@@ -321,21 +285,6 @@ var GameTools = {
     return p1.sub(p2).mag();
   },
 
-  getAngle(start: cc.Vec2, end: cc.Vec2): number {
-    let theangle = -Math.atan2(start.y - end.y, start.x - end.x) //弧度  
-    let theta = - (theangle * 180 / Math.PI - 90); //角度  
-    theta = Math.floor(Math.max(-80, theta))
-    theta = Math.floor(Math.min(80, theta))
-    return theta
-  },
-
-  getBoatPos(idx): cc.Vec2 {
-    let points = [{ x: -720, y: 245 }, { x: -241, y: 245 }, { x: 239, y: 245 }, { x: 720, y: 245 },
-    { x: -485, y: 55 }, { x: -5, y: 55 }, { x: 475, y: 55 },
-    { x: -720, y: -137 }, { x: -72, y: -137 }, { x: 576, y: -137 }]
-    let vec = new cc.Vec2(points[idx].x, points[idx].y)
-    return vec
-  },
 
   //生成count个小于max的整数
   getRandomNums(count, max): number[] {

@@ -12,7 +12,8 @@ export enum State {
     standRight,
     walkLeft,
     walkRight,
-    jump,
+    jumpLeft,
+    jumpRight,
     fight,
 }
 
@@ -26,172 +27,113 @@ export default class NewClass extends cc.Component {
     @property
     text: string = 'hello';
 
-    _state: number = 0
+    private _state: number = 0
 
-    _dir: number = 0 //方向 0 left 1 right 
-
-    _isJumping: boolean = false
-
-    jumpDuration: number = 0.2
-
-    jumpHeight: number = 200
+    private _isJumping: boolean = false
 
     isMove: Boolean = false//主角是否真实运动，在场景两边时主角移动，场景中间时场景移动
 
-    speed: number = 5 //主角移动速度
-
-    readonly LEFT = 0
-    readonly RIGHT = 1
-
-    readonly STANDLEFT = 'standLeft'
-    
-
-
-
-
-    // LIFE-CYCLE CALLBACKS:
+    private readonly Velocity = 150
 
     onLoad() {
         this.isMove = true
-        this._state = State.standLeft
+        this.state = State.standRight
+
     }
 
     start() {
 
     }
 
+    public set isJumping(value: boolean) {
+        this._isJumping = value
+    }
+
+    public get isJumping() {
+        return this._isJumping
+    }
+
     public set state(value: number) {
         if (this._isJumping) return
+        let body = this.node.getComponent(cc.RigidBody)
         this._state = value
 
         let ani = ''
-        let repeatCount: number
+        let repeatCount: number = Infinity
         if (this._state == State.fight) {
             ani = null
             repeatCount = 0
-        } else if (this._state == State.jump) {
-            if (this._dir == this.LEFT) {
-                ani = 'jumpLeft'
-            } else {
-                ani = 'jumpRight'
-            }
-            repeatCount = Infinity
+        } else if (this._state == State.jumpLeft) {
+            ani = 'jumpLeft'
+            if (this.isMove) body.linearVelocity = new cc.Vec2(-this.Velocity, 0)
+            this.playJump()
+        } else if (this._state == State.jumpRight) {
+            ani = 'jumpRight'
+            if (this.isMove) body.linearVelocity = new cc.Vec2(this.Velocity, 0)
             this.playJump()
         } else if (this._state == State.walkLeft) {
             ani = 'walkLeft'
-            repeatCount = Infinity
-            this._dir = this.LEFT
             this.isMove = true
-
-
+            body.linearVelocity = new cc.Vec2(-this.Velocity, 0)
         } else if (this._state == State.walkRight) {
             ani = 'walkRight'
             repeatCount = Infinity
-            this._dir = this.RIGHT
             this.isMove = true
-
+            body.linearVelocity = new cc.Vec2(this.Velocity, 0)
         } else if (this._state == State.standLeft) {
-            // this.node.getComponent(cc.Animation).stop()
-            this._dir = this.LEFT
             this.isMove = false
             ani = 'standLeft'
             repeatCount = Infinity
-
+            body.linearVelocity = new cc.Vec2(0, 0)
         } else if (this._state == State.standRight) {
             // this.node.getComponent(cc.Animation).stop()
-            this._dir = this.RIGHT
+            // this._dir = this.RIGHT
             this.isMove = false
             ani = 'standRight'
             repeatCount = Infinity
-
+            body.linearVelocity = new cc.Vec2(0, 0)
         }
         if (ani) {
             this.node.getComponent(cc.Animation).play(ani).repeatCount = repeatCount
-        } else {
-
+            console.log('播放：' + ani)
         }
-
     }
 
     public get state() {
         return this._state
     }
 
-    runJumpAction() {
-        this._isJumping = true
-        // 跳跃上升
-        var jumpUp = cc.tween().by(this.jumpDuration, { y: this.jumpHeight }, { easing: 'sineOut' });
-        // 下落
-        var jumpDown = cc.tween().by(this.jumpDuration, { y: -this.jumpHeight }, { easing: 'sineIn' });
-
-        // 创建一个缓动，按 jumpUp、jumpDown 的顺序执行动作
-        let callback = cc.callFunc(() => {
-            this._isJumping = false
-            let ani = ''
-            let repeatCount: number
-            if (this._dir == this.LEFT) {
-                ani = 'standLeft'
-                repeatCount = Infinity
-            } else {
-                ani = 'standRight'
-                repeatCount = Infinity
-            }
-            this.node.getComponent(cc.Animation).play(ani).repeatCount = repeatCount
-        })
-        var tween = cc.tween().sequence(jumpUp, jumpDown, callback)
-        // 不断重复
-        return tween;
-    }
-
     playJump() {
-        if (!this._isJumping) {
-            let jump = this.runJumpAction()
-            cc.tween(this.node).then(jump).start()
+        // if (!this._isJumping) {
+        //     let jump = this.runJumpAction()
+        //     cc.tween(this.node).then(jump).start()
+        // }
+        let body = this.node.getComponent(cc.RigidBody)
+        if (body.linearVelocity.y == 0) {
+            body.linearVelocity = new cc.Vec2(body.linearVelocity.x, this.Velocity * 4)
+            this._isJumping = true
         }
     }
-
-    // changeState() {
-    //     let ani = ''
-    //     let repeatCount: number
-    //     if (this._state == State.fight) {
-    //         ani = null
-    //         repeatCount = 0
-    //     } else if (this._state == State.jumpLeft) {
-    //         ani = 'jumpLeft'
-    //         repeatCount = Infinity
-    //     } else if (this._state == State.jumpRight) {
-    //         ani = 'jumpRight'
-    //         repeatCount = Infinity
-
-    //     } else if (this._state == State.walkLeft) {
-    //         ani = 'walkLeft'
-    //         repeatCount = Infinity
-
-    //     } else if (this._state == State.walkRight) {
-    //         ani = 'walkRight'
-    //         repeatCount = Infinity
-
-    //     }
-    //     this.node.getComponent(cc.Animation).play(ani).repeatCount = repeatCount
-
-    // }
-
-
 
     update(dt) {
-        if (this.isMove && this._state != State.standLeft && this._state != State.standRight) {
-          
-            if (this.node.x < -500) {
-                this.node.x = -500
-            } else if (this.node.x > 500) {
-                this.node.x = 500
-            } else {
-                if (this._dir == this.LEFT) {
-                    this.node.x -= this.speed
-                } else if (this._dir == this.RIGHT) {
-                    this.node.x += this.speed
-                }
-            }
+    
+        if (this.node.x < 20) {
+            this.node.x = 20
+        } else if (this.node.x > this.node.parent.width - 20) {
+            this.node.x = this.node.parent.width - 20
         }
+        // if (this.isMove && this._state != State.standLeft && this._state != State.standRight) {
+        //     if (this.node.x < -500) {
+        //         this.node.x = -500
+        //     } else if (this.node.x > 500) {
+        //         this.node.x = 500
+        //     } else {
+        //         // if (this._dir == this.LEFT) {
+        //         //     this.node.x -= this.speed
+        //         // } else if (this._dir == this.RIGHT) {
+        //         //     this.node.x += this.speed
+        //         // }
+        //     }
+        // }
     }
 }
