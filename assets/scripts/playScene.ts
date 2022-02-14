@@ -41,6 +41,7 @@ export default class NewClass extends cc.Component {
         hero.zIndex = cc.macro.MAX_ZINDEX
         this.node.getChildByName('gameUI').addChild(hero)
         gameContext.player = hero.getComponent('hero')
+        gameContext.playerNode = hero
     }
 
     start() {

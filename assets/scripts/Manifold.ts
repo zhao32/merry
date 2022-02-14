@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import hero, { State } from "./hero";
+import EventMgr from "./utils/EventMgr";
 import { gameContext } from "./utils/GameTools";
 
 const { ccclass, property } = cc._decorator;
@@ -41,11 +42,18 @@ export default class NewClass extends cc.Component {
                 }
                 let body = gameContext.player.getComponent(cc.RigidBody)
                 body.linearVelocity = new cc.Vec2(0, 0)
-                
-            }
-        } else if (otherCollider.tag == 1) {//道具
 
-        } else if (otherCollider.tag == 2) {//敌人
+            }
+        } else if (otherCollider.tag == 1) {//完成
+            console.log('到达完成地点')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHFINISH);
+
+        } else if (otherCollider.tag == 2) {//口罩
+            console.log('接触口罩')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHMASK, {});
+        } else if (otherCollider.tag == 3) {//病毒
+            console.log('接触病毒')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHVIRUS);
 
         }
     }

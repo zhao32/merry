@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import hero, { State } from "../hero";
+import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 
 const { ccclass, property } = cc._decorator;
@@ -46,14 +47,40 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     role: cc.Node = null;
 
+
+    _canOperate: boolean
+
+    public set canOperate(open: boolean) {
+        this._canOperate = open
+    }
+
+    public get canOperate() {
+        return this._canOperate
+    }
+
+    private openOperate(){
+        this._canOperate = true
+        console.log('打开玩家操作')
+    }
+
+    private closeOperate(){
+        this._canOperate = false
+        console.log('打开玩家操作')
+    }
+
+
     callback: any
 
     init(data: any, callback) {
         this.callback = callback
+        this._canOperate = false
         this.displayLevel.string = `第${gameConfig.currLevel + 1}关`
 
         GameTools.loadItemIcon(`pic/role${gameConfig.levelData[gameConfig.currLevel].role}`, this.role)
     }
+
+
+
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -72,6 +99,10 @@ export default class NewClass extends cc.Component {
         this.btnPause.on(cc.Node.EventType.TOUCH_END, this.checkPause, this)
         this.btnReplay.on(cc.Node.EventType.TOUCH_END, this.doReplay, this)
         this.btnHome.on(cc.Node.EventType.TOUCH_END, this.doHome, this)
+
+        EventMgr.getInstance().registerListener(EventMgr.OPENOPERATE, this, this.openOperate.bind(this))
+        EventMgr.getInstance().registerListener(EventMgr.CLOSEOPERATE, this, this.closeOperate.bind(this))
+
     }
 
     setHp() {
@@ -79,22 +110,27 @@ export default class NewClass extends cc.Component {
     }
 
     startLeft() {
+        if (!this._canOperate) return
         (gameContext.player as hero).state = State.walkLeft
     }
 
     endLeft() {
+        if (!this._canOperate) return
         (gameContext.player as hero).state = State.standLeft
     }
 
     startRight() {
+        if (!this._canOperate) return
         (gameContext.player as hero).state = State.walkRight
     }
 
     endRight() {
+        if (!this._canOperate) return
         (gameContext.player as hero).state = State.standRight
     }
 
     endUp() {
+        if (!this._canOperate) return
         if ((gameContext.player as hero).state == State.walkLeft) {
             (gameContext.player as hero).isMove = true;
             (gameContext.player as hero).state = State.jumpLeft
@@ -146,6 +182,8 @@ export default class NewClass extends cc.Component {
 
     doReplay() {
 
+        EventMgr.getInstance().sendListener(EventMgr.RESTART, {});
+        console.log('重新开始游戏')
     }
 
     doHome() {

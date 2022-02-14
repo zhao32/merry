@@ -20,6 +20,8 @@ var gameContext = {
   toastPool: [],
   prefabs: {},
   player: null,
+  playerNode:null,
+  // currLevelScript:null,//当前关卡Script
 
   isPlayMusic: true,
   isPause: false,
@@ -31,7 +33,6 @@ var gameContext = {
       GameTools.load(resName, cc.Prefab, function (err, prefab) {
         if (!err) {
           gameContext.prefabs[resName] = prefab
-
           callback && callback(prefab), callback = null
         } else {
           console.log(resName)
