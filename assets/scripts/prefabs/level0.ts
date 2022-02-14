@@ -27,6 +27,9 @@ export default class NewClass extends cc.Component {
     Finish: cc.Node = null;
 
     @property(cc.Node)
+    failPage: cc.Node = null;
+
+    @property(cc.Node)
     weChatLeft: cc.Node = null;
 
     @property(cc.Node)
@@ -151,6 +154,8 @@ export default class NewClass extends cc.Component {
         this.Mask.active = true
         this.Finish.active = true
         this.hasMask = false
+
+        this.failPage.active = false
         gameContext.playerNode.setPosition(100, -165)
         this.resetToggle()
         this.preStart()
@@ -159,7 +164,7 @@ export default class NewClass extends cc.Component {
 
     /**前情提要 */
     preStart() {
-        let preTime = 2
+        let preTime = 1
         this.scheduleOnce(() => {
             this.weChatLeft.active = true
             console.log('播放音效')
@@ -176,8 +181,7 @@ export default class NewClass extends cc.Component {
             this.weChatLeft.active = false
             this.weChatRight.active = false
             EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {});
-
-        }, preTime + 3)
+        }, preTime + 4)
     }
 
     touchMask(self: this, params) {
@@ -192,6 +196,11 @@ export default class NewClass extends cc.Component {
             console.log('免疫病毒')
         } else {
             console.log('血量减少')
+            this.failPage.active = true
+            this.schedule(() => {
+                this.failPage.active = false
+                this.Restart()
+            }, 1)
         }
     }
 

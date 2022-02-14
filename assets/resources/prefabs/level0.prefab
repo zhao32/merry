@@ -2150,7 +2150,7 @@
         "__id__": 34
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 38
@@ -5709,7 +5709,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "toggle1",
+    "_name": "toggle0",
     "_objFlags": 0,
     "_parent": {
       "__id__": 120
@@ -6081,7 +6081,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "toggle2",
+    "_name": "toggle1",
     "_objFlags": 0,
     "_parent": {
       "__id__": 120
@@ -6449,7 +6449,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "toggle3",
+    "_name": "toggle2",
     "_objFlags": 0,
     "_parent": {
       "__id__": 120
@@ -7199,7 +7199,7 @@
         "__id__": 165
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [],
     "_prefab": {
       "__id__": 168
@@ -7493,6 +7493,9 @@
     },
     "Finish": {
       "__id__": 15
+    },
+    "failPage": {
+      "__id__": 161
     },
     "weChatLeft": {
       "__id__": 80
