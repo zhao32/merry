@@ -17,40 +17,41 @@ export default class NewClass extends cc.Component {
     @property(cc.Label)
     label: cc.Label = null;
 
-    @property(cc.Node)
+    // @property(cc.Node)
     Mask: cc.Node = null;
 
-    @property(cc.Node)
+    // @property(cc.Node)
     Virus: cc.Node = null;
 
-    @property(cc.Node)
+    // @property(cc.Node)
     Finish: cc.Node = null;
 
-    @property(cc.Node)
+    // @property(cc.Node)
     failPage: cc.Node = null;
-
-    @property(cc.Node)
+    weChat: cc.Node = null
+    // @property(cc.Node)
     weChatLeft: cc.Node = null;
 
-    @property(cc.Node)
+    // @property(cc.Node)
     weChatRight: cc.Node = null;
 
-    @property(cc.Node)
+    shop: cc.Node = null
+    // @property(cc.Node)
     chat: cc.Node = null;
 
-    @property(cc.Node)
+    // @property(cc.Node)
     btnOk: cc.Node = null;
 
-    @property(cc.Node)
+    // @property(cc.Node)
     selectMilk: cc.Node = null;
-
-    @property({ type: cc.Toggle })
+    toggle: cc.Node = null
+    // @property({ type: cc.Toggle })
     toggle0: cc.Toggle = null
 
-    @property({ type: cc.Toggle })
+    // @property({ type: cc.Toggle })
     toggle1: cc.Toggle = null
 
-    @property({ type: cc.Toggle })
+    // @property({ type: cc.Toggle })
     toggle2: cc.Toggle = null
 
 
@@ -69,8 +70,8 @@ export default class NewClass extends cc.Component {
 
     init(data: any, callback) {
         this.callback = callback
-        this.Restart()
-        this.preStart()
+        // this.Restart()
+        // this.preStart()
     }
 
     // LIFE-CYCLE CALLBACKS:
@@ -85,12 +86,40 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFINISH, this, this.touchFinish.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
 
+        this.Mask = this.node.getChildByName('Mask')
+        this.Virus = this.node.getChildByName('Virus')
+        this.Finish = this.node.getChildByName('Finish')
+        this.failPage = this.node.getChildByName('fail')
+        this.shop = this.node.getChildByName('shop')
+        this.weChat = this.node.getChildByName('weChat')
+
+        this.weChatLeft = this.weChat.getChildByName('weChatLeft')
+        this.weChatRight = this.weChat.getChildByName('weChatRight')
+
+        this.chat = this.shop.getChildByName('chat')
+        this.selectMilk = this.shop.getChildByName('select')
+        this.btnOk = this.selectMilk.getChildByName('btnOk')
+        this.toggle = this.selectMilk.getChildByName('toggle')
+        console.log('toggle:' + this.toggle)
+        this.toggle0 = this.toggle.getChildByName('toggle0').getComponent(cc.Toggle)
+        this.toggle1 = this.toggle.getChildByName('toggle1').getComponent(cc.Toggle)
+        this.toggle2 = this.toggle.getChildByName('toggle2').getComponent(cc.Toggle)
+
+
         this.toggle0.node.on('toggle', this.doToggle, this)
         this.toggle1.node.on('toggle', this.doToggle, this)
         this.toggle2.node.on('toggle', this.doToggle, this)
         this.btnOk.on(cc.Node.EventType.TOUCH_END, this.doSelected, this)
-
     }
+
+
+    start() {
+        this.Restart()
+        this.preStart()
+    }
+
+
+
 
     resetToggle() {
         this.toggle0.isChecked = this.toggle1.isChecked = this.toggle2.isChecked = false
@@ -127,31 +156,31 @@ export default class NewClass extends cc.Component {
         if (!this.answer) {
             gameContext.showToast('请选择答案')
         } else if (this.answer == this.toggle0.name) {
-            console.log('选择错误')
-            gameContext.showToast('恭喜通关')
+            console.log('选择正确')
+            gameContext.showToast('恭喜通关,打开记忆宝典页面')
             this.chat.active = false
             this.selectMilk.active = false
         } else {
-            console.log('选择正确')
+            console.log('选择确定')
             this.chat.active = false
             this.selectMilk.active = false
+            gameConfig.maxLevel =  1
             gameContext.showToast('你谁啊！')
         }
     }
-
-
 
     Restart() {
         gameConfig.currLevel = 1
         gameConfig.maxLevel = 1
         this.weChatLeft.active = false
-        this.weChatRight.active = false
 
+        this.weChatRight.active = false
         this.selectMilk.active = false
         this.chat.active = false
 
         this.Virus.active = true
         this.Mask.active = true
+
         this.Finish.active = true
         this.hasMask = false
 
@@ -212,11 +241,6 @@ export default class NewClass extends cc.Component {
         }, 1)
     }
 
-
-    start() {
-
-
-    }
 
     update(dt) {
 

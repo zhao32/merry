@@ -56,6 +56,7 @@ export default class NewClass extends cc.Component {
             gameContext.showToast('请先通关之前关卡')
         } else {
             console.log('打开关卡' + level)
+            gameConfig.currLevel = level
             cc.director.loadScene("playScene");
             // console.log(cc.director.runScene())
         }

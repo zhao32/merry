@@ -14,12 +14,14 @@ export default class EventMgr extends cc.Component {
 
     public static OPENOPERATE: string = "openOperate"
     public static CLOSEOPERATE: string = 'closeOperate'
+    /**更新血条 */
+    public static UPDATESAN:string = 'updateSan'
     public static TOUCHMASK: string = 'touchMask'
-    // this.Virus.active = true
-    // this.Mask.active = true
-    // this.Finish.active = true
     public static TOUCHVIRUS: string = 'touchVirus'
     public static TOUCHFINISH: string = 'touchFinish'
+    public static TOUCHTHORNS: string = 'touchthorns'
+
+    
     public static RESTART: string = 'restart'
 
     protected static instance: EventMgr;

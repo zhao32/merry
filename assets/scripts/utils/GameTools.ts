@@ -20,9 +20,11 @@ var gameContext = {
   toastPool: [],
   prefabs: {},
   player: null,
-  playerNode:null,
+  operateUI:null,
+  playerNode: null,
   // currLevelScript:null,//当前关卡Script
-
+  viewSpeed: 0,
+  moveType:0,//0 玩家移动 1 背景移动
   isPlayMusic: true,
   isPause: false,
 
@@ -76,6 +78,7 @@ var gameContext = {
     gameContext.getPrefabByResName(resName, (prefab) => {
       PoolUtil.getItemShowNode(prefab, (node) => {
         node.getComponent('operateUI').init(data, callback)
+        gameContext.operateUI = node.getComponent('operateUI')
         let otherPanel = cc.director.getScene()
           .getChildByName("Canvas")
           .getChildByName("otherPanel");
@@ -93,7 +96,7 @@ var gameContext = {
           .getChildByName("Canvas")
           .getChildByName("gameUI");
         gameUI.addChild(node);
-     
+
       })
     });
   },
@@ -147,7 +150,8 @@ var gameConfig = {
   },
 
   set maxLevel(value: number) {
-    localStorage.setItem('MAXLEVEL', String(value))
+    let level = Math.max(parseInt(localStorage.getItem('MAXLEVEL')), value)
+    localStorage.setItem('MAXLEVEL', String(level))
   },
 
   openPhysics(open: boolean) {

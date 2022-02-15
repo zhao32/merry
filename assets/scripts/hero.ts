@@ -5,6 +5,8 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { gameContext } from "./utils/GameTools";
+
 const { ccclass, property } = cc._decorator;
 
 export enum State {
@@ -34,6 +36,11 @@ export default class NewClass extends cc.Component {
     isMove: Boolean = false//主角是否真实运动，在场景两边时主角移动，场景中间时场景移动
 
     private readonly Velocity = 150
+
+    private readonly Speed = 5
+
+
+    // public moveType: number = 0//0 玩家移动 1 背景移动
 
     onLoad() {
         this.isMove = true
@@ -65,26 +72,49 @@ export default class NewClass extends cc.Component {
             repeatCount = 0
         } else if (this._state == State.jumpLeft) {
             ani = 'jumpLeft'
-            if (this.isMove) body.linearVelocity = new cc.Vec2(-this.Velocity, 0)
+            if (this.isMove) {
+                if (gameContext.moveType == 0) {
+                    body.linearVelocity = new cc.Vec2(-this.Velocity, 0)
+                } else {
+                    gameContext.viewSpeed = -this.Speed
+                }
+            }
             this.playJump()
         } else if (this._state == State.jumpRight) {
             ani = 'jumpRight'
-            if (this.isMove) body.linearVelocity = new cc.Vec2(this.Velocity, 0)
+            if (this.isMove) {
+                if (gameContext.moveType == 0) {
+                    body.linearVelocity = new cc.Vec2(this.Velocity, 0)
+                } else {
+                    gameContext.viewSpeed = -this.Speed
+                }
+            }
             this.playJump()
         } else if (this._state == State.walkLeft) {
             ani = 'walkLeft'
             this.isMove = true
-            body.linearVelocity = new cc.Vec2(-this.Velocity, 0)
+            if (gameContext.moveType == 0) {
+                body.linearVelocity = new cc.Vec2(-this.Velocity, 0)
+            } else {
+                gameContext.viewSpeed = -this.Speed
+            }
         } else if (this._state == State.walkRight) {
             ani = 'walkRight'
             repeatCount = Infinity
             this.isMove = true
-            body.linearVelocity = new cc.Vec2(this.Velocity, 0)
+            if (gameContext.moveType == 0) {
+                body.linearVelocity = new cc.Vec2(this.Velocity, 0)
+            } else {
+                gameContext.viewSpeed = this.Speed
+            }
         } else if (this._state == State.standLeft) {
             this.isMove = false
             ani = 'standLeft'
             repeatCount = Infinity
             body.linearVelocity = new cc.Vec2(0, 0)
+            gameContext.viewSpeed = 0
+
+
         } else if (this._state == State.standRight) {
             // this.node.getComponent(cc.Animation).stop()
             // this._dir = this.RIGHT
@@ -92,6 +122,7 @@ export default class NewClass extends cc.Component {
             ani = 'standRight'
             repeatCount = Infinity
             body.linearVelocity = new cc.Vec2(0, 0)
+            gameContext.viewSpeed = 0
         }
         if (ani) {
             this.node.getComponent(cc.Animation).play(ani).repeatCount = repeatCount
@@ -116,7 +147,7 @@ export default class NewClass extends cc.Component {
     }
 
     update(dt) {
-    
+
         if (this.node.x < 20) {
             this.node.x = 20
         } else if (this.node.x > this.node.parent.width - 20) {

@@ -30,36 +30,36 @@ export default class NewClass extends cc.Component {
 
     // 只在两个碰撞体开始接触时被调用一次
     onBeginContact(contact: cc.PhysicsContact, selfCollider: cc.PhysicsBoxCollider, otherCollider: cc.PhysicsBoxCollider) {
-        if (otherCollider.tag == 0) {//地面砖块
-            // console.log('---------------------碰撞-----------------------------')
-            console.log('开始碰撞')
-            if (gameContext.player) {
-                gameContext.player.isJumping = false
-                if (gameContext.player.state == State.jumpLeft) {
-                    gameContext.player.state = State.standLeft
-                } else if (gameContext.player.state == State.jumpRight) {
-                    gameContext.player.state = State.standRight
-                }
-                let body = gameContext.player.getComponent(cc.RigidBody)
-                body.linearVelocity = new cc.Vec2(0, 0)
+        // if (otherCollider.tag == 0) {//地面砖块
+        //     // console.log('---------------------碰撞-----------------------------')
+        //     console.log('开始碰撞')
+        //     if (gameContext.player) {
+        //         gameContext.player.isJumping = false
+        //         if (gameContext.player.state == State.jumpLeft) {
+        //             gameContext.player.state = State.standLeft
+        //         } else if (gameContext.player.state == State.jumpRight) {
+        //             gameContext.player.state = State.standRight
+        //         }
+        //         let body = gameContext.player.getComponent(cc.RigidBody)
+        //         body.linearVelocity = new cc.Vec2(0, 0)
 
-            }
-        } else if (otherCollider.tag == 1) {//完成
-            console.log('到达完成地点')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHFINISH);
+        //     }
+        // } else if (otherCollider.tag == 1) {//完成
+        //     console.log('到达完成地点')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHFINISH);
 
-        } else if (otherCollider.tag == 2) {//口罩
-            console.log('接触口罩')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHMASK, {});
-        } else if (otherCollider.tag == 3) {//病毒
-            console.log('接触病毒')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHVIRUS);
+        // } else if (otherCollider.tag == 2) {//口罩
+        //     console.log('接触口罩')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHMASK, {});
+        // } else if (otherCollider.tag == 3) {//病毒
+        //     console.log('接触病毒')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHVIRUS);
 
-        } else if (otherCollider.tag == 4) {//荆棘
-            console.log('接触荆棘')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS );
+        // } else if (otherCollider.tag == 4) {//荆棘
+        //     console.log('接触荆棘')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS );
 
-        }
+        // }
     }
 
     // 只在两个碰撞体结束接触时被调用一次
