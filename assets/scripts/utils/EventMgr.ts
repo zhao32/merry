@@ -15,14 +15,28 @@ export default class EventMgr extends cc.Component {
     public static OPENOPERATE: string = "openOperate"
     public static CLOSEOPERATE: string = 'closeOperate'
     /**更新血条 */
-    public static UPDATESAN:string = 'updateSan'
+    public static UPDATESAN: string = 'updateSan'
     public static TOUCHMASK: string = 'touchMask'
     public static TOUCHVIRUS: string = 'touchVirus'
     public static TOUCHFINISH: string = 'touchFinish'
+    /**碰撞荆棘 */
     public static TOUCHTHORNS: string = 'touchthorns'
+    /**碰撞酒瓶 */
+    public static TOUCHBOTTLE: string = 'touchbottle'
+    /**碰撞酒桶 */
+    public static TOUCHBERRL: string = 'touchberrl'
+    /**碰撞食物 */
+    public static TOUCHFOOD: string = 'touchfood'
 
-    
+    /**碰撞蝙蝠 */
+    public static TOUCHBAT: string = 'touchbat'
+    /**碰撞蝙蝠超声波 */
+    public static TOUCHWAVE: string = 'touchwave'
+
+
     public static RESTART: string = 'restart'
+
+
 
     protected static instance: EventMgr;
     public static getInstance(): EventMgr {

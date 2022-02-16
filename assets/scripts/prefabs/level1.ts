@@ -48,7 +48,6 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
 
         this.initNode()
-
     }
 
     Restart(){

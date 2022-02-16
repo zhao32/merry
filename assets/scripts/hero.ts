@@ -29,7 +29,7 @@ export default class NewClass extends cc.Component {
     @property
     text: string = 'hello';
 
-    private _state: number = 0
+    public _state: number = 0
 
     private _isJumping: boolean = false
 
@@ -39,12 +39,48 @@ export default class NewClass extends cc.Component {
 
     private readonly Speed = 5
 
+    private aniObj = {}
+    // public aniType = "normal"
+
+    private _aniType = null
+
+    public set aniType(type:string){
+        this._aniType = type
+        this.state = this._state
+    }
+
+
 
     // public moveType: number = 0//0 玩家移动 1 背景移动
 
     onLoad() {
+
+        this.aniObj = {
+            normal: {
+                jumpLeft: 'jumpLeft',
+                jumpRight: 'jumpRight',
+                standLeft: 'standLeft',
+                standRight: 'standRight',
+                walkLeft: 'walkLeft',
+                walkRight: 'walkRight',
+
+            },
+            mask: {
+                jumpLeft: 'maskJumpLeft',
+                jumpRight: 'maskJumpRight',
+                standLeft: 'maskStandLeft',
+                standRight: 'maskStandRight',
+                walkLeft: 'maskWalkLeft',
+                walkRight: 'maskWalkRight',
+
+            }
+        }
+        this._aniType = 'normal'
+        console.log('aniType：' + this.aniObj[this._aniType].jumpLeft)
+
         this.isMove = true
         this.state = State.standRight
+
 
     }
 
@@ -63,6 +99,7 @@ export default class NewClass extends cc.Component {
     public set state(value: number) {
         if (this._isJumping) return
         let body = this.node.getComponent(cc.RigidBody)
+        let preState = this._state
         this._state = value
 
         let ani = ''
@@ -70,8 +107,15 @@ export default class NewClass extends cc.Component {
         if (this._state == State.fight) {
             ani = null
             repeatCount = 0
+            if (preState == State.walkLeft || preState == State.standLeft) {
+                ani = 'fightLeft'
+            } else if (preState == State.walkRight || preState == State.standRight) {
+                ani = 'fightRight'
+            }
+            console.log('ani:' + ani)
         } else if (this._state == State.jumpLeft) {
-            ani = 'jumpLeft'
+            ani = this.aniObj[this._aniType].jumpLeft
+            this.aniObj
             if (this.isMove) {
                 if (gameContext.moveType == 0) {
                     body.linearVelocity = new cc.Vec2(-this.Velocity, 0)
@@ -81,7 +125,7 @@ export default class NewClass extends cc.Component {
             }
             this.playJump()
         } else if (this._state == State.jumpRight) {
-            ani = 'jumpRight'
+            ani = this.aniObj[this._aniType].jumpRight
             if (this.isMove) {
                 if (gameContext.moveType == 0) {
                     body.linearVelocity = new cc.Vec2(this.Velocity, 0)
@@ -91,7 +135,8 @@ export default class NewClass extends cc.Component {
             }
             this.playJump()
         } else if (this._state == State.walkLeft) {
-            ani = 'walkLeft'
+            ani = this.aniObj[this._aniType].walkLeft
+
             this.isMove = true
             if (gameContext.moveType == 0) {
                 body.linearVelocity = new cc.Vec2(-this.Velocity, 0)
@@ -99,7 +144,7 @@ export default class NewClass extends cc.Component {
                 gameContext.viewSpeed = -this.Speed
             }
         } else if (this._state == State.walkRight) {
-            ani = 'walkRight'
+            ani = this.aniObj[this._aniType].walkRight
             repeatCount = Infinity
             this.isMove = true
             if (gameContext.moveType == 0) {
@@ -109,17 +154,15 @@ export default class NewClass extends cc.Component {
             }
         } else if (this._state == State.standLeft) {
             this.isMove = false
-            ani = 'standLeft'
+            ani = this.aniObj[this._aniType].standLeft
             repeatCount = Infinity
             body.linearVelocity = new cc.Vec2(0, 0)
             gameContext.viewSpeed = 0
-
-
         } else if (this._state == State.standRight) {
             // this.node.getComponent(cc.Animation).stop()
             // this._dir = this.RIGHT
             this.isMove = false
-            ani = 'standRight'
+            ani = this.aniObj[this._aniType].standRight
             repeatCount = Infinity
             body.linearVelocity = new cc.Vec2(0, 0)
             gameContext.viewSpeed = 0
@@ -130,7 +173,7 @@ export default class NewClass extends cc.Component {
         }
     }
 
-    public get state() {
+    public get state(): number {
         return this._state
     }
 

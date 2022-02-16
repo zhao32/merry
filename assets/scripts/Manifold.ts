@@ -47,18 +47,30 @@ export default class NewClass extends cc.Component {
         } else if (otherCollider.tag == 1) {//完成
             console.log('到达完成地点')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHFINISH);
-
         } else if (otherCollider.tag == 2) {//口罩
             console.log('接触口罩')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHMASK, {});
         } else if (otherCollider.tag == 3) {//病毒
             console.log('接触病毒')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHVIRUS);
-
         } else if (otherCollider.tag == 4) {//荆棘
             console.log('接触荆棘')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS );
-
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS);
+        } else if (otherCollider.tag == 5) {//酒瓶
+            console.log('老鼠接触酒瓶')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHBOTTLE);
+        } else if (otherCollider.tag == 6) {//酒桶
+            console.log('老鼠接触酒桶')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHBERRL);
+        } else if (otherCollider.tag == 7) {//食物
+            console.log('老鼠接触食物')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHFOOD);
+        } else if (otherCollider.tag == 8) {//蝙蝠
+            console.log('触碰蝙蝠')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
+        } else if (otherCollider.tag == 9) {//蝙蝠超声波
+            console.log('触碰蝙蝠超声波')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHWAVE);
         }
     }
 

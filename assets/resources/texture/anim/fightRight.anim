@@ -1,0 +1,43 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "fightRight",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.4,
+  "sample": 10,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "6dd6b5ea-ecad-40e0-a28a-23fbb5c810ef"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "25bb131c-20f4-4271-bb76-8a0f67007455"
+            }
+          },
+          {
+            "frame": 0.2,
+            "value": {
+              "__uuid__": "654d530d-c42e-4104-b995-b1ba8757effb"
+            }
+          },
+          {
+            "frame": 0.3,
+            "value": {
+              "__uuid__": "9c1d643a-05cb-4e15-9703-da29b5d133dc"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

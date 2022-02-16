@@ -1,0 +1,43 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "fightLeft",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.4,
+  "sample": 10,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "14512863-6c62-478e-9d94-64d65f25e750"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "fe35a21a-6e99-495f-a90a-4ff81564c75a"
+            }
+          },
+          {
+            "frame": 0.2,
+            "value": {
+              "__uuid__": "03ce8bc5-d950-4e3f-82b7-79c59885c73d"
+            }
+          },
+          {
+            "frame": 0.3,
+            "value": {
+              "__uuid__": "d62810a0-9555-44db-9333-f6014c6e6887"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

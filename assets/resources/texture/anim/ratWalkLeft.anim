@@ -1,12 +1,12 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "walkLeft",
+  "_name": "ratWalkLeft",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.9,
+  "_duration": 0.8,
   "sample": 10,
   "speed": 1,
-  "wrapMode": 2,
+  "wrapMode": 1,
   "curveData": {
     "comps": {
       "cc.Sprite": {
@@ -14,55 +14,49 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "0ba84119-d96a-482e-8069-d8755c723f1a"
+              "__uuid__": "b42dfd7a-cfc2-4c08-a7c5-c502c72547ad"
             }
           },
           {
             "frame": 0.1,
             "value": {
-              "__uuid__": "004c873a-6708-4955-b2a1-d1e38333b4bf"
+              "__uuid__": "853ed1b6-62c9-4135-857f-30515dcbe860"
             }
           },
           {
             "frame": 0.2,
             "value": {
-              "__uuid__": "1f077f23-2f7f-4b1b-b4c7-bc5b5ccab425"
+              "__uuid__": "07e1b9a1-1815-401a-9640-b3b43890ad96"
             }
           },
           {
             "frame": 0.3,
             "value": {
-              "__uuid__": "afb46c92-c2db-4d12-b2ef-4dabc4d25d26"
+              "__uuid__": "72a6419a-1b20-441c-bb81-0ef55985cf82"
             }
           },
           {
             "frame": 0.4,
             "value": {
-              "__uuid__": "d5981899-10e4-45ee-a91d-00dbb575fd77"
+              "__uuid__": "2153fb87-58c3-45f0-9122-455c00db2238"
             }
           },
           {
             "frame": 0.5,
             "value": {
-              "__uuid__": "33db9067-3a78-4542-ab38-b64aef395e44"
+              "__uuid__": "7a1b3d89-188a-4086-a71c-63a0706c45e8"
             }
           },
           {
             "frame": 0.6,
             "value": {
-              "__uuid__": "98e582d3-0db7-446f-a5af-daf9bc1c81bb"
+              "__uuid__": "f6b951b7-557f-4143-a3a9-47e194ecc429"
             }
           },
           {
             "frame": 0.7,
             "value": {
-              "__uuid__": "180ce6c8-04f5-4fa6-933b-12406d37855a"
-            }
-          },
-          {
-            "frame": 0.8,
-            "value": {
-              "__uuid__": "98dc821d-e3ea-4dc5-b9e8-dc2054a45d9b"
+              "__uuid__": "76c89e99-7c94-460f-9c61-f36b0df2a0bc"
             }
           }
         ]

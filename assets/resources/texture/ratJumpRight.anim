@@ -1,12 +1,12 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "standLeft",
+  "_name": "ratJumpRight",
   "_objFlags": 0,
   "_native": "",
   "_duration": 0.016666666666666666,
   "sample": 60,
   "speed": 1,
-  "wrapMode": 2,
+  "wrapMode": 1,
   "curveData": {
     "comps": {
       "cc.Sprite": {
@@ -14,7 +14,7 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "004c873a-6708-4955-b2a1-d1e38333b4bf"
+              "__uuid__": "7e7b2c71-6bd5-4ef7-ab00-b81c5b2857bb"
             }
           }
         ]

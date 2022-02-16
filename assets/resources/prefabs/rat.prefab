@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "hero",
+    "_name": "rat",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -51,8 +51,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 99,
-      "height": 186
+      "width": 115,
+      "height": 130
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -104,7 +104,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "9ee96090-0d6d-4ed9-bc79-2ee00dcee06e"
+      "__uuid__": "2bb7c8c7-dc2f-4373-9410-4565dfb8d10f"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -118,7 +118,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "a57956d5-0ee7-4394-a3b9-659b8c7558b7"
+      "__uuid__": "ac9f665c-dc71-4fde-b247-163ea30b8dbb"
     },
     "_id": ""
   },
@@ -133,51 +133,23 @@
     "_defaultClip": null,
     "_clips": [
       {
-        "__uuid__": "05827053-1d16-48d1-b2e0-e9eee3b39c97"
+        "__uuid__": "5faeeba5-04ef-408c-a3d3-503fe0eb3949"
       },
       {
-        "__uuid__": "765a9995-6c27-4b84-a26c-deb28216a818"
+        "__uuid__": "5a784293-5d73-47d0-b2d1-d2e68bc7413a"
       },
       {
-        "__uuid__": "c9c2f189-1824-4d2e-bffa-11f9321d1215"
+        "__uuid__": "108428b1-a46b-4b19-9989-52fca9492cbc"
       },
       {
-        "__uuid__": "e9c3e22f-05ee-4b67-85bf-9c45e84fe398"
+        "__uuid__": "d97a524d-939b-477d-a7be-d57e3f3d9bc4"
       },
       {
-        "__uuid__": "f1ecbda8-3af5-44f3-a604-6d6f56f1d989"
+        "__uuid__": "b30abd03-ece6-4665-b9a8-1522cad42889"
       },
       {
-        "__uuid__": "1cec5bfc-6cd5-4d4a-a313-0e1b3e74f0ab"
-      },
-      {
-        "__uuid__": "755e6883-d6cd-46ff-9d4a-09cec71372ac"
-      },
-      {
-        "__uuid__": "4cc7e799-a32a-41f3-a1ed-266ebb6539d6"
-      },
-      {
-        "__uuid__": "42811154-cba5-4a59-b4a6-217927d0d968"
-      },
-      {
-        "__uuid__": "7f65c21a-ecfb-49be-bfb3-a2bcf1286b2c"
-      },
-      {
-        "__uuid__": "365ec16d-2d57-4d49-99a4-08828ba86078"
-      },
-      {
-        "__uuid__": "983040da-3670-4c67-8874-d2ce7d9f033d"
-      },
-      {
-        "__uuid__": "d3dff82b-3847-4994-a538-c5f59a953f6b"
-      },
-      {
-        "__uuid__": "1c2cac09-81d0-4ad8-a4e6-44b5d080d61f"
-      },
-      null,
-      null,
-      null,
-      null
+        "__uuid__": "fff6bd12-e283-4ca3-8a1c-94f6c2d41db9"
+      }
     ],
     "playOnLoad": false,
     "_id": ""
@@ -240,8 +212,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 80,
-      "height": 185
+      "width": 90,
+      "height": 120
     },
     "_id": ""
   },
@@ -263,7 +235,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "6ffbdb13-c932-4120-8c1a-e22e5b610018"
+      "__uuid__": "4e662821-45e8-46e9-998d-3b3ecdb4864f"
     },
     "fileId": "",
     "sync": false

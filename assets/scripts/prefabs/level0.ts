@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import hero from "../hero";
 import EventMgr from "../utils/EventMgr";
 import { gameConfig, gameContext } from "../utils/GameTools";
 
@@ -216,7 +217,8 @@ export default class NewClass extends cc.Component {
     touchMask(self: this, params) {
         console.log('触碰口罩回调')
         self.hasMask = true
-        self.Mask.active = false
+        self.Mask.active = false;
+        (gameContext.player as hero).aniType = 'mask'
     }
 
     touchVirus() {

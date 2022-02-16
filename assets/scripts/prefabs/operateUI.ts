@@ -39,6 +39,10 @@ export default class NewClass extends cc.Component {
     btnUp: cc.Node = null;
 
     @property(cc.Node)
+    btnFight: cc.Node = null;
+
+
+    @property(cc.Node)
     btnMusic: cc.Node = null;
 
     @property(cc.Node)
@@ -50,6 +54,8 @@ export default class NewClass extends cc.Component {
     _canOperate: boolean
 
     _san: number = 10
+
+    _preState: number = 0
 
     public set canOperate(open: boolean) {
         this._canOperate = open
@@ -111,6 +117,11 @@ export default class NewClass extends cc.Component {
         this.btnRight.on(cc.Node.EventType.TOUCH_END, this.endRight, this)
         this.btnRight.on(cc.Node.EventType.TOUCH_CANCEL, this.endRight, this)
 
+        this.btnFight.on(cc.Node.EventType.TOUCH_START, this.startFight, this)
+        this.btnFight.on(cc.Node.EventType.TOUCH_END, this.endFight, this)
+        // this.btnFight.on(cc.Node.EventType.TOUCH_CANCEL, this.endFight, this)
+
+
         this.btnUp.on(cc.Node.EventType.TOUCH_END, this.endUp, this)
         this.btnMusic.on(cc.Node.EventType.TOUCH_END, this.checkMusic, this)
         this.btnPause.on(cc.Node.EventType.TOUCH_END, this.checkPause, this)
@@ -163,6 +174,17 @@ export default class NewClass extends cc.Component {
             (gameContext.player as hero).isMove = false;
             (gameContext.player as hero).state = State.jumpRight
         }
+    }
+
+    startFight() {
+        if (!this._canOperate) return
+        this._preState = (gameContext.player as hero)._state as number
+        (gameContext.player as hero).state = State.fight
+
+    }
+
+    endFight() {
+        (gameContext.player as hero).state = this._preState
     }
 
     checkMusic() {
