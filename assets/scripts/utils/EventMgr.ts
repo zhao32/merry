@@ -14,6 +14,8 @@ export default class EventMgr extends cc.Component {
 
     public static OPENOPERATE: string = "openOperate"
     public static CLOSEOPERATE: string = 'closeOperate'
+    public static OPERATEBTNRESET: string = 'resetoperatebtn'
+
     /**更新血条 */
     public static UPDATESAN: string = 'updateSan'
     public static TOUCHMASK: string = 'touchMask'
@@ -32,6 +34,16 @@ export default class EventMgr extends cc.Component {
     public static TOUCHBAT: string = 'touchbat'
     /**碰撞蝙蝠超声波 */
     public static TOUCHWAVE: string = 'touchwave'
+    /**触碰小羊 */
+    public static TOUCHSHEEP: string = 'touchsheep'
+
+    /**触碰装修怪 */
+    public static TOUCHTANK: string = 'touchTank'
+
+    
+    /**触碰装修怪手臂 */
+    public static TOUCHTANKARM: string = 'toucharm'
+
 
 
     public static RESTART: string = 'restart'

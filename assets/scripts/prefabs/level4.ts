@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import hero from "../hero";
 import EventMgr from "../utils/EventMgr";
 import { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
@@ -29,7 +30,11 @@ export default class NewClass extends cc.Component {
     wave0: cc.Node
     wave1: cc.Node
 
+    distance: number = null
 
+    batHp: cc.Node
+    batHpNum: number
+    bat: cc.Node
 
 
     init(data: any, callback) {
@@ -57,16 +62,38 @@ export default class NewClass extends cc.Component {
 
         this.page0.active = true
         this.page1.active = false
+        this.batHp = this.page1.getChildByName('batHp')
+        this.batHpNum = 20
+        this.bat = this.page1.getChildByName('bat')
+
+
     }
 
 
     start() {
+        this.scheduleOnce(() => {
+            console.log('第四关 发送OPERATEBTNRESET')
+            EventMgr.getInstance().sendListener(EventMgr.OPERATEBTNRESET, { left: true, right: true, top: false, down: false, fight: true, jump: true });
+        }, 0.1)
         this.Restart()
         this.preStart()
     }
 
     touchBat() {
-
+        // let player = gameContext.player as hero
+        // console.log('攻击蝙蝠')
+        // console.log('attack:' + player.attack)
+        // if (player && player.attack == true) {
+        //     console.log('攻击蝙蝠')
+        //     player.attack = false
+        //     this.batHpNum -= 2
+        //     if (this.batHpNum > 0) {
+        //         this.batHp.scaleX = this.batHpNum / 20
+        //     } else {
+        //         this.batHp.scaleX = 0
+        //         console.log('打死蝙蝠，通关！')
+        //     }
+        // }
     }
 
     touchWave() {
@@ -83,9 +110,15 @@ export default class NewClass extends cc.Component {
     Restart() {
         // gameConfig.currLevel = 1
         // gameConfig.maxLevel = 1
+        this.distance = 0
+        this.batHp.setScale(1)
+        this.batHpNum = 20
+        this.page0.active = true
+        this.page1.active = false
 
         gameContext.playerNode.setPosition(100, -165)
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+        this.preStart()
     }
 
     /**前情提要 */
@@ -138,6 +171,23 @@ export default class NewClass extends cc.Component {
     update(dt) {
         // this.node.x += 1
         // this.setSyncPosition()
+        // console.log(gameContext.playerNode.x)
+        if (gameContext.playerNode.x > 980 && gameContext.playerNode.x < 1110) {
+            let player = gameContext.player as hero
+            if (player && player.attack == true) {
+                console.log('攻击蝙蝠')
+                player.attack = false
+                this.batHpNum -= 2
+                if (this.batHpNum > 0) {
+                    this.batHp.scaleX = this.batHpNum / 20
+                } else {
+                    this.batHp.scaleX = 0
+                    console.log('打死蝙蝠，通关！')
+                    gameConfig.currLevel = 5
+                    gameConfig.maxLevel = 5
+                }
+            }
+        }
     }
 
     setSyncPosition() {

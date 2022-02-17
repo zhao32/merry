@@ -67,8 +67,6 @@ export default class NewClass extends cc.Component {
 
     callback: any
 
-
-
     init(data: any, callback) {
         this.callback = callback
         // this.Restart()
@@ -106,11 +104,16 @@ export default class NewClass extends cc.Component {
         this.toggle1 = this.toggle.getChildByName('toggle1').getComponent(cc.Toggle)
         this.toggle2 = this.toggle.getChildByName('toggle2').getComponent(cc.Toggle)
 
-
         this.toggle0.node.on('toggle', this.doToggle, this)
         this.toggle1.node.on('toggle', this.doToggle, this)
         this.toggle2.node.on('toggle', this.doToggle, this)
         this.btnOk.on(cc.Node.EventType.TOUCH_END, this.doSelected, this)
+        this.scheduleOnce(() => {
+            console.log('第一关 发送OPERATEBTNRESET')
+            EventMgr.getInstance().sendListener(EventMgr.OPERATEBTNRESET, { left: true, right: true, top: false, down: false, fight: false, jump: true });
+        }, 0.1)
+
+
     }
 
 
@@ -165,7 +168,7 @@ export default class NewClass extends cc.Component {
             console.log('选择确定')
             this.chat.active = false
             this.selectMilk.active = false
-            gameConfig.maxLevel =  1
+            gameConfig.maxLevel = 1
             gameContext.showToast('你谁啊！')
         }
     }

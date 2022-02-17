@@ -25,7 +25,7 @@ export default class NewClass extends cc.Component {
 
     @property({ type: cc.Prefab })
     bottlePfb: cc.Prefab = null;
-    
+
 
 
 
@@ -43,6 +43,8 @@ export default class NewClass extends cc.Component {
 
     bottleList = []
 
+    distance: number = null
+
     callback: any
 
     init(data: any, callback) {
@@ -58,12 +60,19 @@ export default class NewClass extends cc.Component {
         this._barrelNum = 0
         this._bottleNum = 0
         this._foodNum = 0
-        gameContext.moveType = 0
+
+        gameContext.moveType = 1
+        this.distance = 0
+        gameContext.playerNode.setPosition(300, -165)
 
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFINISH, this, this.touchFinish.bind(this))
 
+        this.scheduleOnce(() => {
+            console.log('第3关 发送OPERATEBTNRESET')
+            EventMgr.getInstance().sendListener(EventMgr.OPERATEBTNRESET, { left: true, right: true, top: false, down: false, fight: false, jump: true });
+        }, 0.1)
 
     }
 
@@ -72,8 +81,10 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
-        gameContext.playerNode.setPosition(100, -165)
+        gameContext.playerNode.setPosition(300, -165)
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+        gameContext.moveType = 1
+        this.distance = 0
 
     }
 
@@ -83,7 +94,6 @@ export default class NewClass extends cc.Component {
     }
 
     preStart() {
-
         EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {});
         this.scheduleOnce(() => {
             EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {});
@@ -94,20 +104,32 @@ export default class NewClass extends cc.Component {
     update(dt) {
         // this.node.x += 1
         // this.setSyncPosition()
-        if (gameContext.playerNode.x == 200 && this._barrelNum == 0) {
+        if (gameContext.moveType == 1) {
+            this.node.x -= gameContext.viewSpeed
+            this.setSyncPosition()
+            this.distance += gameContext.viewSpeed
+        }
+
+        if (this.distance > 1334) {
+            gameContext.moveType = 0
+        }
+        // console.log(this.distance)
+
+        if (gameContext.playerNode.x > 400 && this._barrelNum == 0) {
             this._barrelNum = 1
-            this.createrBarrel(new cc.Vec2(200, 500))
-        } else if (gameContext.playerNode.x == 400 && this._barrelNum == 1) {
+            this.createrBarrel(new cc.Vec2(this.distance + gameContext.playerNode.x, 500))
+            console.log('Barrel:' + (this.distance + 200))
+        } else if (gameContext.playerNode.x > 600 && this._barrelNum == 1) {
             this._barrelNum = 2
-            this.createrBarrel(new cc.Vec2(400, 500))
-        } else if (gameContext.playerNode.x == 600 && this._barrelNum == 2) {
+            this.createrBarrel(new cc.Vec2(this.distance + gameContext.playerNode.x, 500))
+        } else if (gameContext.playerNode.x > 800 && this._barrelNum == 2) {
             this._barrelNum = 3
-            this.createrBarrel(new cc.Vec2(600, 500))
+            this.createrBarrel(new cc.Vec2(this.distance + gameContext.playerNode.x, 500))
         } else if (gameContext.playerNode.x >= 800 && this._foodNum == 0) {
             this.createrFood()
         }
 
-        if(this._bottleNum == 0){
+        if (this._bottleNum == 0) {
             this.createBottle()
         }
 
@@ -154,13 +176,13 @@ export default class NewClass extends cc.Component {
             this.scheduleOnce(() => {
                 let food = cc.instantiate(this.foodPfb)
                 this.node.addChild(food)
-                food.setPosition(Math.random() * 200 + 800, 500)
+                food.setPosition(this.distance + Math.random() * 400 + 600, 500)
                 this.foodList.push(food)
             }, i * 2)
         }
     }
 
-    createBottle(){
+    createBottle() {
         this._bottleNum = 4
         for (let i = 0; i < 4; i++) {
             this.scheduleOnce(() => {

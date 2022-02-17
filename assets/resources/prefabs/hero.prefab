@@ -118,7 +118,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": {
-      "__uuid__": "a57956d5-0ee7-4394-a3b9-659b8c7558b7"
+      "__uuid__": "23606889-0d62-4517-af26-c7089320406e"
     },
     "_id": ""
   },
@@ -173,11 +173,7 @@
       },
       {
         "__uuid__": "1c2cac09-81d0-4ad8-a4e6-44b5d080d61f"
-      },
-      null,
-      null,
-      null,
-      null
+      }
     ],
     "playOnLoad": false,
     "_id": ""

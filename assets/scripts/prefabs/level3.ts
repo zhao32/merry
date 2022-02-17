@@ -44,9 +44,9 @@ export default class NewClass extends cc.Component {
             this.scheduleOnce(() => {
                 let food = cc.instantiate(this.foodPfb)
                 this.node.addChild(food)
-                food.setPosition(Math.random() * 1334, 500)
+                food.setPosition(400 + Math.random() * 634, 500)
                 this.foodList.push(food)
-            }, 2 +  30 * ( i / 30))
+            }, 2 + 30 * (i / 30))
         }
     }
 
@@ -70,9 +70,13 @@ export default class NewClass extends cc.Component {
 
 
         this.weChat = this.node.getChildByName('weChat')
-
         this.weChatLeft = this.weChat.getChildByName('weChatLeft')
         this.weChatRight = this.weChat.getChildByName('weChatRight')
+
+        this.scheduleOnce(() => {
+            console.log('第四关 发送OPERATEBTNRESET')
+            EventMgr.getInstance().sendListener(EventMgr.OPERATEBTNRESET, { left: true, right: true, top: false, down: false, fight: false, jump: false });
+        }, 0.1)
     }
 
 

@@ -39,7 +39,14 @@ export default class NewClass extends cc.Component {
     btnUp: cc.Node = null;
 
     @property(cc.Node)
+    btnDown: cc.Node = null;
+
+    @property(cc.Node)
     btnFight: cc.Node = null;
+
+    @property(cc.Node)
+    btnJump: cc.Node = null;
+
 
 
     @property(cc.Node)
@@ -57,12 +64,29 @@ export default class NewClass extends cc.Component {
 
     _preState: number = 0
 
+    _fightTouch:boolean = true
+
     public set canOperate(open: boolean) {
         this._canOperate = open
     }
 
     public get canOperate() {
         return this._canOperate
+    }
+
+    public resetBtn(self, parms) {
+        console.log('执行OPERATEBTNRESET')
+
+        console.log('重置按钮状态')
+        this.btnLeft.active = parms.left
+        this.btnRight.active = parms.right
+        this.btnUp.active = parms.up
+        this.btnDown.active = parms.down
+        this.btnJump.active = parms.jump
+        this.btnFight.active = parms.fight
+        let btnBg1 = this.node.getChildByName('btnBg1')
+        if( !parms.jump && !parms.fight)btnBg1.active = false
+        else btnBg1.active = true
     }
 
     public set san(num: number) {
@@ -87,12 +111,18 @@ export default class NewClass extends cc.Component {
 
     private openOperate() {
         this._canOperate = true
+        let btnBg0 = this.node.getChildByName('btnBg0')
+        let btnBg1 = this.node.getChildByName('btnBg1')
+        btnBg0.active = btnBg1.active = true
         console.log('打开玩家操作')
     }
 
     private closeOperate() {
         this._canOperate = false
-        console.log('打开玩家操作')
+        let btnBg0 = this.node.getChildByName('btnBg0')
+        let btnBg1 = this.node.getChildByName('btnBg1')
+        btnBg0.active = btnBg1.active = false
+        console.log('关闭玩家操作')
     }
 
     callback: any
@@ -108,6 +138,7 @@ export default class NewClass extends cc.Component {
 
     onLoad() {
         this.san = 10
+        this._fightTouch = true
 
         this.btnLeft.on(cc.Node.EventType.TOUCH_START, this.startLeft, this)
         this.btnLeft.on(cc.Node.EventType.TOUCH_END, this.endLeft, this)
@@ -122,7 +153,7 @@ export default class NewClass extends cc.Component {
         // this.btnFight.on(cc.Node.EventType.TOUCH_CANCEL, this.endFight, this)
 
 
-        this.btnUp.on(cc.Node.EventType.TOUCH_END, this.endUp, this)
+        this.btnJump.on(cc.Node.EventType.TOUCH_END, this.endJump, this)
         this.btnMusic.on(cc.Node.EventType.TOUCH_END, this.checkMusic, this)
         this.btnPause.on(cc.Node.EventType.TOUCH_END, this.checkPause, this)
         this.btnReplay.on(cc.Node.EventType.TOUCH_END, this.doReplay, this)
@@ -130,7 +161,14 @@ export default class NewClass extends cc.Component {
 
         EventMgr.getInstance().registerListener(EventMgr.OPENOPERATE, this, this.openOperate.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.CLOSEOPERATE, this, this.closeOperate.bind(this))
+
         EventMgr.getInstance().registerListener(EventMgr.UPDATESAN, this, this.updateSan.bind(this))
+        console.log('注册OPERATEBTNRESET')
+        EventMgr.getInstance().registerListener(EventMgr.OPERATEBTNRESET, this, this.resetBtn.bind(this))
+
+        let btnBg0 = this.node.getChildByName('btnBg0')
+        let btnBg1 = this.node.getChildByName('btnBg1')
+        btnBg0.active = btnBg1.active = false
 
 
     }
@@ -159,7 +197,7 @@ export default class NewClass extends cc.Component {
         (gameContext.player as hero).state = State.standRight
     }
 
-    endUp() {
+    endJump() {
         if (!this._canOperate) return
         if ((gameContext.player as hero).state == State.walkLeft) {
             (gameContext.player as hero).isMove = true;
@@ -178,12 +216,24 @@ export default class NewClass extends cc.Component {
 
     startFight() {
         if (!this._canOperate) return
-        this._preState = (gameContext.player as hero)._state as number
-        (gameContext.player as hero).state = State.fight
+        if(this._fightTouch == true){
+            this._fightTouch = false
+
+            this.scheduleOnce(()=>{
+                this._fightTouch = true
+            },1)
+            this._preState = (gameContext.player as hero)._state as number
+            (gameContext.player as hero).state = State.fight
+        }else{
+            gameContext.showToast('冷却时间1s')
+        
+        }
+       
 
     }
 
     endFight() {
+        if (!this._canOperate) return
         (gameContext.player as hero).state = this._preState
     }
 
@@ -233,6 +283,8 @@ export default class NewClass extends cc.Component {
     }
 
     start() {
+       
+
 
     }
 

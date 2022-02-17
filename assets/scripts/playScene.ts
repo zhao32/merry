@@ -27,14 +27,15 @@ export default class NewClass extends cc.Component {
     onLoad() {
         gameConfig.openPhysics(true)
         gameConfig.setGravity(20)
-        gameConfig.openPhysicsDebug()
+        // gameConfig.openPhysicsDebug()
 
-        gameConfig.currLevel = 4
-        gameConfig.maxLevel = 4
+        gameConfig.currLevel = 7
+        gameConfig.maxLevel = 7
        
 
         gameContext.showOperateUI()
         gameContext.showLevel(gameConfig.currLevel)
+
 
         let hero = cc.instantiate(this.heroPfb)
         hero.setPosition(100, -165)
@@ -46,6 +47,10 @@ export default class NewClass extends cc.Component {
     }
 
     start() {
+        // this.scheduleOnce(()=>{
+        //     gameContext.showLevel(gameConfig.currLevel)
+        // },0.1)
+
 
     }
 

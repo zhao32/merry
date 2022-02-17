@@ -46,11 +46,15 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().registerListener(EventMgr.TOUCHTHORNS, this, this.touchThorns.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFINISH, this, this.touchFinish.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
+        this.scheduleOnce(() => {
+            console.log('第2关 发送OPERATEBTNRESET')
+            EventMgr.getInstance().sendListener(EventMgr.OPERATEBTNRESET, { left: true, right: true, top: false, down: false, fight: false, jump: true });
+        }, 0.1)
 
         this.initNode()
     }
 
-    Restart(){
+    Restart() {
         gameContext.moveType = 1
         this.distance = 0
         this.node.setPosition(0, 0)
@@ -73,10 +77,10 @@ export default class NewClass extends cc.Component {
     touchFinish() {
         console.log('达成通关')
         this.scheduleOnce(() => {
-            console.log('进入记忆宝典')
-            gameContext.showToast('进入记忆宝典')
-            gameConfig.maxLevel =  2
-            EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+            console.log('游戏完成')
+            // gameContext.showToast('进入记忆宝典')
+            gameConfig.maxLevel = 2
+            // EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         }, 1)
     }
 
@@ -88,7 +92,7 @@ export default class NewClass extends cc.Component {
         this.Finish = this.node.getChildByName('Finish')
     }
 
-    preStart(){
+    preStart() {
         let move = cc.moveTo(4, new cc.Vec2(2200, -150))
         this.boat.runAction(cc.sequence(move, cc.callFunc(() => { this.boat.setPosition(115, 800) })))
         let self = this
@@ -106,7 +110,8 @@ export default class NewClass extends cc.Component {
     }
 
     start() {
-      this.preStart()
+        this.preStart()
+
 
     }
 

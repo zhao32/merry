@@ -44,9 +44,18 @@ export default class NewClass extends cc.Component {
 
     private _aniType = null
 
-    public set aniType(type:string){
+    public set aniType(type: string) {
         this._aniType = type
         this.state = this._state
+    }
+    private _attack: boolean
+
+    public set attack(type: boolean) {
+        this._attack = type
+    }
+
+    public get attack() {
+        return this._attack
     }
 
 
@@ -80,6 +89,7 @@ export default class NewClass extends cc.Component {
 
         this.isMove = true
         this.state = State.standRight
+        this._attack = false
     }
 
     start() {
@@ -104,16 +114,16 @@ export default class NewClass extends cc.Component {
         let repeatCount: number = Infinity
         if (this._state == State.fight) {
             ani = null
-            repeatCount = 0
+            repeatCount = 1
             if (preState == State.walkLeft || preState == State.standLeft) {
                 ani = 'fightLeft'
             } else if (preState == State.walkRight || preState == State.standRight) {
                 ani = 'fightRight'
             }
             console.log('ani:' + ani)
+            this.attack = true
         } else if (this._state == State.jumpLeft) {
             ani = this.aniObj[this._aniType].jumpLeft
-            this.aniObj
             if (this.isMove) {
                 if (gameContext.moveType == 0) {
                     body.linearVelocity = new cc.Vec2(-this.Velocity, 0)

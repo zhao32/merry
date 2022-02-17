@@ -65,12 +65,25 @@ export default class NewClass extends cc.Component {
         } else if (otherCollider.tag == 7) {//食物
             console.log('老鼠接触食物')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHFOOD);
-        } else if (otherCollider.tag == 8) {//蝙蝠
-            console.log('触碰蝙蝠')
+        }
+        else if (otherCollider.tag == 8) {//蝙蝠
+            // console.log('触碰蝙蝠')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
-        } else if (otherCollider.tag == 9) {//蝙蝠超声波
+        }
+        else if (otherCollider.tag == 9) {//蝙蝠超声波
             console.log('触碰蝙蝠超声波')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHWAVE);
+        } else if (otherCollider.tag == 10) {//羊
+            console.log('触碰羊')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHSHEEP);
+        } 
+        // else if (otherCollider.tag == 11) {//装修怪手臂
+        //     console.log('触碰装修怪手臂')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHTANKARM);
+        // }
+         else if (otherCollider.tag == 12) {//装修怪
+            console.log('触碰装修怪')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHTANK);
         }
     }
 
@@ -97,11 +110,24 @@ export default class NewClass extends cc.Component {
         //     }
         // }
 
+        // if (otherCollider.tag == 8) {//蝙蝠
+        //     console.log('onPreSolve 触碰蝙蝠')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
+        // }
 
+        if (otherCollider.tag == 11) {//装修怪手臂
+            console.log('触碰装修怪手臂')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHTANKARM);
+        }
     }
 
     // 每次处理完碰撞体接触逻辑时被调用
-    onPostSolve(contact, selfCollider, otherCollider) {
+    onPostSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsBoxCollider, otherCollider: cc.PhysicsBoxCollider) {
+        // if (otherCollider.tag == 8) {//蝙蝠
+        //     console.log('onPostSolve 触碰蝙蝠')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
+        // }
+
     }
 
     // update (dt) {}
