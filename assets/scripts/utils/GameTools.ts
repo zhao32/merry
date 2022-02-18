@@ -27,8 +27,7 @@ var gameContext = {
   moveType:0,//0 玩家移动 1 背景移动
   isPlayMusic: true,
   isPause: false,
-
-
+  memoryLength:5,
 
   getPrefabByResName(resName: string, callback?: Function) {
     if (!gameContext.prefabs[resName]) {

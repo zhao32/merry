@@ -47,7 +47,7 @@ export default class NewClass extends cc.Component {
         this.mask.on(cc.Node.EventType.TOUCH_END, this.hideItem, this)
 
         this.mask.active = false
-        this.displayItem.active = true
+        this.displayItem.active = false
         EventMgr.getInstance().registerListener(EventMgr.SHOWMEMRY, this, this.showItem.bind(this))
 
     }
@@ -57,7 +57,8 @@ export default class NewClass extends cc.Component {
     }
 
     start() {
-        let data = [0, 1, 2, 3, 4, 5, 6]
+        // let data = [0, 1, 2, 3, 4, 5, 6]
+        let data = new Array(gameContext.memoryLength)
         this.memoryList.setData(data)
     }
 
