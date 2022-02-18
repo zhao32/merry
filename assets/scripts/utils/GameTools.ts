@@ -73,6 +73,19 @@ var gameContext = {
     });
   },
 
+  showMemoryUI(data?: any, callback?: Function) {
+    var resName = "prefabs/memoryUI"
+    gameContext.getPrefabByResName(resName, (prefab) => {
+      PoolUtil.getItemShowNode(prefab, (node) => {
+        node.getComponent('memoryUI').init(data, callback)
+        let UIPanel = cc.director.getScene()
+          .getChildByName("Canvas")
+          .getChildByName("UIPanel");
+        UIPanel.addChild(node);
+      })
+    });
+  },
+
   showOperateUI(data?: any, callback?: Function) {
     var resName = "prefabs/operateUI"
     gameContext.getPrefabByResName(resName, (prefab) => {

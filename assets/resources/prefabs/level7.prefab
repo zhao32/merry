@@ -1233,7 +1233,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "hp",
+    "_name": "tankHp",
     "_objFlags": 0,
     "_parent": {
       "__id__": 26
@@ -1547,7 +1547,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -107.086,
+        -100,
         -167.574,
         0,
         0,
@@ -2127,6 +2127,9 @@
     "_enabled": true,
     "label": null,
     "text": "hello",
+    "boxPfb": {
+      "__uuid__": "f2b5eed6-870c-449f-91bd-405f5f13b4f6"
+    },
     "_id": ""
   },
   {

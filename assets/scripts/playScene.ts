@@ -29,8 +29,8 @@ export default class NewClass extends cc.Component {
         gameConfig.setGravity(20)
         // gameConfig.openPhysicsDebug()
 
-        gameConfig.currLevel = 7
-        gameConfig.maxLevel = 7
+        gameConfig.currLevel = 8
+        gameConfig.maxLevel = 8
        
 
         gameContext.showOperateUI()
