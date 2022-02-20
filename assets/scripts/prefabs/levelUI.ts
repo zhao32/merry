@@ -39,6 +39,7 @@ export default class NewClass extends cc.Component {
                 nameLabel.active = false
             } else {
                 nameLabel.active = true
+                nameLabel.getComponent(cc.Label).string = gameConfig.levelData[i].name
             }
 
         }
