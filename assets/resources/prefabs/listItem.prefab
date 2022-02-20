@@ -189,7 +189,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "item0",
+    "_name": "item",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1

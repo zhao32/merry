@@ -7,7 +7,7 @@
 
 import List from "../ListView/List";
 import EventMgr from "../utils/EventMgr";
-import { gameConfig, gameContext } from "../utils/GameTools";
+import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 
 
 const { ccclass, property } = cc._decorator;
@@ -59,6 +59,10 @@ export default class NewClass extends cc.Component {
     start() {
         // let data = [0, 1, 2, 3, 4, 5, 6]
         let data = new Array(gameContext.memoryLength)
+        for (let i = 0; i < data.length; i++) {
+           data[i] = `pic/item${i}`
+            
+        }
         this.memoryList.setData(data)
     }
 
@@ -79,6 +83,8 @@ export default class NewClass extends cc.Component {
     showItem(self, param) {
         this.displayItem.active = true
         this.mask.active = true
+        console.log('param:'+param)
+        GameTools.loadItemIcon(param.data,this.displayItem)
     }
 
     hideItem() {

@@ -1,4 +1,5 @@
 import EventMgr from "../utils/EventMgr";
+import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import List, { ListType } from "./List";
 
 const { ccclass, property } = cc._decorator;
@@ -44,6 +45,7 @@ export default class ItemRender extends cc.Component {
         //     let spriteFrame = new cc.SpriteFrame(texture)
         //     container.spriteFrame = spriteFrame
         // })
+        GameTools.loadItemIcon(this.data,this.node.getChildByName('item'))
 
     }
 }
