@@ -35,8 +35,8 @@ export default class NewClass extends cc.Component {
         manager.enabled = true;
         manager.enabledDebugDraw = true;
 
-        gameConfig.currLevel = 7
-        gameConfig.maxLevel = 7
+        gameConfig.currLevel = 8
+        gameConfig.maxLevel = 8
 
 
         gameContext.showOperateUI()

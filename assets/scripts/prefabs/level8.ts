@@ -56,9 +56,6 @@ export default class NewClass extends cc.Component {
 
     init(data: any, callback) {
         this.callback = callback
-        // this.Restart()
-        // this.preStart()
-
     }
 
     // LIFE-CYCLE CALLBACKS:
@@ -67,21 +64,12 @@ export default class NewClass extends cc.Component {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         this.setSyncPosition()
-        // gameContext.currLevelScript = this.node.getComponent('level0')
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
-
-        this.scheduleOnce(() => {
-            console.log('第六关 发送OPENOPERATE')
-            EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
-        }, 0.1)
+        EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
 
         this.page0 = this.node.getChildByName('page0')
         this.page1 = this.node.getChildByName('page1')
-        this.page0.active = true
-        this.page1.active = false
-
         this.death = this.page0.getChildByName('death')
-        this.death.x = 800
 
         this.label0 = this.page0.getChildByName('label0').getComponent(cc.Label)
         this.label1 = this.page0.getChildByName('label1').getComponent(cc.Label)
@@ -90,22 +78,13 @@ export default class NewClass extends cc.Component {
         this.enemy = this.page1.getChildByName('enemy')
         this.hook = this.page1.getChildByName('hook')
         this.enemyHp = this.page1.getChildByName('enemyHp')
-
-        this.hpNum = 10
-        this.enemyHpNum = 20
-
         this.angleRat = this.page1.getChildByName('angleRat')
-
-
-        gameContext.playerNode.active = false
-        this._touchArm = false
         this.schedule(this.hookAttack, 10)
     }
 
 
     start() {
         this.Restart()
-        this.preStart()
     }
 
     Restart() {
@@ -113,11 +92,9 @@ export default class NewClass extends cc.Component {
         this.page0.opacity = 255
         this.page1.active = false
         this.hpNum = 10
-        this.hpNum = 10
         this.enemyHpNum = 20
-        // this.hp.scaleX = 1
         this.enemyHp.scaleX = 1
-
+        this.death.x = 800
         gameContext.playerNode.active = false
         this._touchArm = false
 
@@ -150,9 +127,7 @@ export default class NewClass extends cc.Component {
                 gameContext.playerNode.active = true
                 this.page1.active = true
             })))
-
         }, preTime + 3)
-
     }
 
     touchArm() {
@@ -171,7 +146,7 @@ export default class NewClass extends cc.Component {
 
 
     hookAttack() {
-          cc.tween(this.hook)
+        cc.tween(this.hook)
             .by(1, { position: cc.v3(-200, 45, 0), angle: 100 })
             .delay(1)
             .by(.5, { position: cc.v3(200, -45, 0), angle: -100 })
