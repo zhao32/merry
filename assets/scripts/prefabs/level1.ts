@@ -39,6 +39,7 @@ export default class NewClass extends cc.Component {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         this.setSyncPosition()
+        gameContext.hasFllow = false
 
         gameContext.moveType = 1
         this.distance = 0
@@ -46,11 +47,6 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().registerListener(EventMgr.TOUCHTHORNS, this, this.touchThorns.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFINISH, this, this.touchFinish.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
-        this.scheduleOnce(() => {
-            console.log('第2关 发送OPERATEBTNRESET')
-            EventMgr.getInstance().sendListener(EventMgr.OPERATEBTNRESET, { left: true, right: true, top: false, down: false, fight: false, jump: true });
-        }, 0.1)
-
         this.initNode()
     }
 
@@ -79,8 +75,12 @@ export default class NewClass extends cc.Component {
         this.scheduleOnce(() => {
             console.log('游戏完成')
             // gameContext.showToast('进入记忆宝典')
-            gameConfig.maxLevel = 2
-            // EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+            gameConfig.maxLevel = 1
+            gameConfig.currLevel = 1
+            cc.director.loadScene("startScene",()=>{
+                gameContext.memoryLength = 2
+                gameContext.showMemoryUI()
+            });           
         }, 1)
     }
 
@@ -94,7 +94,7 @@ export default class NewClass extends cc.Component {
 
     preStart() {
         let move = cc.moveTo(4, new cc.Vec2(2200, -150))
-        this.boat.runAction(cc.sequence(move, cc.callFunc(() => { this.boat.setPosition(115, 800) })))
+        this.boat.runAction(cc.sequence(move, cc.callFunc(() => { this.boat.setPosition(115, 500) })))
         let self = this
         this.scheduleOnce(() => {
             self.weChat.active = true
@@ -103,7 +103,15 @@ export default class NewClass extends cc.Component {
 
         this.scheduleOnce(() => {
             self.weChat.active = false
-            EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {});
+            EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
+                left: true,
+                right: true,
+                top: false,
+                down: false,
+                fight: false,
+                jump: true
+            });
+
             console.log('start weChat1：' + self.weChat)
 
         }, 4)

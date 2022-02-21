@@ -155,18 +155,6 @@
     "_id": ""
   },
   {
-    "__type__": "c6672CeqoFIdKpRDGvAjj3m",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "label": null,
-    "text": "hello",
-    "_id": ""
-  },
-  {
     "__type__": "cc.RigidBody",
     "_name": "",
     "_objFlags": 0,
@@ -213,12 +201,24 @@
     "_size": {
       "__type__": "cc.Size",
       "width": 90,
-      "height": 120
+      "height": 110
     },
     "_id": ""
   },
   {
     "__type__": "0790cgwfkhD/4YJhfaHL/Cu",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "label": null,
+    "text": "hello",
+    "_id": ""
+  },
+  {
+    "__type__": "90d11H3cpVDcJF9M1UJtZxP",
     "_name": "",
     "_objFlags": 0,
     "node": {

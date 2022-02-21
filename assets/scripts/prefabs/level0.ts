@@ -84,6 +84,7 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().registerListener(EventMgr.TOUCHVIRUS, this, this.touchVirus.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFINISH, this, this.touchFinish.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
+        gameContext.hasFllow = false
 
         this.Mask = this.node.getChildByName('Mask')
         this.Virus = this.node.getChildByName('Virus')
@@ -108,11 +109,6 @@ export default class NewClass extends cc.Component {
         this.toggle1.node.on('toggle', this.doToggle, this)
         this.toggle2.node.on('toggle', this.doToggle, this)
         this.btnOk.on(cc.Node.EventType.TOUCH_END, this.doSelected, this)
-        this.scheduleOnce(() => {
-            console.log('第一关 发送OPERATEBTNRESET')
-            EventMgr.getInstance().sendListener(EventMgr.OPERATEBTNRESET, { left: true, right: true, top: false, down: false, fight: false, jump: true });
-        }, 0.1)
-
 
     }
 
@@ -164,18 +160,24 @@ export default class NewClass extends cc.Component {
             gameContext.showToast('恭喜通关,打开记忆宝典页面')
             this.chat.active = false
             this.selectMilk.active = false
+            gameConfig.maxLevel = 0
+            cc.director.loadScene("startScene",()=>{
+                gameContext.memoryLength = 1
+                gameContext.showMemoryUI()
+            });
+           
         } else {
-            console.log('选择确定')
+            console.log('选择错误')
             this.chat.active = false
             this.selectMilk.active = false
-            gameConfig.maxLevel = 1
+            // gameConfig.maxLevel = 1
             gameContext.showToast('你谁啊！')
         }
     }
 
     Restart() {
         gameConfig.currLevel = 1
-        gameConfig.maxLevel = 1
+        // gameConfig.maxLevel = 1
         this.weChatLeft.active = false
 
         this.weChatRight.active = false
@@ -213,7 +215,15 @@ export default class NewClass extends cc.Component {
         this.scheduleOnce(() => {
             this.weChatLeft.active = false
             this.weChatRight.active = false
-            EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {});
+            EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
+                left: true,
+                right: true,
+                top: false,
+                down: false,
+                fight: false,
+                jump: true
+            });
+
         }, preTime + 4)
     }
 

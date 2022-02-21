@@ -17,14 +17,6 @@ export default class NewClass extends cc.Component {
     @property(cc.Label)
     label: cc.Label = null;
 
-
-    // weChat: cc.Node = null
-    // // @property(cc.Node)
-    // weChatLeft: cc.Node = null;
-
-    // // @property(cc.Node)
-    // weChatRight: cc.Node = null;
-
     @property({ type: cc.Prefab })
     foodPfb: cc.Prefab = null;
 
@@ -39,8 +31,12 @@ export default class NewClass extends cc.Component {
     page0: cc.Node
     page1: cc.Node
     page2: cc.Node
-    label0:cc.Label
-    label1:cc.Label
+    label0: cc.Label
+    label1: cc.Label
+
+    sheepMis: cc.Node
+    water: cc.Node
+    ratTear: cc.Node
 
     sheep: cc.Node
     _touchSheep: boolean = false
@@ -48,13 +44,8 @@ export default class NewClass extends cc.Component {
     hp: cc.Node
     hpNum: number
 
-
-
     init(data: any, callback) {
         this.callback = callback
-        // this.Restart()
-        // this.preStart()
-
     }
 
     // LIFE-CYCLE CALLBACKS:
@@ -63,57 +54,58 @@ export default class NewClass extends cc.Component {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         this.setSyncPosition()
-        // gameContext.currLevelScript = this.node.getComponent('level0')
+
         EventMgr.getInstance().registerListener(EventMgr.TOUCHSHEEP, this, this.touchSheep.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
-        this.scheduleOnce(() => {
-            console.log('第六关 发送OPERATEBTNRESET')
-            EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
-        }, 0.1)
+        EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+
         this.page0 = this.node.getChildByName('page0')
         this.page1 = this.node.getChildByName('page1')
         this.page2 = this.node.getChildByName('page2')
-        this.page0.active = true
-        this.page1.active = false
-        this.page2.active = false
 
         this.label0 = this.page0.getChildByName('label0').getComponent(cc.Label)
         this.label1 = this.page0.getChildByName('label1').getComponent(cc.Label)
-        this.label0.string = ''
-        this.label1.string = ''
 
         this.hp = this.page1.getChildByName('hp')
         for (let i = 0; i < 4; i++) {
             let could = this.page1.getChildByName(`could${i}`)
             this.couldList.push(could)
         }
-        this.idX = 0
-        this.hpNum = 10
-        this._touchSheep = false
-        this.sheep = this.page1.getChildByName('sheep')
 
-        gameContext.playerNode.active = false
+        this.sheep = this.page1.getChildByName('sheep')
+        this.sheepMis = this.page2.getChildByName('sheep')
+        this.ratTear = this.page2.getChildByName('tearRat')
+        this.water = this.page2.getChildByName('water')
     }
 
 
     start() {
         this.Restart()
-        this.preStart()
     }
 
     Restart() {
         this.page0.active = true
         this.page1.active = false
         this.page2.active = false
+
+        this.label0.string = ''
+        this.label1.string = ''
+
         this.idX = 0
         this.hpNum = 10
         this._touchSheep = false
         this.sheep.setPosition(this.couldList[0].x, this.couldList[0].y + 60)
 
-        gameConfig.currLevel = 6
-        gameContext.playerNode.setPosition(100, -165)
+        this.sheepMis.y = -500
+        this.water.height = 100
+        this.ratTear.active = true
+
+        gameConfig.currLevel = 5
+        gameContext.playerNode.setPosition(200, -165)
         gameContext.playerNode.active = false
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+        this.unscheduleAllCallbacks()
+        this.sheep.stopAllActions()
         this.preStart()
     }
 
@@ -121,8 +113,6 @@ export default class NewClass extends cc.Component {
     preStart() {
         let preTime = 1
         this.scheduleOnce(() => {
-            // this.weChatLeft.active = true
-            // console.log('播放音效')
             this.label0.string = '【鼠】:我想吃小羊羔'
         }, preTime)
         console.log('播放音效')
@@ -134,14 +124,16 @@ export default class NewClass extends cc.Component {
             this.page0.active = false
             this.page1.active = true
             gameContext.playerNode.active = true
-            EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {});
-            EventMgr.getInstance().sendListener(EventMgr.OPERATEBTNRESET, { left: true, right: true, top: false, down: false, fight: false, jump: true });
+            EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
+                left: true,
+                right: true,
+                top: false,
+                down: false,
+                fight: false,
+                jump: true
+            });
 
         }, preTime + 4)
-    }
-
-    touchFood(self: this, params) {
-
     }
 
     touchSheep() {
@@ -157,10 +149,30 @@ export default class NewClass extends cc.Component {
             this.sheep.runAction(cc.sequence(cc.moveTo(1, new cc.Vec2(0, 500)), cc.callFunc(() => {
                 console.log('追样结束')
                 this.page1.active = false
-                this.page2.active = true
+                this.showOverPage()
             })))
-
         }
+    }
+
+    showOverPage() {
+        this.page2.active = true
+        this.ratTear.active = true
+        cc.tween(this.sheepMis)
+            .to(2, { y: -60 }, { easing: 'sineOutIn' })
+            .start()
+
+        cc.tween(this.water)
+            .to(2, { height: 350 }, { easing: 'sineOutIn' })
+            .delay(1)
+            .call(() => {
+                gameConfig.currLevel = 5
+                gameConfig.maxLevel = 5
+                cc.director.loadScene("startScene", () => {
+                    gameContext.memoryLength = 6
+                    gameContext.showMemoryUI()
+                });
+            })
+            .start()
     }
 
     update(dt) {

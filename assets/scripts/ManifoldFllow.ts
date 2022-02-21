@@ -28,6 +28,67 @@ export default class NewClass extends cc.Component {
 
     }
 
+    /**
+ * 当碰撞产生的时候调用
+ * @param  {Collider} other 产生碰撞的另一个碰撞组件
+ * @param  {Collider} self  产生碰撞的自身的碰撞组件
+ */
+    onCollisionEnter(other, self) {
+        console.log('on collision enter');
+
+        // 碰撞系统会计算出碰撞组件在世界坐标系下的相关的值，并放到 world 这个属性里面
+        // var world = self.world;
+
+        // // 碰撞组件的 aabb 碰撞框
+        // var aabb = world.aabb;
+
+        // // 节点碰撞前上一帧 aabb 碰撞框的位置
+        // var preAabb = world.preAabb;
+
+        // // 碰撞框的世界矩阵
+        // var t = world.transform;
+
+        // // 以下属性为圆形碰撞组件特有属性
+        // var r = world.radius;
+        // var p = world.position;
+
+        // // 以下属性为 矩形 和 多边形 碰撞组件特有属性
+        // var ps = world.points;
+
+        if (other.tag == 5) {//酒瓶
+            console.log('老鼠接触酒瓶')
+            other.node.opacity = 0
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHBOTTLE);
+        } else if (other.tag == 6) {//酒桶
+            console.log('老鼠接触酒桶')
+            other.node.opacity = 0
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHBERRL);
+        } else if (other.tag == 7) {//食物
+            console.log('老鼠接触食物')
+            other.node.opacity = 0
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHFOOD);
+        }
+    }
+
+    /**
+     * 当碰撞产生后，碰撞结束前的情况下，每次计算碰撞结果后调用
+     * @param  {Collider} other 产生碰撞的另一个碰撞组件
+     * @param  {Collider} self  产生碰撞的自身的碰撞组件
+     */
+    onCollisionStay(other, self) {
+        console.log('on collision stay');
+    }
+
+    /**
+     * 当碰撞结束后调用
+     * @param  {Collider} other 产生碰撞的另一个碰撞组件
+     * @param  {Collider} self  产生碰撞的自身的碰撞组件
+     */
+    onCollisionExit(other, self: cc.BoxCollider) {
+        console.log('on collision exit');
+    }
+
+
     // 只在两个碰撞体开始接触时被调用一次
     onBeginContact(contact: cc.PhysicsContact, selfCollider: cc.PhysicsBoxCollider, otherCollider: cc.PhysicsBoxCollider) {
         if (otherCollider.tag == 0) {//地面砖块
@@ -56,19 +117,17 @@ export default class NewClass extends cc.Component {
         } else if (otherCollider.tag == 4) {//荆棘
             console.log('接触荆棘')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS);
-        } 
-        // else if (otherCollider.tag == 5) {//酒瓶
-        //     console.log('老鼠接触酒瓶')
-        //     otherCollider.node.destroy()
-        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHBOTTLE);
-        // } else if (otherCollider.tag == 6) {//酒桶
-        //     console.log('老鼠接触酒桶')
-        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHBERRL);
-        // } else if (otherCollider.tag == 7) {//食物
-        //     console.log('老鼠接触食物')
-        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHFOOD);
-        // }
-
+        } else if (otherCollider.tag == 5) {//酒瓶
+            console.log('老鼠接触酒瓶')
+            otherCollider.node.destroy()
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHBOTTLE);
+        } else if (otherCollider.tag == 6) {//酒桶
+            console.log('老鼠接触酒桶')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHBERRL);
+        } else if (otherCollider.tag == 7) {//食物
+            console.log('老鼠接触食物')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHFOOD);
+        }
         else if (otherCollider.tag == 8) {//蝙蝠
             // console.log('触碰蝙蝠')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
@@ -79,59 +138,18 @@ export default class NewClass extends cc.Component {
         } else if (otherCollider.tag == 10) {//羊
             console.log('触碰羊')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHSHEEP);
-        } 
+        }
         // else if (otherCollider.tag == 11) {//装修怪手臂
         //     console.log('触碰装修怪手臂')
         //     EventMgr.getInstance().sendListener(EventMgr.TOUCHTANKARM);
         // }
-         else if (otherCollider.tag == 12) {//装修怪
+        else if (otherCollider.tag == 12) {//装修怪
             console.log('触碰装修怪')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHTANK);
         }
     }
 
-    // 只在两个碰撞体结束接触时被调用一次
-    onEndContact(contact: cc.PhysicsContact, selfCollider: cc.PhysicsBoxCollider, otherCollider: cc.PhysicsBoxCollider) {
-    }
 
-    // 每次将要处理碰撞体接触逻辑时被调用
-    onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsBoxCollider, otherCollider: cc.PhysicsBoxCollider) {
-        // let body = gameContext.player.getComponent(cc.RigidBody)
-        // let vx = body.linearVelocity.x
-        // let vy = body.linearVelocity.y
-
-        // if (body && vx == 0) {
-        //     if (otherCollider.tag == 0) {//撞墙
-        //         // console.log('---------------------碰撞-----------------------------')
-        //         if (gameContext.player) {
-        //             if (gameContext.player.state == State.standLeft) {
-        //                 gameContext.player.state = State.standLeft
-        //             } else if (gameContext.player.state == State.standRight) {
-        //                 gameContext.player.state = State.standRight
-        //             }
-        //         }
-        //     }
-        // }
-
-        // if (otherCollider.tag == 8) {//蝙蝠
-        //     console.log('onPreSolve 触碰蝙蝠')
-        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
-        // }
-
-        if (otherCollider.tag == 11) {//装修怪手臂
-            console.log('触碰装修怪手臂')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHTANKARM);
-        }
-    }
-
-    // 每次处理完碰撞体接触逻辑时被调用
-    onPostSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsBoxCollider, otherCollider: cc.PhysicsBoxCollider) {
-        // if (otherCollider.tag == 8) {//蝙蝠
-        //     console.log('onPostSolve 触碰蝙蝠')
-        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
-        // }
-
-    }
 
     // update (dt) {}
 }

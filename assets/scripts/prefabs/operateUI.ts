@@ -75,8 +75,8 @@ export default class NewClass extends cc.Component {
     }
 
     public resetBtn(self, parms) {
-        console.log('执行OPERATEBTNRESET')
-
+        console.log('执行OPENOPERATE')
+        this._canOperate = true
         console.log('重置按钮状态')
         this.btnLeft.active = parms.left
         this.btnRight.active = parms.right
@@ -84,9 +84,11 @@ export default class NewClass extends cc.Component {
         this.btnDown.active = parms.down
         this.btnJump.active = parms.jump
         this.btnFight.active = parms.fight
+        let btnBg0 = this.node.getChildByName('btnBg0')
         let btnBg1 = this.node.getChildByName('btnBg1')
         if( !parms.jump && !parms.fight)btnBg1.active = false
         else btnBg1.active = true
+        btnBg0.active = true
     }
 
     public set san(num: number) {
@@ -109,13 +111,13 @@ export default class NewClass extends cc.Component {
         return this._san
     }
 
-    private openOperate() {
-        this._canOperate = true
-        let btnBg0 = this.node.getChildByName('btnBg0')
-        let btnBg1 = this.node.getChildByName('btnBg1')
-        btnBg0.active = btnBg1.active = true
-        console.log('打开玩家操作')
-    }
+    // private openOperate() {
+    //     this._canOperate = true
+    //     let btnBg0 = this.node.getChildByName('btnBg0')
+    //     let btnBg1 = this.node.getChildByName('btnBg1')
+    //     btnBg0.active = btnBg1.active = true
+    //     console.log('打开玩家操作')
+    // }
 
     private closeOperate() {
         this._canOperate = false
@@ -159,12 +161,11 @@ export default class NewClass extends cc.Component {
         this.btnReplay.on(cc.Node.EventType.TOUCH_END, this.doReplay, this)
         this.btnHome.on(cc.Node.EventType.TOUCH_END, this.doHome, this)
 
-        EventMgr.getInstance().registerListener(EventMgr.OPENOPERATE, this, this.openOperate.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.CLOSEOPERATE, this, this.closeOperate.bind(this))
 
         EventMgr.getInstance().registerListener(EventMgr.UPDATESAN, this, this.updateSan.bind(this))
-        console.log('注册OPERATEBTNRESET')
-        EventMgr.getInstance().registerListener(EventMgr.OPERATEBTNRESET, this, this.resetBtn.bind(this))
+        console.log('注册OPENOPERATE')
+        EventMgr.getInstance().registerListener(EventMgr.OPENOPERATE, this, this.resetBtn.bind(this))
 
         let btnBg0 = this.node.getChildByName('btnBg0')
         let btnBg1 = this.node.getChildByName('btnBg1')

@@ -71,7 +71,7 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
 
         this.scheduleOnce(() => {
-            console.log('第六关 发送OPERATEBTNRESET')
+            console.log('第六关 发送OPENOPERATE')
             EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         }, 0.1)
 
@@ -139,8 +139,7 @@ export default class NewClass extends cc.Component {
         console.log('播放音效')
         this.scheduleOnce(() => {
             this.page0.runAction(cc.sequence(cc.fadeOut(2), cc.callFunc(() => {
-                EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {});
-                EventMgr.getInstance().sendListener(EventMgr.OPERATEBTNRESET, {
+                EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
                     left: true,
                     right: true,
                     top: false,

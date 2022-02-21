@@ -23,6 +23,8 @@ export default class NewClass extends cc.Component {
     callback: any
 
     role0: cc.Node
+    role1: cc.Node
+
 
     page0: cc.Node
     page1: cc.Node
@@ -49,52 +51,41 @@ export default class NewClass extends cc.Component {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         this.setSyncPosition()
-        // gameContext.currLevelScript = this.node.getComponent('level0')
-        EventMgr.getInstance().registerListener(EventMgr.TOUCHBAT, this, this.touchBat.bind(this))
-        EventMgr.getInstance().registerListener(EventMgr.TOUCHWAVE, this, this.touchWave.bind(this))
 
+        EventMgr.getInstance().registerListener(EventMgr.TOUCHWAVE, this, this.touchWave.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
         this.page0 = this.node.getChildByName('page0')
         this.page1 = this.node.getChildByName('page1')
         this.role0 = this.page0.getChildByName('role0')
+        this.role1 = this.page0.getChildByName('role1')
+
         this.wave0 = this.page1.getChildByName('wave0')
         this.wave1 = this.page1.getChildByName('wave1')
-
-        this.page0.active = true
-        this.page1.active = false
         this.batHp = this.page1.getChildByName('batHp')
-        this.batHpNum = 20
         this.bat = this.page1.getChildByName('bat')
-
-
     }
 
 
     start() {
-        this.scheduleOnce(() => {
-            console.log('第四关 发送OPERATEBTNRESET')
-            EventMgr.getInstance().sendListener(EventMgr.OPERATEBTNRESET, { left: true, right: true, top: false, down: false, fight: true, jump: true });
-        }, 0.1)
         this.Restart()
-        this.preStart()
     }
 
-    touchBat() {
-        // let player = gameContext.player as hero
-        // console.log('攻击蝙蝠')
-        // console.log('attack:' + player.attack)
-        // if (player && player.attack == true) {
-        //     console.log('攻击蝙蝠')
-        //     player.attack = false
-        //     this.batHpNum -= 2
-        //     if (this.batHpNum > 0) {
-        //         this.batHp.scaleX = this.batHpNum / 20
-        //     } else {
-        //         this.batHp.scaleX = 0
-        //         console.log('打死蝙蝠，通关！')
-        //     }
-        // }
-    }
+    // touchBat() {
+    //     // let player = gameContext.player as hero
+    //     // console.log('攻击蝙蝠')
+    //     // console.log('attack:' + player.attack)
+    //     // if (player && player.attack == true) {
+    //     //     console.log('攻击蝙蝠')
+    //     //     player.attack = false
+    //     //     this.batHpNum -= 2
+    //     //     if (this.batHpNum > 0) {
+    //     //         this.batHp.scaleX = this.batHpNum / 20
+    //     //     } else {
+    //     //         this.batHp.scaleX = 0
+    //     //         console.log('打死蝙蝠，通关！')
+    //     //     }
+    //     // }
+    // }
 
     touchWave() {
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -3 });
@@ -108,40 +99,53 @@ export default class NewClass extends cc.Component {
 
 
     Restart() {
-        // gameConfig.currLevel = 1
-        // gameConfig.maxLevel = 1
         this.distance = 0
         this.batHp.setScale(1)
         this.batHpNum = 20
         this.page0.active = true
         this.page1.active = false
-
-        gameContext.playerNode.setPosition(100, -165)
+        gameContext.playerNode.active = false
+        gameContext.playerNode.setPosition(300, -165)
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         this.preStart()
     }
 
     /**前情提要 */
     preStart() {
-        let preTime = 1
+        let preTime = 0
+        this.role0.scale = 1.5
+        this.role0.x = -95
+        this.role1.x = 0
+        this.unscheduleAllCallbacks()
+        this.role0.stopAllActions()
+        this.role1.stopAllActions()
         this.scheduleOnce(() => {
-            this.role0.scale = 1.5
-            let roleAni = this.role0.getComponent(cc.Animation)
+            this.role0.getComponent(cc.Animation)
                 .play('walkRight').repeatCount = Infinity
+            this.role1.getComponent(cc.Animation)
+                .play('ratWalkRight').repeatCount = Infinity
             let moveBy = cc.moveBy(6, new cc.Vec2(900, 0));
             let callF = cc.callFunc(() => {
-                EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {});
                 this.page0.active = false
                 this.page1.active = true
                 this.showWave()
+
+                EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
+                    left: true,
+                    right: true,
+                    top: false,
+                    down: false,
+                    fight: true,
+                    jump: true
+                });
+                gameContext.playerNode.active = true
             });
             this.role0.runAction(cc.sequence(moveBy, callF))
+            this.role1.runAction(moveBy.clone())
 
         }, preTime + 1)
     }
 
-    touchFood(self: this, params) {
-    }
 
     showWave() {
         // this.wave.runAction()
@@ -169,9 +173,6 @@ export default class NewClass extends cc.Component {
     }
 
     update(dt) {
-        // this.node.x += 1
-        // this.setSyncPosition()
-        // console.log(gameContext.playerNode.x)
         if (gameContext.playerNode.x > 980 && gameContext.playerNode.x < 1110) {
             let player = gameContext.player as hero
             if (player && player.attack == true) {
@@ -183,8 +184,13 @@ export default class NewClass extends cc.Component {
                 } else {
                     this.batHp.scaleX = 0
                     console.log('打死蝙蝠，通关！')
-                    gameConfig.currLevel = 5
-                    gameConfig.maxLevel = 5
+                    gameConfig.currLevel = 4
+                    gameConfig.maxLevel = 4
+                    cc.director.loadScene("startScene", () => {
+                        gameContext.memoryLength = 5
+                        gameContext.showMemoryUI()
+                    });
+
                 }
             }
         }

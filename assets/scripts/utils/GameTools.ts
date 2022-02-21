@@ -28,6 +28,7 @@ var gameContext = {
   isPlayMusic: true,
   isPause: false,
   memoryLength:5,
+  hasFllow:false,
 
   getPrefabByResName(resName: string, callback?: Function) {
     if (!gameContext.prefabs[resName]) {

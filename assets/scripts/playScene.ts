@@ -21,6 +21,9 @@ export default class NewClass extends cc.Component {
     @property({ type: cc.Prefab })
     heroPfb: cc.Prefab = null;
 
+    @property({ type: cc.Prefab })
+    ratPfb: cc.Prefab = null;
+
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -28,21 +31,30 @@ export default class NewClass extends cc.Component {
         gameConfig.openPhysics(true)
         gameConfig.setGravity(20)
         // gameConfig.openPhysicsDebug()
+        let manager = cc.director.getCollisionManager();
+        manager.enabled = true;
+        manager.enabledDebugDraw = true;
 
-        gameConfig.currLevel = 8
-        gameConfig.maxLevel = 8
-       
+        gameConfig.currLevel = 7
+        gameConfig.maxLevel = 7
+
 
         gameContext.showOperateUI()
         gameContext.showLevel(gameConfig.currLevel)
 
 
-        let hero = cc.instantiate(this.heroPfb)
+        let hero
+        if (gameConfig.currLevel == 5) {
+            hero = cc.instantiate(this.ratPfb)
+            gameContext.player = hero.getComponent('rat')
+        } else {
+            hero = cc.instantiate(this.heroPfb)
+            gameContext.player = hero.getComponent('hero')
+        }
         hero.setPosition(100, -165)
         hero.setAnchorPoint(0.5, 0.5)
         hero.zIndex = cc.macro.MAX_ZINDEX
         this.node.getChildByName('gameUI').addChild(hero)
-        gameContext.player = hero.getComponent('hero')
         gameContext.playerNode = hero
     }
 

@@ -7,6 +7,7 @@
 
 import EventMgr from "../utils/EventMgr";
 import { gameConfig, gameContext } from "../utils/GameTools";
+import operateUI from "./operateUI";
 
 
 const { ccclass, property } = cc._decorator;
@@ -25,9 +26,6 @@ export default class NewClass extends cc.Component {
 
     @property({ type: cc.Prefab })
     bottlePfb: cc.Prefab = null;
-
-
-
 
     @property
     text: string = 'hello';
@@ -60,6 +58,7 @@ export default class NewClass extends cc.Component {
         this._barrelNum = 0
         this._bottleNum = 0
         this._foodNum = 0
+        gameContext.hasFllow = true
 
         gameContext.moveType = 1
         this.distance = 0
@@ -68,11 +67,11 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFINISH, this, this.touchFinish.bind(this))
+        EventMgr.getInstance().registerListener(EventMgr.TOUCHBOTTLE, this, this.touchBottle.bind(this))
+        EventMgr.getInstance().registerListener(EventMgr.TOUCHBERRL, this, this.touchBerrl.bind(this))
 
-        this.scheduleOnce(() => {
-            console.log('第3关 发送OPERATEBTNRESET')
-            EventMgr.getInstance().sendListener(EventMgr.OPERATEBTNRESET, { left: true, right: true, top: false, down: false, fight: false, jump: true });
-        }, 0.1)
+        EventMgr.getInstance().registerListener(EventMgr.TOUCHFOOD, this, this.touchFood.bind(this))
+
 
     }
 
@@ -81,22 +80,65 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        this.node.setPosition(0, 0)
+        EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 10 });
+
+        this.distance = 0
         gameContext.playerNode.setPosition(300, -165)
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         gameContext.moveType = 1
         this.distance = 0
+        this._bottleNum = 0
+        this._barrelNum = 0
+        this._foodNum = 0
+        this.preStart()
 
     }
 
     touchFinish() {
         console.log('游戏结束')
-        gameConfig.maxLevel = 3
+        gameConfig.maxLevel = 2
+        gameConfig.currLevel = 2
+        cc.director.loadScene("startScene", () => {
+            gameContext.memoryLength = 3
+            gameContext.showMemoryUI()
+        });
+
+    }
+
+    touchBottle() {
+        EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI.san <= 0) {
+            operateUI.san = 2
+            gameContext.showToast('鼠鼠醒醒！')
+        }
+    }
+
+    touchBerrl() {
+        EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -4 });
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI.san <= 0) {
+            operateUI.san = 2
+            gameContext.showToast('鼠鼠醒醒！')
+        }
+    }
+
+    touchFood() {
+        EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 2 });
     }
 
     preStart() {
-        EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {});
         this.scheduleOnce(() => {
-            EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {});
+            gameContext.playerNode.setPosition(300, -165)
+            EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
+                left: true,
+                right: true,
+                top: false,
+                down: false,
+                fight: false,
+                jump: true
+            });
 
         }, 1)
     }
@@ -164,7 +206,7 @@ export default class NewClass extends cc.Component {
     createrBarrel(pos: cc.Vec2) {
 
         let barrel = cc.instantiate(this.barrelPfb)
-
+        barrel.opacity = 255
         this.node.addChild(barrel)
         barrel.setPosition(pos)
         this.barrelList.push(barrel)
@@ -175,8 +217,9 @@ export default class NewClass extends cc.Component {
         for (let i = 0; i < 5; i++) {
             this.scheduleOnce(() => {
                 let food = cc.instantiate(this.foodPfb)
+                food.opacity = 255
                 this.node.addChild(food)
-                food.setPosition(this.distance + Math.random() * 400 + 600, 500)
+                food.setPosition(this.distance + Math.random() * 400 + 400, 500)
                 this.foodList.push(food)
             }, i * 2)
         }
@@ -188,6 +231,7 @@ export default class NewClass extends cc.Component {
             this.scheduleOnce(() => {
                 console.log('生成水瓶')
                 let bottle = cc.instantiate(this.bottlePfb)
+                bottle.opacity = 255
                 this.node.addChild(bottle)
                 bottle.setPosition(1500, -180)
                 this.bottleList.push(bottle)

@@ -39,7 +39,6 @@ export default class NewClass extends cc.Component {
     label0: cc.Label
     label1: cc.Label
 
-    hp: cc.Node
     hpNum: number
 
     tank: cc.Node
@@ -76,49 +75,40 @@ export default class NewClass extends cc.Component {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         this.setSyncPosition()
+        gameContext.hasFllow = true
         // gameContext.currLevelScript = this.node.getComponent('level0')
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHTANKARM, this, this.touchArm.bind(this))
 
-        this.scheduleOnce(() => {
-            console.log('第六关 发送OPERATEBTNRESET')
-            EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
-        }, 0.1)
+        EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
 
         this.createrBox()
-
         this.page0 = this.node.getChildByName('page0')
         this.page1 = this.node.getChildByName('page1')
-        this.page0.active = true
-        this.page1.active = false
 
         this.label0 = this.page0.getChildByName('label0').getComponent(cc.Label)
         this.label1 = this.page0.getChildByName('label1').getComponent(cc.Label)
-        this.label0.string = this.label1.string = ''
 
-        this.hp = this.page1.getChildByName('hp')
         this.tank = this.page1.getChildByName('tank')
         this.arm = this.page1.getChildByName('arm')
         this.tankHp = this.page1.getChildByName('tankHp')
-        this.arm.opacity = 0
-        this.arm.x = -100
-        this.tank.x = 60
-        this.hpNum = 10
-        this.tankHpNum = 20
 
-        gameContext.playerNode.active = false
-        this._touchArm = false
-        this.schedule(this.tankMove, 10)
-        this.armAttack()
+        // gameContext.playerNode.active = false
+        // this.schedule(this.tankMove, 10)
     }
 
 
     start() {
         this.Restart()
-        this.preStart()
     }
 
     Restart() {
+        this.unschedule(this.tankMove)
+        this.arm.opacity = 0
+        this.arm.stopAllActions()
+        this.tank.stopAllActions()
+        this.label0.string = this.label1.string = ''
+
         this.page0.active = true
         this.page0.opacity = 255
         this.page1.active = false
@@ -127,9 +117,7 @@ export default class NewClass extends cc.Component {
         this.arm.opacity = 0
         this.arm.x = -100
         this.tank.x = 60
-        this.hpNum = 10
         this.tankHpNum = 20
-        this.hp.scaleX = 1
         this.tankHp.scaleX = 1
 
         gameContext.playerNode.active = false
@@ -155,8 +143,7 @@ export default class NewClass extends cc.Component {
         console.log('播放音效')
         this.scheduleOnce(() => {
             this.page0.runAction(cc.sequence(cc.fadeOut(2), cc.callFunc(() => {
-                EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {});
-                EventMgr.getInstance().sendListener(EventMgr.OPERATEBTNRESET, {
+                EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
                     left: true,
                     right: true,
                     top: false,
@@ -239,15 +226,18 @@ export default class NewClass extends cc.Component {
                         .call(() => {
                             box.y += 1400
                             if (i == 0) {
-                                this.unschedule(this.tankMove)
-                                this.arm.opacity = 0
-                                this.arm.stopAllActions()
-                                this.tank.stopAllActions()
+                                // this.unschedule(this.tankMove)
+                                // this.arm.opacity = 0
+                                // this.arm.stopAllActions()
+                                // this.tank.stopAllActions()
                                 console.log('游戏完成')
-                                gameConfig.currLevel = 6
-                                gameConfig.maxLevel = 6
-                                EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+                                gameConfig.currLevel = 7
+                                gameConfig.maxLevel = 7
 
+                                cc.director.loadScene("startScene", () => {
+                                    gameContext.memoryLength = 7
+                                    gameContext.showMemoryUI()
+                                });
                             }
                         })
                         .start()

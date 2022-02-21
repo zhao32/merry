@@ -12,9 +12,8 @@ export default class EventMgr extends cc.Component {
 
     private dic = {};
 
-    public static OPENOPERATE: string = "openOperate"
     public static CLOSEOPERATE: string = 'closeOperate'
-    public static OPERATEBTNRESET: string = 'resetoperatebtn'
+    public static OPENOPERATE: string = 'openOperate'
 
     /**展示记忆宝典详情 */
     public static SHOWMEMRY: string = 'showmemory'
@@ -46,6 +45,12 @@ export default class EventMgr extends cc.Component {
 
     /**触碰装修怪手臂 */
     public static TOUCHTANKARM: string = 'toucharm'
+
+    /**食物落地 */
+    public static FOODGROUND: string = 'foodground'
+
+    /**食物砸到玩家 */
+    public static FOODGPLAYER: string = 'foodplayer'
 
 
 
