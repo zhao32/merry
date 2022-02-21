@@ -56,7 +56,7 @@ export default class NewClass extends cc.Component {
         } else if (otherCollider.tag == 4) {//荆棘
             console.log('接触荆棘')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS);
-        } 
+        }
         // else if (otherCollider.tag == 5) {//酒瓶
         //     console.log('老鼠接触酒瓶')
         //     otherCollider.node.destroy()
@@ -79,14 +79,17 @@ export default class NewClass extends cc.Component {
         } else if (otherCollider.tag == 10) {//羊
             console.log('触碰羊')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHSHEEP);
-        } 
+        }
         // else if (otherCollider.tag == 11) {//装修怪手臂
         //     console.log('触碰装修怪手臂')
         //     EventMgr.getInstance().sendListener(EventMgr.TOUCHTANKARM);
         // }
-         else if (otherCollider.tag == 12) {//装修怪
+        else if (otherCollider.tag == 12) {//装修怪
             console.log('触碰装修怪')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHTANK);
+        } else if (otherCollider.tag == 13) {//装修怪
+            console.log('触碰子弹')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHBULLET);
         }
     }
 

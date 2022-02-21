@@ -32,10 +32,17 @@ export default class NewClass extends cc.Component {
     @property(cc.Prefab)
     boxPfb: cc.Prefab = null;
 
+
+    @property(cc.Prefab)
+    bulletPfb: cc.Prefab = null;
+
+
     callback: any
 
     page0: cc.Node
     page1: cc.Node
+    page2: cc.Node
+
     label0: cc.Label
     label1: cc.Label
 
@@ -49,10 +56,17 @@ export default class NewClass extends cc.Component {
     _touchArm: boolean
 
     death: cc.Node
-    boxList = []
+    bulletList = []
     hook: cc.Node
 
     angleRat: cc.Node
+
+    bullet: cc.Node
+
+    btnContine:cc.Node
+
+    btnRestart:cc.Node
+    btnGiveUp:cc.Node
 
     init(data: any, callback) {
         this.callback = callback
@@ -64,11 +78,29 @@ export default class NewClass extends cc.Component {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         this.setSyncPosition()
+        gameContext.hasFllow = true
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
+        EventMgr.getInstance().registerListener(EventMgr.TOUCHBULLET, this, this.touchBullet.bind(this))
+
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
 
         this.page0 = this.node.getChildByName('page0')
         this.page1 = this.node.getChildByName('page1')
+        this.page2 = this.node.getChildByName('page2')
+        this.btnContine = this.page2.getChildByName('btnContine')
+        this.btnGiveUp = this.page2.getChildByName('btnGiveUp')
+        this.btnRestart = this.page2.getChildByName('btnRestart')
+
+        this.btnContine.on(cc.Node.EventType.TOUCH_END,()=>{
+            this.page2.active = false
+            this.page1.active = true
+        },this)
+        this.btnGiveUp.on(cc.Node.EventType.TOUCH_END,()=>{},this)
+        this.btnRestart.on(cc.Node.EventType.TOUCH_END,()=>{
+            this.Restart()
+        },this)
+
+
         this.death = this.page0.getChildByName('death')
 
         this.label0 = this.page0.getChildByName('label0').getComponent(cc.Label)
@@ -79,7 +111,10 @@ export default class NewClass extends cc.Component {
         this.hook = this.page1.getChildByName('hook')
         this.enemyHp = this.page1.getChildByName('enemyHp')
         this.angleRat = this.page1.getChildByName('angleRat')
-        this.schedule(this.hookAttack, 10)
+        this.bullet = cc.instantiate(this.bulletPfb)
+        this.page1.addChild(this.bullet)
+        this.bullet.setPosition(320, -95)
+        this.bullet.active = false
     }
 
 
@@ -88,9 +123,11 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        this.unscheduleAllCallbacks()
         this.page0.active = true
         this.page0.opacity = 255
         this.page1.active = false
+        this.page2.active = false
         this.hpNum = 10
         this.enemyHpNum = 20
         this.enemyHp.scaleX = 1
@@ -126,6 +163,8 @@ export default class NewClass extends cc.Component {
                 });
                 gameContext.playerNode.active = true
                 this.page1.active = true
+                console.log('启用生成子弹回调')
+                this.schedule(this.hookAttack, 5)
             })))
         }, preTime + 3)
     }
@@ -142,16 +181,31 @@ export default class NewClass extends cc.Component {
         //     }
         // }
     }
+    touchBullet() {
+        this.bullet.active = false
+        EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI.san <= 1) {
+            operateUI.san = 10
+            gameContext.showToast('不要丢下鼠鼠一个人！')
+        }
+    }
 
 
 
     hookAttack() {
-        cc.tween(this.hook)
-            .by(1, { position: cc.v3(-200, 45, 0), angle: 100 })
-            .delay(1)
-            .by(.5, { position: cc.v3(200, -45, 0), angle: -100 })
-            .start()
-        // this.hook.runAction(cc.repeatForever(cc.sequence(delay0, callF0, delay1, callF1)))
+        // cc.tween(this.hook)
+        //     .by(1, { position: cc.v3(-200, 45, 0), angle: 100 })
+        //     .delay(1)
+        //     .by(.5, { position: cc.v3(200, -45, 0), angle: -100 })
+        //     .start()
+        // let bullet = cc.instantiate(this.bulletPfb)
+        // this.page1.addChild(bullet)
+        // bullet.setPosition(320, -95)
+        // console.log('生成子弹')
+        this.bullet.active = true
+        this.bullet.setPosition(320, -95)
+        // this.bulletList.push(bullet)
     }
 
 
@@ -209,16 +263,17 @@ export default class NewClass extends cc.Component {
                     gameConfig.currLevel = 8
                     gameConfig.maxLevel = 8
                     gameContext.showToast('坦然面对死亡吧')
-                    this.angleRat.getComponent(cc.Animation).play('angleRat').repeatCount = Infinity
-                    let moveBy = cc.moveBy(3, new cc.Vec2(0, 500))
-                    let callF = cc.callFunc(() => {
-                        this.angleRat.y -= 500
-                        this.angleRat.getComponent(cc.Animation).stop('angleRat')
-                        this.angleRat.getComponent(cc.Sprite).spriteFrame = new cc.SpriteFrame()
-                    })
-                    this.angleRat.runAction(cc.sequence(moveBy, callF))
-                    this.enemy
+                    let rat = gameContext.playerNode.getChildByName('fllow')
+                    rat.getComponent(cc.Animation).play('angleRat').repeatCount = Infinity
                     EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+                    let moveBy = cc.moveBy(3, new cc.Vec2(0, 400))
+                    let callF = cc.callFunc(() => {
+                        // rat.y -= 500
+                        // rat.getComponent(cc.Animation).stop('angleRat')
+                        // rat.spriteFrame = new cc.SpriteFrame()
+                        this.page2.active = true
+                    })
+                    rat.runAction(cc.sequence(moveBy, callF))
 
                 }
             }

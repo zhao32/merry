@@ -52,6 +52,8 @@ export default class EventMgr extends cc.Component {
     /**食物砸到玩家 */
     public static FOODGPLAYER: string = 'foodplayer'
 
+    public static TOUCHBULLET:string = 'bullet'
+
 
 
     public static RESTART: string = 'restart'
