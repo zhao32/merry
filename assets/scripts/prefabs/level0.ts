@@ -161,23 +161,21 @@ export default class NewClass extends cc.Component {
             this.chat.active = false
             this.selectMilk.active = false
             gameConfig.maxLevel = 0
-            cc.director.loadScene("startScene",()=>{
+            cc.director.loadScene("startScene", () => {
                 gameContext.memoryLength = 1
                 gameContext.showMemoryUI()
             });
-           
+
         } else {
             console.log('选择错误')
             this.chat.active = false
             this.selectMilk.active = false
-            // gameConfig.maxLevel = 1
             gameContext.showToast('你谁啊！')
         }
     }
 
     Restart() {
-        gameConfig.currLevel = 1
-        // gameConfig.maxLevel = 1
+        gameConfig.currLevel = 0
         this.weChatLeft.active = false
 
         this.weChatRight.active = false
@@ -191,6 +189,7 @@ export default class NewClass extends cc.Component {
         this.hasMask = false
 
         this.failPage.active = false
+        gameContext.playerNode.active = true
         gameContext.playerNode.setPosition(100, -165)
         this.resetToggle()
         this.preStart()

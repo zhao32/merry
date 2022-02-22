@@ -51,9 +51,11 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        gameConfig.currLevel = 1
         gameContext.moveType = 1
         this.distance = 0
         this.node.setPosition(0, 0)
+        gameContext.playerNode.active = true
         gameContext.playerNode.setPosition(100, -165)
         this.preStart()
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
@@ -76,7 +78,6 @@ export default class NewClass extends cc.Component {
             console.log('游戏完成')
             // gameContext.showToast('进入记忆宝典')
             gameConfig.maxLevel = 1
-            gameConfig.currLevel = 1
             cc.director.loadScene("startScene",()=>{
                 gameContext.memoryLength = 2
                 gameContext.showMemoryUI()

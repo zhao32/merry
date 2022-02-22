@@ -58,7 +58,12 @@ export default class EventMgr extends cc.Component {
 
     public static RESTART: string = 'restart'
 
-
+    public static MISSSTONE:string = 'stone'
+    public static MISSSMILK:string = 'milk'
+    public static MISSSYUYANG:string = 'yueyang'
+    public static MISSSMUSEUM:string = 'museum'
+    public static MISSSSTAB:string = 'stab'
+    public static MISSSSFLY:string = 'fly'
 
     protected static instance: EventMgr;
     public static getInstance(): EventMgr {

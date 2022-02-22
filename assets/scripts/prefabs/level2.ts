@@ -62,7 +62,6 @@ export default class NewClass extends cc.Component {
 
         gameContext.moveType = 1
         this.distance = 0
-        gameContext.playerNode.setPosition(300, -165)
 
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
@@ -71,8 +70,6 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().registerListener(EventMgr.TOUCHBERRL, this, this.touchBerrl.bind(this))
 
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFOOD, this, this.touchFood.bind(this))
-
-
     }
 
     start() {
@@ -84,6 +81,7 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 10 });
 
         this.distance = 0
+        gameContext.playerNode.active = true
         gameContext.playerNode.setPosition(300, -165)
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         gameContext.moveType = 1
@@ -98,7 +96,6 @@ export default class NewClass extends cc.Component {
     touchFinish() {
         console.log('游戏结束')
         gameConfig.maxLevel = 2
-        gameConfig.currLevel = 2
         cc.director.loadScene("startScene", () => {
             gameContext.memoryLength = 3
             gameContext.showMemoryUI()

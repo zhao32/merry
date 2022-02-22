@@ -51,6 +51,7 @@ export default class NewClass extends cc.Component {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         this.setSyncPosition()
+        gameContext.hasFllow = false
 
         EventMgr.getInstance().registerListener(EventMgr.TOUCHWAVE, this, this.touchWave.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
@@ -99,6 +100,7 @@ export default class NewClass extends cc.Component {
 
 
     Restart() {
+        gameConfig.currLevel = 4
         this.distance = 0
         this.batHp.setScale(1)
         this.batHpNum = 20
@@ -184,7 +186,6 @@ export default class NewClass extends cc.Component {
                 } else {
                     this.batHp.scaleX = 0
                     console.log('打死蝙蝠，通关！')
-                    gameConfig.currLevel = 4
                     gameConfig.maxLevel = 4
                     cc.director.loadScene("startScene", () => {
                         gameContext.memoryLength = 5

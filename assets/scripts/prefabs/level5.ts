@@ -54,6 +54,7 @@ export default class NewClass extends cc.Component {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         this.setSyncPosition()
+        gameContext.hasFllow = false
 
         EventMgr.getInstance().registerListener(EventMgr.TOUCHSHEEP, this, this.touchSheep.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
@@ -165,7 +166,6 @@ export default class NewClass extends cc.Component {
             .to(2, { height: 350 }, { easing: 'sineOutIn' })
             .delay(1)
             .call(() => {
-                gameConfig.currLevel = 5
                 gameConfig.maxLevel = 5
                 cc.director.loadScene("startScene", () => {
                     gameContext.memoryLength = 6

@@ -42,6 +42,8 @@ export default class NewClass extends cc.Component {
     page0: cc.Node
     page1: cc.Node
     page2: cc.Node
+    page3: cc.Node
+
 
     label0: cc.Label
     label1: cc.Label
@@ -63,10 +65,10 @@ export default class NewClass extends cc.Component {
 
     bullet: cc.Node
 
-    btnContine:cc.Node
+    btnContine: cc.Node
 
-    btnRestart:cc.Node
-    btnGiveUp:cc.Node
+    btnRestart: cc.Node
+    btnGiveUp: cc.Node
 
     init(data: any, callback) {
         this.callback = callback
@@ -81,24 +83,55 @@ export default class NewClass extends cc.Component {
         gameContext.hasFllow = true
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHBULLET, this, this.touchBullet.bind(this))
-
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
 
         this.page0 = this.node.getChildByName('page0')
         this.page1 = this.node.getChildByName('page1')
         this.page2 = this.node.getChildByName('page2')
+        this.page3 = this.node.getChildByName('page3')
+
         this.btnContine = this.page2.getChildByName('btnContine')
         this.btnGiveUp = this.page2.getChildByName('btnGiveUp')
         this.btnRestart = this.page2.getChildByName('btnRestart')
 
-        this.btnContine.on(cc.Node.EventType.TOUCH_END,()=>{
+        this.btnContine.on(cc.Node.EventType.TOUCH_END, () => {
             this.page2.active = false
             this.page1.active = true
-        },this)
-        this.btnGiveUp.on(cc.Node.EventType.TOUCH_END,()=>{},this)
-        this.btnRestart.on(cc.Node.EventType.TOUCH_END,()=>{
+
+            gameContext.playerNode.getComponent(cc.Animation).play('angleMonkey').repeatCount = Infinity
+            EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+            let moveBy = cc.moveBy(3, new cc.Vec2(0, 400))
+            let callF = cc.callFunc(() => {
+                let rat = gameContext.playerNode.getChildByName('fllow')
+                rat.y -= 400
+                rat.getComponent(cc.Animation).play('ratstandRight')
+
+                gameContext.playerNode.y -= 400
+                gameContext.playerNode.getComponent(cc.Animation).play('standRight')
+                gameConfig.maxLevel = 8
+                cc.director.loadScene("startScene", () => {
+                    gameContext.memoryLength = 9
+                    gameContext.showMemoryUI()
+                });
+                // rat.spriteFrame = new cc.SpriteFrame()
+            })
+            gameContext.playerNode.runAction(cc.sequence(moveBy, callF))
+        }, this)
+        this.btnGiveUp.on(cc.Node.EventType.TOUCH_END, () => {
+            this.page2.active = false
+            this.page3.active = true
+            gameContext.playerNode.active = false
+
+            let rat = gameContext.playerNode.getChildByName('fllow')
+            rat.y -= 400
+            rat.getComponent(cc.Animation).play('ratstandRight')
+        }, this)
+        this.btnRestart.on(cc.Node.EventType.TOUCH_END, () => {
             this.Restart()
-        },this)
+            let rat = gameContext.playerNode.getChildByName('fllow')
+            rat.y -= 400
+            rat.getComponent(cc.Animation).play('ratstandRight')
+        }, this)
 
 
         this.death = this.page0.getChildByName('death')
@@ -113,8 +146,7 @@ export default class NewClass extends cc.Component {
         this.angleRat = this.page1.getChildByName('angleRat')
         this.bullet = cc.instantiate(this.bulletPfb)
         this.page1.addChild(this.bullet)
-        this.bullet.setPosition(320, -95)
-        this.bullet.active = false
+      
     }
 
 
@@ -124,10 +156,16 @@ export default class NewClass extends cc.Component {
 
     Restart() {
         this.unscheduleAllCallbacks()
+        EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 10 });
+
+        this.bullet.setPosition(320, -95)
+        this.bullet.active = false
+
         this.page0.active = true
         this.page0.opacity = 255
         this.page1.active = false
         this.page2.active = false
+        this.page3.active = false
         this.hpNum = 10
         this.enemyHpNum = 20
         this.enemyHp.scaleX = 1
@@ -135,7 +173,7 @@ export default class NewClass extends cc.Component {
         gameContext.playerNode.active = false
         this._touchArm = false
 
-        gameConfig.currLevel = 6
+        gameConfig.currLevel = 8
         gameContext.playerNode.setPosition(100, -165)
         gameContext.playerNode.active = false
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
@@ -260,7 +298,6 @@ export default class NewClass extends cc.Component {
                     this.enemyHp.scaleX = this.enemyHpNum / 20
                 } else {
                     this.enemyHp.scaleX = 0
-                    gameConfig.currLevel = 8
                     gameConfig.maxLevel = 8
                     gameContext.showToast('坦然面对死亡吧')
                     let rat = gameContext.playerNode.getChildByName('fllow')

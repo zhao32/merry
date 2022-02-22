@@ -120,12 +120,11 @@ export default class NewClass extends cc.Component {
         this.tankHpNum = 20
         this.tankHp.scaleX = 1
 
-        gameContext.playerNode.active = false
         this._touchArm = false
         this.schedule(this.tankMove, 10)
         this.armAttack()
 
-        gameConfig.currLevel = 6
+        gameConfig.currLevel = 7
         gameContext.playerNode.setPosition(100, -165)
         gameContext.playerNode.active = false
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
@@ -231,11 +230,10 @@ export default class NewClass extends cc.Component {
                                 // this.arm.stopAllActions()
                                 // this.tank.stopAllActions()
                                 console.log('游戏完成')
-                                gameConfig.currLevel = 7
                                 gameConfig.maxLevel = 7
 
                                 cc.director.loadScene("startScene", () => {
-                                    gameContext.memoryLength = 7
+                                    gameContext.memoryLength = 8
                                     gameContext.showMemoryUI()
                                 });
                             }
@@ -257,9 +255,11 @@ export default class NewClass extends cc.Component {
                 } else {
                     this.tankHp.scaleX = 0
                     console.log('打死装修怪，通关！')
-                    gameConfig.currLevel = 6
-                    gameConfig.maxLevel = 6
-                    EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+                    gameConfig.maxLevel = 7
+                    cc.director.loadScene("startScene", () => {
+                        gameContext.memoryLength = 8
+                        gameContext.showMemoryUI()
+                    });
 
                 }
             }

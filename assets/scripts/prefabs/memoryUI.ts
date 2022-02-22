@@ -58,10 +58,10 @@ export default class NewClass extends cc.Component {
 
     start() {
         // let data = [0, 1, 2, 3, 4, 5, 6]
+        console.log('gameContext.memoryLength:' + gameContext.memoryLength)
         let data = new Array(gameContext.memoryLength)
         for (let i = 0; i < data.length; i++) {
-           data[i] = `pic/item${i}`
-            
+            data[i] = `pic/item${i}`
         }
         this.memoryList.setData(data)
     }
@@ -83,8 +83,8 @@ export default class NewClass extends cc.Component {
     showItem(self, param) {
         this.displayItem.active = true
         this.mask.active = true
-        console.log('param:'+param)
-        GameTools.loadItemIcon(param.data,this.displayItem)
+        console.log('param:' + param)
+        GameTools.loadItemIcon(param.data, this.displayItem)
     }
 
     hideItem() {

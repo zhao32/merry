@@ -36,7 +36,6 @@ export default class NewClass extends cc.Component {
     onLoad() {
         this.btnMemory.on(cc.Node.EventType.TOUCH_END, this.showMemory, this)
         this.btnStart.on(cc.Node.EventType.TOUCH_END, this.showLevel, this)
-
     }
 
     start() {
@@ -46,7 +45,6 @@ export default class NewClass extends cc.Component {
     showMemory() {
         gameContext.showToast('打开记忆宝典')
         gameContext.showMemoryUI()
-
     }
 
     showLevel() {

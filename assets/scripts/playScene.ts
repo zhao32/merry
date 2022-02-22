@@ -35,8 +35,8 @@ export default class NewClass extends cc.Component {
         manager.enabled = true;
         manager.enabledDebugDraw = true;
 
-        gameConfig.currLevel = 8
-        gameConfig.maxLevel = 8
+        // gameConfig.currLevel = 6
+        // gameConfig.maxLevel = 6
 
 
         gameContext.showOperateUI()
@@ -54,6 +54,7 @@ export default class NewClass extends cc.Component {
         hero.setPosition(100, -165)
         hero.setAnchorPoint(0.5, 0.5)
         hero.zIndex = cc.macro.MAX_ZINDEX
+        hero.active = false
         this.node.getChildByName('gameUI').addChild(hero)
         gameContext.playerNode = hero
     }
