@@ -97,12 +97,27 @@ export default class NewClass extends cc.Component {
         // this.schedule(this.tankMove, 10)
     }
 
+    onDisable() {
+        console.log('------------------第8关注销监听------------------')
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHTANKARM, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+
+
+        for (let i = 0; i < this.boxList.length; i++) {
+            this.boxList[i].destroy()
+            this.boxList.splice(i, 1)
+
+        }
+    }
+
+
 
     start() {
         this.Restart()
     }
 
     Restart() {
+        gameContext.moveType = 0
         this.unschedule(this.tankMove)
         this.arm.opacity = 0
         this.arm.stopAllActions()
@@ -230,7 +245,7 @@ export default class NewClass extends cc.Component {
                                 // this.arm.stopAllActions()
                                 // this.tank.stopAllActions()
                                 console.log('游戏完成')
-                                gameConfig.maxLevel = 7
+                                gameConfig.maxLevel = 8
 
                                 cc.director.loadScene("startScene", () => {
                                     gameContext.memoryLength = 8
@@ -255,7 +270,7 @@ export default class NewClass extends cc.Component {
                 } else {
                     this.tankHp.scaleX = 0
                     console.log('打死装修怪，通关！')
-                    gameConfig.maxLevel = 7
+                    gameConfig.maxLevel = 8
                     cc.director.loadScene("startScene", () => {
                         gameContext.memoryLength = 8
                         gameContext.showMemoryUI()

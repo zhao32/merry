@@ -64,7 +64,7 @@ export default class NewClass extends cc.Component {
 
     _preState: number = 0
 
-    _fightTouch:boolean = true
+    _fightTouch: boolean = true
 
     public set canOperate(open: boolean) {
         this._canOperate = open
@@ -86,7 +86,7 @@ export default class NewClass extends cc.Component {
         this.btnFight.active = parms.fight
         let btnBg0 = this.node.getChildByName('btnBg0')
         let btnBg1 = this.node.getChildByName('btnBg1')
-        if( !parms.jump && !parms.fight)btnBg1.active = false
+        if (!parms.jump && !parms.fight) btnBg1.active = false
         else btnBg1.active = true
         btnBg0.active = true
     }
@@ -174,6 +174,14 @@ export default class NewClass extends cc.Component {
 
     }
 
+    onDisable() {
+        console.log('注销OP监听')
+        EventMgr.getInstance().unRegisterListener(EventMgr.CLOSEOPERATE, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.UPDATESAN, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.OPENOPERATE, this)
+
+    }
+
     setHp() {
 
     }
@@ -217,19 +225,19 @@ export default class NewClass extends cc.Component {
 
     startFight() {
         if (!this._canOperate) return
-        if(this._fightTouch == true){
+        if (this._fightTouch == true) {
             this._fightTouch = false
 
-            this.scheduleOnce(()=>{
+            this.scheduleOnce(() => {
                 this._fightTouch = true
-            },1)
+            }, 1)
             this._preState = (gameContext.player as hero)._state as number
             (gameContext.player as hero).state = State.fight
-        }else{
+        } else {
             gameContext.showToast('冷却时间1s')
-        
+
         }
-       
+
 
     }
 
@@ -284,7 +292,7 @@ export default class NewClass extends cc.Component {
     }
 
     start() {
-       
+
 
 
     }

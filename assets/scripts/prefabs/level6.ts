@@ -66,7 +66,7 @@ export default class NewClass extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this._dis = 2
+        this._dis = 5
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         this.setSyncPosition()
@@ -123,6 +123,34 @@ export default class NewClass extends cc.Component {
 
         // gameContext.playerNode.active = false
         // this.schedule(this.tankMove, 10)
+    }
+
+
+    onDisable() {
+        console.log('------------------第7关注销监听------------------')
+        EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.MISSSTONE, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.MISSSMUSEUM, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.MISSSSFLY, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.MISSSSTAB, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.MISSSYUYANG, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.MISSSMILK, this)
+
+        this.btnDown.off(cc.Node.EventType.TOUCH_START)
+        this.btnDown.off(cc.Node.EventType.TOUCH_CANCEL)
+        this.btnDown.off(cc.Node.EventType.TOUCH_END)
+
+        this.btnUp.off(cc.Node.EventType.TOUCH_START)
+        this.btnUp.off(cc.Node.EventType.TOUCH_CANCEL)
+        this.btnUp.off(cc.Node.EventType.TOUCH_END)
+
+        this.btnLeft.off(cc.Node.EventType.TOUCH_START)
+        this.btnLeft.off(cc.Node.EventType.TOUCH_CANCEL)
+        this.btnLeft.off(cc.Node.EventType.TOUCH_END)
+
+        this.btnRight.off(cc.Node.EventType.TOUCH_START)
+        this.btnRight.off(cc.Node.EventType.TOUCH_CANCEL)
+        this.btnRight.off(cc.Node.EventType.TOUCH_END)
     }
 
     startLeft() {
@@ -191,8 +219,7 @@ export default class NewClass extends cc.Component {
             gameContext.showToast('还想喝lai茶')
 
         } else {
-            gameConfig.currLevel = 6
-            gameConfig.maxLevel = 6
+            gameConfig.maxLevel = 7
             cc.director.loadScene("startScene", () => {
                 gameContext.memoryLength = 7
                 gameContext.showMemoryUI()
@@ -232,6 +259,7 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        gameContext.moveType = 0
         this.op.active = false
         this.role.active = false
         this.fly.x = -800

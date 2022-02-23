@@ -66,6 +66,12 @@ export default class NewClass extends cc.Component {
         this.bat = this.page1.getChildByName('bat')
     }
 
+    onDisable(){
+        console.log('------------------第5关注销监听------------------')
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHWAVE, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+    }
+
 
     start() {
         this.Restart()
@@ -100,6 +106,7 @@ export default class NewClass extends cc.Component {
 
 
     Restart() {
+        gameContext.moveType = 0
         gameConfig.currLevel = 4
         this.distance = 0
         this.batHp.setScale(1)
@@ -186,7 +193,7 @@ export default class NewClass extends cc.Component {
                 } else {
                     this.batHp.scaleX = 0
                     console.log('打死蝙蝠，通关！')
-                    gameConfig.maxLevel = 4
+                    gameConfig.maxLevel = 5
                     cc.director.loadScene("startScene", () => {
                         gameContext.memoryLength = 5
                         gameContext.showMemoryUI()

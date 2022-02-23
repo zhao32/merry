@@ -20,15 +20,15 @@ var gameContext = {
   toastPool: [],
   prefabs: {},
   player: null,
-  operateUI:null,
+  operateUI: null,
   playerNode: null,
   // currLevelScript:null,//当前关卡Script
   viewSpeed: 0,
-  moveType:0,//0 玩家移动 1 背景移动
+  moveType: 0,//0 玩家移动 1 背景移动
   isPlayMusic: true,
   isPause: false,
-  memoryLength:0,
-  hasFllow:false,
+  memoryLength: 0,
+  hasFllow: false,
 
   getPrefabByResName(resName: string, callback?: Function) {
     if (!gameContext.prefabs[resName]) {
@@ -163,6 +163,7 @@ var gameConfig = {
   },
 
   set maxLevel(value: number) {
+    if (!localStorage.getItem('MAXLEVEL')) localStorage.setItem('MAXLEVEL', '0')
     let level = Math.max(parseInt(localStorage.getItem('MAXLEVEL')), value)
     localStorage.setItem('MAXLEVEL', String(level))
   },

@@ -85,8 +85,17 @@ export default class NewClass extends cc.Component {
         this.Restart()
     }
 
+    onDisable(){
+        console.log('------------------第4关注销监听------------------')
+        EventMgr.getInstance().unRegisterListener(EventMgr.FOODGROUND, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.FOODGPLAYER, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+    }
+
+
 
     Restart() {
+        gameContext.moveType = 0
         gameConfig.currLevel = 3
         this.weChatLeft.active = false
         this.weChatRight.active = false
@@ -140,8 +149,7 @@ export default class NewClass extends cc.Component {
 
             this.scheduleOnce(() => {
                 console.log('游戏结束')
-                gameConfig.maxLevel = 3
-                gameConfig.currLevel = 3
+                gameConfig.maxLevel = 4
                 cc.director.loadScene("startScene", () => {
                     gameContext.memoryLength = 4
                     gameContext.showMemoryUI()

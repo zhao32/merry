@@ -55,25 +55,27 @@ export default class NewClass extends cc.Component {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         this.setSyncPosition()
-        this._barrelNum = 0
-        this._bottleNum = 0
-        this._foodNum = 0
-        gameContext.hasFllow = true
-
-        gameContext.moveType = 1
-        this.distance = 0
 
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFINISH, this, this.touchFinish.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHBOTTLE, this, this.touchBottle.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHBERRL, this, this.touchBerrl.bind(this))
-
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFOOD, this, this.touchFood.bind(this))
     }
 
+    onDisable(){
+        console.log('------------------第3关注销监听------------------')
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHFINISH, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHTHORNS, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHBOTTLE, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHBERRL, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+    }
+
+
     start() {
-        this.preStart()
+        this.Restart()
     }
 
     Restart() {
@@ -85,6 +87,8 @@ export default class NewClass extends cc.Component {
         gameContext.playerNode.setPosition(300, -165)
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         gameContext.moveType = 1
+        gameContext.hasFllow = true
+
         this.distance = 0
         this._bottleNum = 0
         this._barrelNum = 0
@@ -95,7 +99,7 @@ export default class NewClass extends cc.Component {
 
     touchFinish() {
         console.log('游戏结束')
-        gameConfig.maxLevel = 2
+        gameConfig.maxLevel = 3
         cc.director.loadScene("startScene", () => {
             gameContext.memoryLength = 3
             gameContext.showMemoryUI()

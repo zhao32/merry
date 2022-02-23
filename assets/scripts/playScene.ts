@@ -31,17 +31,18 @@ export default class NewClass extends cc.Component {
         gameConfig.openPhysics(true)
         gameConfig.setGravity(20)
         // gameConfig.openPhysicsDebug()
+        
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
-        manager.enabledDebugDraw = true;
+        // manager.enabledDebugDraw = true;
 
-        // gameConfig.currLevel = 6
-        // gameConfig.maxLevel = 6
+        // gameConfig.currLevel = 0
+        // gameConfig.maxLevel = 0
+        // gameConfig.maxLevel = 9
 
 
         gameContext.showOperateUI()
         gameContext.showLevel(gameConfig.currLevel)
-
 
         let hero
         if (gameConfig.currLevel == 5) {
@@ -60,6 +61,10 @@ export default class NewClass extends cc.Component {
     }
 
     start() {
+        cc.director.preloadScene("startScene", function () {
+            cc.log("Next scene startScene preloaded");
+        });
+
         // this.scheduleOnce(()=>{
         //     gameContext.showLevel(gameConfig.currLevel)
         // },0.1)

@@ -55,11 +55,14 @@ export default class NewClass extends cc.Component {
     // @property({ type: cc.Toggle })
     toggle2: cc.Toggle = null
 
+    death: boolean = false
+
 
 
     answer: string = ''
     hasMask: boolean = false
 
+    distance: number = null
 
 
     @property
@@ -84,10 +87,9 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().registerListener(EventMgr.TOUCHVIRUS, this, this.touchVirus.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFINISH, this, this.touchFinish.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
-        gameContext.hasFllow = false
 
         this.Mask = this.node.getChildByName('Mask')
-        this.Virus = this.node.getChildByName('Virus')
+        // this.Virus = this.node.getChildByName('Virus')
         this.Finish = this.node.getChildByName('Finish')
         this.failPage = this.node.getChildByName('fail')
         this.shop = this.node.getChildByName('shop')
@@ -118,6 +120,18 @@ export default class NewClass extends cc.Component {
         this.preStart()
     }
 
+   
+    onDisable(){
+        console.log('------------------第一关销毁------------------')
+        this.toggle0.node.off('toggle')
+        this.toggle1.node.off('toggle')
+        this.toggle2.node.off('toggle')
+
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHMASK, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHVIRUS, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHFINISH, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+    }
 
 
 
@@ -153,14 +167,16 @@ export default class NewClass extends cc.Component {
     }
 
     doSelected() {
+      
         if (!this.answer) {
             gameContext.showToast('请选择答案')
-        } else if (this.answer == this.toggle0.name) {
+        } else if (this.answer == this.toggle2.node.name) {
             console.log('选择正确')
-            gameContext.showToast('恭喜通关,打开记忆宝典页面')
             this.chat.active = false
             this.selectMilk.active = false
-            gameConfig.maxLevel = 0
+            gameConfig.maxLevel = 1
+            this.unscheduleAllCallbacks()
+
             cc.director.loadScene("startScene", () => {
                 gameContext.memoryLength = 1
                 gameContext.showMemoryUI()
@@ -175,6 +191,12 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        gameContext.hasFllow = false
+
+        this.distance = 0
+        gameContext.moveType = 1
+        this.node.setPosition(0, 0)
+        this.failPage.getChildByName('flight').x = -800
         gameConfig.currLevel = 0
         this.weChatLeft.active = false
 
@@ -182,11 +204,12 @@ export default class NewClass extends cc.Component {
         this.selectMilk.active = false
         this.chat.active = false
 
-        this.Virus.active = true
+        // this.Virus.active = true
         this.Mask.active = true
 
         this.Finish.active = true
         this.hasMask = false
+        this.death = false
 
         this.failPage.active = false
         gameContext.playerNode.active = true
@@ -235,15 +258,20 @@ export default class NewClass extends cc.Component {
 
     touchVirus() {
         console.log('触碰病毒回调')
+        if (this.death) return
         if (this.hasMask) {
             console.log('免疫病毒')
         } else {
             console.log('血量减少')
             this.failPage.active = true
-            this.schedule(() => {
-                this.failPage.active = false
+            this.death = true
+            gameContext.playerNode.active = false
+            this.failPage.getChildByName('flight').runAction(cc.moveTo(2, new cc.Vec2(800, 0)))
+            this.scheduleOnce(() => {
+                // this.setSyncPosition()
                 this.Restart()
-            }, 1)
+                // this.Restart()
+            }, 2)
         }
     }
 
@@ -260,6 +288,22 @@ export default class NewClass extends cc.Component {
 
         // this.node.x += 1
         // this.setSyncPosition()
+
+        if (gameContext.moveType == 1) {
+            this.node.x -= gameContext.viewSpeed
+            this.setSyncPosition()
+            this.distance += gameContext.viewSpeed
+        }
+
+        if(this.node.x > 0){
+            this.node.x = 0
+            this.distance = 0
+            this.setSyncPosition()
+        }
+
+        if (this.distance > 1334) {
+            gameContext.moveType = 0
+        }
     }
 
     setSyncPosition() {

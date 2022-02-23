@@ -66,6 +66,11 @@ export default class NewClass extends cc.Component {
         this.memoryList.setData(data)
     }
 
+    onDisable() {
+        EventMgr.getInstance().unRegisterListener(EventMgr.SHOWMEMRY, this)
+
+    }
+
     selectPass(touch: any) {
         // console.log(touch)
         let name: string = touch.target.name

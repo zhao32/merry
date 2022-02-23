@@ -79,12 +79,19 @@ export default class NewClass extends cc.Component {
         this.water = this.page2.getChildByName('water')
     }
 
+    onDisable(){
+        console.log('------------------第6关注销监听------------------')
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHSHEEP, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+    }
+
 
     start() {
         this.Restart()
     }
 
     Restart() {
+        gameContext.moveType = 0
         this.page0.active = true
         this.page1.active = false
         this.page2.active = false
@@ -102,7 +109,7 @@ export default class NewClass extends cc.Component {
         this.ratTear.active = true
 
         gameConfig.currLevel = 5
-        gameContext.playerNode.setPosition(200, -165)
+        gameContext.playerNode.setPosition(200, -185)
         gameContext.playerNode.active = false
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         this.unscheduleAllCallbacks()
@@ -150,6 +157,7 @@ export default class NewClass extends cc.Component {
             this.sheep.runAction(cc.sequence(cc.moveTo(1, new cc.Vec2(0, 500)), cc.callFunc(() => {
                 console.log('追样结束')
                 this.page1.active = false
+                gameContext.playerNode.active = false
                 this.showOverPage()
             })))
         }
@@ -166,7 +174,7 @@ export default class NewClass extends cc.Component {
             .to(2, { height: 350 }, { easing: 'sineOutIn' })
             .delay(1)
             .call(() => {
-                gameConfig.maxLevel = 5
+                gameConfig.maxLevel = 6
                 cc.director.loadScene("startScene", () => {
                     gameContext.memoryLength = 6
                     gameContext.showMemoryUI()

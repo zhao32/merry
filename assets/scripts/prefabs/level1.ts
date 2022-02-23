@@ -39,10 +39,9 @@ export default class NewClass extends cc.Component {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         this.setSyncPosition()
-        gameContext.hasFllow = false
 
-        gameContext.moveType = 1
-        this.distance = 0
+        // gameContext.moveType = 1
+        // this.distance = 0
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         EventMgr.getInstance().registerListener(EventMgr.TOUCHTHORNS, this, this.touchThorns.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFINISH, this, this.touchFinish.bind(this))
@@ -50,7 +49,16 @@ export default class NewClass extends cc.Component {
         this.initNode()
     }
 
+    onDisable(){
+        console.log('------------------第2关销毁------------------')
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHTHORNS, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHFINISH, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+    }
+
+
     Restart() {
+        gameContext.hasFllow = false
         gameConfig.currLevel = 1
         gameContext.moveType = 1
         this.distance = 0
@@ -77,7 +85,7 @@ export default class NewClass extends cc.Component {
         this.scheduleOnce(() => {
             console.log('游戏完成')
             // gameContext.showToast('进入记忆宝典')
-            gameConfig.maxLevel = 1
+            gameConfig.maxLevel = 2
             cc.director.loadScene("startScene",()=>{
                 gameContext.memoryLength = 2
                 gameContext.showMemoryUI()
@@ -119,7 +127,7 @@ export default class NewClass extends cc.Component {
     }
 
     start() {
-        this.preStart()
+        this.Restart()
 
 
     }
@@ -130,6 +138,13 @@ export default class NewClass extends cc.Component {
             this.setSyncPosition()
             this.distance += gameContext.viewSpeed
         }
+
+        if(this.node.x > 0){
+            this.node.x = 0
+            this.distance = 0
+            this.setSyncPosition()
+        }
+
 
         if (this.distance > 1334) {
             gameContext.moveType = 0

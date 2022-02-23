@@ -7,7 +7,7 @@
 
 import GameTools, { gameConfig, gameContext } from "./utils/GameTools";
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class NewClass extends cc.Component {
@@ -20,12 +20,15 @@ export default class NewClass extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
         gameContext.showStartUI()
         this.loadGameData()
     }
 
-    start () {
+    start() {
+        cc.director.preloadScene("playScene", function () {
+            cc.log("Next scene playScene preloaded");
+        });
 
     }
 

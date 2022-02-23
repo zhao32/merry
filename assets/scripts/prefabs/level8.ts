@@ -94,21 +94,23 @@ export default class NewClass extends cc.Component {
         this.btnGiveUp = this.page2.getChildByName('btnGiveUp')
         this.btnRestart = this.page2.getChildByName('btnRestart')
 
-        this.btnContine.on(cc.Node.EventType.TOUCH_END, () => {
+        this.btnGiveUp.on(cc.Node.EventType.TOUCH_END, () => {
             this.page2.active = false
             this.page1.active = true
 
             gameContext.playerNode.getComponent(cc.Animation).play('angleMonkey').repeatCount = Infinity
             EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
             let moveBy = cc.moveBy(3, new cc.Vec2(0, 400))
+            let moveBy1 = cc.moveBy(3, new cc.Vec2(0, -400))
+
             let callF = cc.callFunc(() => {
                 let rat = gameContext.playerNode.getChildByName('fllow')
-                rat.y -= 400
+                // rat.y -= 400
                 rat.getComponent(cc.Animation).play('ratstandRight')
 
                 gameContext.playerNode.y -= 400
                 gameContext.playerNode.getComponent(cc.Animation).play('standRight')
-                gameConfig.maxLevel = 8
+                gameConfig.maxLevel = 9
                 cc.director.loadScene("startScene", () => {
                     gameContext.memoryLength = 9
                     gameContext.showMemoryUI()
@@ -116,8 +118,9 @@ export default class NewClass extends cc.Component {
                 // rat.spriteFrame = new cc.SpriteFrame()
             })
             gameContext.playerNode.runAction(cc.sequence(moveBy, callF))
+            gameContext.playerNode.getChildByName('fllow').runAction(moveBy1)
         }, this)
-        this.btnGiveUp.on(cc.Node.EventType.TOUCH_END, () => {
+        this.btnContine.on(cc.Node.EventType.TOUCH_END, () => {
             this.page2.active = false
             this.page3.active = true
             gameContext.playerNode.active = false
@@ -149,12 +152,23 @@ export default class NewClass extends cc.Component {
       
     }
 
+    onDisable() {
+        console.log('------------------第9关注销监听------------------')
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHBULLET, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+
+        this.btnContine.off(cc.Node.EventType.TOUCH_END)
+        this.btnGiveUp.off(cc.Node.EventType.TOUCH_END)
+        this.btnRestart.off(cc.Node.EventType.TOUCH_END)
+    }
+
 
     start() {
         this.Restart()
     }
 
     Restart() {
+        gameContext.moveType = 0
         this.unscheduleAllCallbacks()
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 10 });
 
@@ -183,7 +197,7 @@ export default class NewClass extends cc.Component {
     /**前情提要 */
     preStart() {
         let preTime = 1
-        this.death.runAction(cc.moveBy(3, new cc.Vec2(-200, 0)))
+        this.death.runAction(cc.moveBy(3, new cc.Vec2(-300, 0)))
 
         this.scheduleOnce(() => {
             this.label0.string = '【死神】:我来接人了！'
@@ -298,7 +312,7 @@ export default class NewClass extends cc.Component {
                     this.enemyHp.scaleX = this.enemyHpNum / 20
                 } else {
                     this.enemyHp.scaleX = 0
-                    gameConfig.maxLevel = 8
+                    gameConfig.maxLevel = 9
                     gameContext.showToast('坦然面对死亡吧')
                     let rat = gameContext.playerNode.getChildByName('fllow')
                     rat.getComponent(cc.Animation).play('angleRat').repeatCount = Infinity
