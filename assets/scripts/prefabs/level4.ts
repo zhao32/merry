@@ -50,7 +50,7 @@ export default class NewClass extends cc.Component {
     onLoad() {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
-        this.setSyncPosition()
+        // this.setSyncPosition()
         gameContext.hasFllow = false
 
         EventMgr.getInstance().registerListener(EventMgr.TOUCHWAVE, this, this.touchWave.bind(this))

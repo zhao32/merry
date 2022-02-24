@@ -815,6 +815,7 @@
       "__id__": 17
     },
     "_enabled": true,
+    "label": null,
     "pressedScale": 1.1,
     "_id": ""
   },
@@ -1013,6 +1014,7 @@
       "__id__": 23
     },
     "_enabled": true,
+    "label": null,
     "pressedScale": 1.1,
     "_id": ""
   },

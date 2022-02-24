@@ -69,7 +69,6 @@ export default class NewClass extends cc.Component {
         this._dis = 5
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
-        this.setSyncPosition()
         gameContext.hasFllow = false
         // gameContext.currLevelScript = this.node.getComponent('level0')
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
@@ -304,16 +303,16 @@ export default class NewClass extends cc.Component {
     update(dt) {
         if (this._dir == DIR.UP) {
             if (this.player.y < 750) this.player.y += this._dis
-            console.log('this.player.y:' + this.player.y)
+            // console.log('this.player.y:' + this.player.y)
         } else if (this._dir == DIR.DOWN) {
             if (this.player.y > -750) this.player.y -= this._dis
-            console.log('this.player.y:' + this.player.y)
+            // console.log('this.player.y:' + this.player.y)
         } else if (this._dir == DIR.LEFT) {
             if (this.player.x > -1334) this.player.x -= this._dis
-            console.log('this.player.x:' + this.player.x)
+            // console.log('this.player.x:' + this.player.x)
         } else if (this._dir == DIR.RIGHT) {
             if (this.player.x < 1334) this.player.x += this._dis
-            console.log('this.player.x:' + this.player.x)
+            // console.log('this.player.x:' + this.player.x)
         }
 
         if (this._dir == DIR.RIGHT && this.page1.x == 1334 && this.player.x >= 0) {

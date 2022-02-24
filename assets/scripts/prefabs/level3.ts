@@ -69,7 +69,6 @@ export default class NewClass extends cc.Component {
     onLoad() {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
-        this.setSyncPosition()
         gameContext.hasFllow = false
         EventMgr.getInstance().registerListener(EventMgr.FOODGROUND, this, this.touchGround.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.FOODGPLAYER, this, this.touchPlayer.bind(this))
@@ -142,20 +141,26 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -1 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 0) {
-            for (let i = 0; i < this.foodList.length; i++) {
-                this.foodList[i].opacity = 255
-            }
+           
             gameContext.showToast('叔叔我吃不下了')
 
-            this.scheduleOnce(() => {
-                console.log('游戏结束')
-                gameConfig.maxLevel = 4
-                cc.director.loadScene("startScene", () => {
-                    gameContext.memoryLength = 4
-                    gameContext.showMemoryUI()
-                });
-                this.destoryFood()
-            }, 1.5)
+            console.log('游戏结束')
+            this.destoryFood()
+            gameConfig.maxLevel = 4
+            cc.director.loadScene("startScene", () => {
+                gameContext.memoryLength = 4
+                gameContext.showMemoryUI()
+            });
+
+            // this.scheduleOnce(() => {
+            //     console.log('游戏结束')
+            //     this.destoryFood()
+            //     gameConfig.maxLevel = 4
+            //     cc.director.loadScene("startScene", () => {
+            //         gameContext.memoryLength = 4
+            //         gameContext.showMemoryUI()
+            //     });
+            // }, 1.5)
         }
     }
 
