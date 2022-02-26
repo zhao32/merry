@@ -1,0 +1,49 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "eatLeft",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.5,
+  "sample": 10,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "5fc6dbf8-af33-4178-bf12-0a29777ca2bd"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "d4768e40-add1-4b04-8b50-29f9a9070804"
+            }
+          },
+          {
+            "frame": 0.2,
+            "value": {
+              "__uuid__": "1ecc5e48-3f76-464d-9b3f-528293eec251"
+            }
+          },
+          {
+            "frame": 0.3,
+            "value": {
+              "__uuid__": "fd1edf0e-1e5f-4823-9912-0bc2a43c00ff"
+            }
+          },
+          {
+            "frame": 0.4,
+            "value": {
+              "__uuid__": "5fc6dbf8-af33-4178-bf12-0a29777ca2bd"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

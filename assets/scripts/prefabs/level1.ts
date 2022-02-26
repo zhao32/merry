@@ -5,6 +5,8 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import hero from "../hero";
+import { State } from "../rat";
 import EventMgr from "../utils/EventMgr";
 import { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
@@ -40,60 +42,13 @@ export default class NewClass extends cc.Component {
         this.node.setPosition(0, 0)
         this.setSyncPosition()
 
-        // gameContext.moveType = 1
-        // this.distance = 0
-        EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         EventMgr.getInstance().registerListener(EventMgr.TOUCHTHORNS, this, this.touchThorns.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFINISH, this, this.touchFinish.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
         this.initNode()
     }
 
-    onDisable(){
-        console.log('------------------第2关销毁------------------')
-        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHTHORNS, this)
-        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHFINISH, this)
-        EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
-    }
-
-
-    Restart() {
-        gameContext.hasFllow = false
-        gameConfig.currLevel = 1
-        gameContext.moveType = 1
-        this.distance = 0
-        this.node.setPosition(0, 0)
-        gameContext.playerNode.active = true
-        gameContext.playerNode.setPosition(100, -165)
-        this.preStart()
-        EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
-    }
-
-    touchThorns() {
-        console.log('触碰荆棘')
-        EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -1 });
-        let operateUI: operateUI = gameContext.operateUI
-        if (operateUI.san == 1) {
-            operateUI.san = 9
-            gameContext.showToast('老鼠需要猴子！')
-        }
-
-    }
-
-    touchFinish() {
-        console.log('达成通关')
-        this.scheduleOnce(() => {
-            console.log('游戏完成')
-            // gameContext.showToast('进入记忆宝典')
-            gameConfig.maxLevel = 2
-            cc.director.loadScene("startScene",()=>{
-                gameContext.memoryLength = 2
-                gameContext.showMemoryUI()
-            });           
-        }, 1)
-    }
-
-
+    
     initNode() {
         this.boat = this.node.getChildByName('boat')
         this.weChat = this.node.getChildByName('weChat')
@@ -128,8 +83,6 @@ export default class NewClass extends cc.Component {
 
     start() {
         this.Restart()
-
-
     }
 
     update(dt) {
@@ -147,10 +100,63 @@ export default class NewClass extends cc.Component {
 
 
         if (this.distance > 1334) {
-            gameContext.moveType = 0
+            // gameContext.moveType = 0
+            let operateUI: operateUI = gameContext.operateUI
+            if (gameContext.moveType == 1) {
+                gameContext.moveType = 0
+                if ((gameContext.player as hero).state == State.walkRight) {
+                    operateUI.startRight()
+                } else if ((gameContext.player as hero).state == State.walkLeft) {
+                    operateUI.startLeft()
+                }
+            }
         }
-
     }
+
+
+    onDisable(){
+        console.log('------------------第2关销毁------------------')
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHTHORNS, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHFINISH, this)
+        EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+    }
+
+
+    Restart() {
+        gameContext.hasFllow = false
+        gameConfig.currLevel = 1
+        this.distance = 0
+        gameContext.moveType = 1
+        this.node.setPosition(0, 0)
+        gameContext.playerNode.active = true
+        gameContext.playerNode.setPosition(100, -165)
+        this.preStart()
+        EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+    }
+
+    touchThorns() {
+        console.log('触碰荆棘')
+        EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -1 });
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI.san == 1) {
+            operateUI.san = 9
+            gameContext.showToast('老鼠需要猴子！')
+        }
+    }
+
+    touchFinish() {
+        console.log('达成通关')
+        this.scheduleOnce(() => {
+            console.log('游戏完成')
+            // gameContext.showToast('进入记忆宝典')
+            gameConfig.maxLevel = 2
+            cc.director.loadScene("startScene",()=>{
+                gameContext.memoryLength = 2
+                gameContext.showMemoryUI()
+            });           
+        }, 1)
+    }
+
 
     setSyncPosition() {
         let bodys = this.node.getComponentsInChildren(cc.RigidBody)

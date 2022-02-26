@@ -17,6 +17,7 @@ export enum State {
     jumpLeft,
     jumpRight,
     fight,
+    eat
 }
 
 
@@ -45,6 +46,9 @@ export default class NewClass extends cc.Component {
     // public aniType = "normal"
 
     private _aniType = null
+
+    animCtrl: cc.Animation
+    animName: string
 
     public set aniType(type: string) {
         this._aniType = type
@@ -201,13 +205,61 @@ export default class NewClass extends cc.Component {
             repeatCount = Infinity
             body.linearVelocity = new cc.Vec2(0, 0)
             gameContext.viewSpeed = 0
+        } else if (this._state == State.eat) {
+            if (preState == State.walkLeft || preState == State.standLeft || preState == State.eat) {
+                ani = 'eatLeft'
+            } else if (preState == State.walkRight || preState == State.standRight) {
+                ani = 'eatRight'
+
+            }
+            repeatCount = 1
+            // this.isMove = true
+            // if (gameContext.moveType == 0) {
+            //     body.linearVelocity = new cc.Vec2(-this.Velocity, 0)
+            // } else {
+            //     gameContext.viewSpeed = -this.Speed
+            // }
         }
         if (ani) {
-            this.node.getComponent(cc.Animation).play(ani).repeatCount = repeatCount
-            if(aniFllow) this.fllow.getComponent(cc.Animation).play(aniFllow).repeatCount = repeatCount
+            this.animName = ani
+            this.animCtrl = this.node.getComponent(cc.Animation)
+            // 注册播放动画结束的回调
+            let play = this.animCtrl.play(ani)
+            // this.animCtrl.on('stop', this.onAnimStop, this);
+
+            if (play) play.repeatCount = repeatCount
+            if (aniFllow) this.fllow.getComponent(cc.Animation).play(aniFllow).repeatCount = repeatCount
             console.log('播放：' + ani)
+
+            this.scheduleOnce(() => {
+                let ani
+                if (this.animName === 'eatLeft') {
+                    ani = this.aniObj[this._aniType].standLeft
+                    this.animCtrl.play(ani).repeatCount = Infinity
+                }
+                if (this.animName === 'eatRight') {
+                    ani = this.aniObj[this._aniType].standRight
+                    this.animCtrl.play(ani).repeatCount = Infinity
+                }
+            }, 0.3)
         }
     }
+
+    onAnimStop(event) {
+        // let animState = event.detail;
+        let ani
+        if (this.animName === 'eatLeft' && event === 'stop') {
+            ani = this.aniObj[this._aniType].standLeft
+            this.animCtrl.play(ani).repeatCount = Infinity
+        }
+        if (this.animName === 'eatRight' && event === 'stop') {
+            ani = this.aniObj[this._aniType].standRight
+            this.animCtrl.play(ani).repeatCount = Infinity
+        }
+        this.animCtrl.off('stop', this.onAnimStop, this);
+
+    }
+
 
     public get state(): number {
         return this._state
@@ -224,7 +276,7 @@ export default class NewClass extends cc.Component {
             this._isJumping = true
         }
     }
-    
+
 
     update(dt) {
 

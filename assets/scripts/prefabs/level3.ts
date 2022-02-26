@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { State } from "../hero";
 import EventMgr from "../utils/EventMgr";
 import { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
@@ -17,7 +18,6 @@ export default class NewClass extends cc.Component {
 
     @property(cc.Label)
     label: cc.Label = null;
-
 
     weChat: cc.Node = null
     // @property(cc.Node)
@@ -33,28 +33,24 @@ export default class NewClass extends cc.Component {
 
     foodList = []
 
-    @property
-    text: string = 'hello';
-
     callback: any
 
     initFood() {
         console.log('初始化食物')
-        this._foodNum = 30
-        for (let i = 0; i < this._foodNum; i++) {
-            this.scheduleOnce(() => {
-                let food = cc.instantiate(this.foodPfb)
-                this.node.addChild(food)
-                food.setPosition(400 + Math.random() * 634, 500)
-                this.foodList.push(food)
-            }, 2 + 30 * (i / 30))
-        }
+        let i = 0
+        this.schedule(() => {
+            let food = cc.instantiate(this.foodPfb)
+            this.node.addChild(food)
+            food.setPosition(400 + Math.random() * 634, 500)
+            this.foodList.push(food)
+        }, 1.5 - i * 20)
     }
 
     destoryFood() {
-        for (let i = 0; i < this.foodList.length; i++) {
-            this.foodList[i].destroy()
-            this.foodList.splice(i, 1)
+        while (this.foodList.length > 0) {
+            let node = this.foodList.pop()
+            if (node) node.destroy()
+            console.log('删除食物')
         }
     }
 
@@ -84,11 +80,13 @@ export default class NewClass extends cc.Component {
         this.Restart()
     }
 
-    onDisable(){
+    onDisable() {
         console.log('------------------第4关注销监听------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.FOODGROUND, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.FOODGPLAYER, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+        this.unscheduleAllCallbacks()
+        this.destoryFood()
     }
 
 
@@ -98,8 +96,7 @@ export default class NewClass extends cc.Component {
         gameConfig.currLevel = 3
         this.weChatLeft.active = false
         this.weChatRight.active = false
-        this.unscheduleAllCallbacks()
-        this.destoryFood()
+
         gameContext.playerNode.active = true
         gameContext.playerNode.setPosition(100, -165)
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
@@ -141,30 +138,22 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -1 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 0) {
-           
+
             gameContext.showToast('叔叔我吃不下了')
 
             console.log('游戏结束')
+            this.unscheduleAllCallbacks()
             this.destoryFood()
             gameConfig.maxLevel = 4
             cc.director.loadScene("startScene", () => {
                 gameContext.memoryLength = 4
                 gameContext.showMemoryUI()
             });
-
-            // this.scheduleOnce(() => {
-            //     console.log('游戏结束')
-            //     this.destoryFood()
-            //     gameConfig.maxLevel = 4
-            //     cc.director.loadScene("startScene", () => {
-            //         gameContext.memoryLength = 4
-            //         gameContext.showMemoryUI()
-            //     });
-            // }, 1.5)
         }
     }
 
     touchPlayer(self: this, params) {
+        gameContext.player.state = State.eat
     }
 
 

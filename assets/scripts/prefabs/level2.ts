@@ -5,6 +5,8 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import hero from "../hero";
+import { State } from "../rat";
 import EventMgr from "../utils/EventMgr";
 import { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
@@ -56,7 +58,7 @@ export default class NewClass extends cc.Component {
         this.node.setPosition(0, 0)
         this.setSyncPosition()
 
-        EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+        // EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFINISH, this, this.touchFinish.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHBOTTLE, this, this.touchBottle.bind(this))
@@ -64,13 +66,14 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFOOD, this, this.touchFood.bind(this))
     }
 
-    onDisable(){
+    onDisable() {
         console.log('------------------第3关注销监听------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHFINISH, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHTHORNS, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHBOTTLE, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHBERRL, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+        this.clear()
     }
 
 
@@ -81,13 +84,13 @@ export default class NewClass extends cc.Component {
     Restart() {
         this.node.setPosition(0, 0)
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 10 });
+        EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
 
-        this.distance = 0
         gameContext.playerNode.active = true
         gameContext.playerNode.setPosition(300, -165)
-        EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         gameContext.moveType = 1
-        gameContext.hasFllow = true
+        gameContext.hasFllow = true;
+        (gameContext.player as hero).state = State.standRight
 
         this.distance = 0
         this._bottleNum = 0
@@ -100,11 +103,31 @@ export default class NewClass extends cc.Component {
     touchFinish() {
         console.log('游戏结束')
         gameConfig.maxLevel = 3
+        this.unscheduleAllCallbacks()
+        this.clear()
         cc.director.loadScene("startScene", () => {
             gameContext.memoryLength = 3
             gameContext.showMemoryUI()
         });
+    }
 
+    clear() {
+        while (this.barrelList.length > 0) {
+            let node = this.barrelList.pop()
+            if (node) node.destroy()
+            console.log('删除水桶')
+        }
+        while (this.foodList.length > 0) {
+            let node = this.foodList.pop()
+            if (node) node.destroy()
+            console.log('删除食物')
+        }
+        while (this.bottleList.length > 0) {
+            let node = this.bottleList.pop()
+            if (node) node.destroy()
+            console.log('删除酒瓶')
+
+        }
     }
 
     touchBottle() {
@@ -154,7 +177,15 @@ export default class NewClass extends cc.Component {
         }
 
         if (this.distance > 1334) {
-            gameContext.moveType = 0
+            if (gameContext.moveType == 1) {
+                gameContext.moveType = 0
+                let operateUI: operateUI = gameContext.operateUI
+                if ((gameContext.player as hero).state == State.walkRight) {
+                    operateUI.startRight()
+                } else if ((gameContext.player as hero).state == State.walkLeft) {
+                    operateUI.startLeft()
+                }
+            }
         }
         // console.log(this.distance)
 
@@ -175,39 +206,12 @@ export default class NewClass extends cc.Component {
         if (this._bottleNum == 0) {
             this.createBottle()
         }
-
-
-
-        for (let i = 0; i < this.barrelList.length; i++) {
-            if (this.barrelList[i].y < -500) {
-                this.barrelList[i].destroy()
-                this.barrelList.splice(i, 1)
-                console.log('删除水桶')
-            }
-
-        }
-
-        for (let i = 0; i < this.foodList.length; i++) {
-            if (this.foodList[i].y < -500) {
-                this.foodList[i].destroy()
-                this.foodList.splice(i, 1)
-                console.log('删除食物')
-            }
-        }
-
-        for (let i = 0; i < this.bottleList.length; i++) {
-            if (this.bottleList[i].x < -100) {
-                this.bottleList[i].destroy()
-                this.bottleList.splice(i, 1)
-                console.log('删除酒瓶')
-            }
-        }
     }
 
     createrBarrel(pos: cc.Vec2) {
 
         let barrel = cc.instantiate(this.barrelPfb)
-        barrel.opacity = 255
+        // barrel.opacity = 255
         this.node.addChild(barrel)
         barrel.setPosition(pos)
         this.barrelList.push(barrel)
@@ -218,7 +222,7 @@ export default class NewClass extends cc.Component {
         for (let i = 0; i < 5; i++) {
             this.scheduleOnce(() => {
                 let food = cc.instantiate(this.foodPfb)
-                food.opacity = 255
+                // food.opacity = 255
                 this.node.addChild(food)
                 food.setPosition(this.distance + Math.random() * 400 + 400, 500)
                 this.foodList.push(food)
@@ -232,7 +236,7 @@ export default class NewClass extends cc.Component {
             this.scheduleOnce(() => {
                 console.log('生成水瓶')
                 let bottle = cc.instantiate(this.bottlePfb)
-                bottle.opacity = 255
+                // bottle.opacity = 255
                 this.node.addChild(bottle)
                 bottle.setPosition(1500, -180)
                 this.bottleList.push(bottle)

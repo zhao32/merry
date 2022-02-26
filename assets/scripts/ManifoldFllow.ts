@@ -119,7 +119,7 @@ export default class NewClass extends cc.Component {
             EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS);
         } else if (otherCollider.tag == 5) {//酒瓶
             console.log('老鼠接触酒瓶')
-            otherCollider.node.destroy()
+            otherCollider.node.active = false
             EventMgr.getInstance().sendListener(EventMgr.TOUCHBOTTLE);
         } else if (otherCollider.tag == 6) {//酒桶
             console.log('老鼠接触酒桶')

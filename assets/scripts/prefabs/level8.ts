@@ -138,7 +138,6 @@ export default class NewClass extends cc.Component {
 
 
         this.death = this.page0.getChildByName('death')
-
         this.label0 = this.page0.getChildByName('label0').getComponent(cc.Label)
         this.label1 = this.page0.getChildByName('label1').getComponent(cc.Label)
         this.label0.string = this.label1.string = ''
@@ -149,7 +148,7 @@ export default class NewClass extends cc.Component {
         this.angleRat = this.page1.getChildByName('angleRat')
         this.bullet = cc.instantiate(this.bulletPfb)
         this.page1.addChild(this.bullet)
-      
+
     }
 
     onDisable() {
@@ -176,7 +175,6 @@ export default class NewClass extends cc.Component {
         this.bullet.active = false
 
         this.page0.active = true
-        this.page0.opacity = 255
         this.page1.active = false
         this.page2.active = false
         this.page3.active = false

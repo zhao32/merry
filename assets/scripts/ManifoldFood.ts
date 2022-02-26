@@ -34,16 +34,20 @@ export default class NewClass extends cc.Component {
         if (otherCollider.tag == 0) {//地面砖块
             // console.log('---------------------碰撞-----------------------------')
             console.log('落地')
-            if (selfCollider.node.opacity == 255) {
-                EventMgr.getInstance().sendListener(EventMgr.FOODGROUND);
-                selfCollider.node.opacity = 0
-            }
+            EventMgr.getInstance().sendListener(EventMgr.FOODGROUND);
+            selfCollider.node.active = false
+            // if (selfCollider.node.opacity == 255) {
+            //     EventMgr.getInstance().sendListener(EventMgr.FOODGROUND);
+            //     selfCollider.node.opacity = 0
+            // }
         } else if (otherCollider.tag == 1) {//碰到玩家
             console.log('砸到玩家')
-            if (selfCollider.node.opacity == 255) {
-                EventMgr.getInstance().sendListener(EventMgr.FOODGPLAYER);
-                selfCollider.node.opacity = 0
-            }
+            EventMgr.getInstance().sendListener(EventMgr.FOODGPLAYER);
+            selfCollider.node.active = false
+            // if (selfCollider.node.opacity == 255) {
+            //     EventMgr.getInstance().sendListener(EventMgr.FOODGPLAYER);
+            //     selfCollider.node.opacity = 0
+            // }
         }
     }
 

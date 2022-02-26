@@ -18,14 +18,6 @@ export default class NewClass extends cc.Component {
     @property(cc.Label)
     label: cc.Label = null;
 
-
-    // weChat: cc.Node = null
-    // // @property(cc.Node)
-    // weChatLeft: cc.Node = null;
-
-    // // @property(cc.Node)
-    // weChatRight: cc.Node = null;
-
     @property
     text: string = 'hello';
 
@@ -51,20 +43,13 @@ export default class NewClass extends cc.Component {
 
     init(data: any, callback) {
         this.callback = callback
-        // this.Restart()
-        // this.preStart()
-
     }
     createrBox() {
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 10; i++) {
             let box = cc.instantiate(this.boxPfb)
             this.boxList.push(box)
             box.setPosition(200 + Math.random() * 1000, 500 + Math.random() * 500)
             this.node.addChild(box)
-            // cc.tween(box)
-            //     .by(3, { position: cc.v3(0, -800, 0) }, { easing: 'sineOutIn' })
-            //     .call(() => { box.y += 800 })
-            //     .start()
         }
     }
 
@@ -74,12 +59,11 @@ export default class NewClass extends cc.Component {
     onLoad() {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
-        this.setSyncPosition()
+        // this.setSyncPosition()
         gameContext.hasFllow = true
         // gameContext.currLevelScript = this.node.getComponent('level0')
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHTANKARM, this, this.touchArm.bind(this))
-
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
 
         this.createrBox()
@@ -93,8 +77,6 @@ export default class NewClass extends cc.Component {
         this.arm = this.page1.getChildByName('arm')
         this.tankHp = this.page1.getChildByName('tankHp')
 
-        // gameContext.playerNode.active = false
-        // this.schedule(this.tankMove, 10)
     }
 
     onDisable() {
@@ -102,11 +84,9 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHTANKARM, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
 
-
-        for (let i = 0; i < this.boxList.length; i++) {
-            this.boxList[i].destroy()
-            this.boxList.splice(i, 1)
-
+        while (this.boxList.length > 0) {
+            let node = this.boxList.pop()
+            if (node) node.destroy()
         }
     }
 
@@ -119,21 +99,20 @@ export default class NewClass extends cc.Component {
     Restart() {
         gameContext.moveType = 0
         this.unschedule(this.tankMove)
-        this.arm.opacity = 0
-        this.arm.stopAllActions()
         this.tank.stopAllActions()
-        this.label0.string = this.label1.string = ''
-
-        this.page0.active = true
-        this.page0.opacity = 255
-        this.page1.active = false
-        this.hpNum = 10
-
-        this.arm.opacity = 0
-        this.arm.x = -100
         this.tank.x = 60
         this.tankHpNum = 20
         this.tankHp.scaleX = 1
+
+        this.label0.string = this.label1.string = ''
+
+        this.page0.active = true
+        this.page1.active = false
+        this.hpNum = 10
+        this.arm.stopAllActions()
+        this.arm.opacity = 0
+        this.arm.x = -100
+
 
         this._touchArm = false
         this.schedule(this.tankMove, 10)
@@ -217,15 +196,7 @@ export default class NewClass extends cc.Component {
 
 
     update(dt) {
-        // this.node.x += 1
-        // this.setSyncPosition()
-
-
         let armPos = this.page1.convertToWorldSpaceAR(this.arm.getPosition())
-        // console.log('heroX:'+ gameContext.playerNode.x)
-        // console.log('sheepX:'+ sheepPos.x)
-        // console.log('heroY:'+ gameContext.playerNode.y)
-        // console.log('sheepY:'+ sheepPos.y)
         if (this._touchArm == false && Math.abs(armPos.x - gameContext.playerNode.x) < 100) {
             this._touchArm = true
             EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
@@ -240,10 +211,6 @@ export default class NewClass extends cc.Component {
                         .call(() => {
                             box.y += 1400
                             if (i == 0) {
-                                // this.unschedule(this.tankMove)
-                                // this.arm.opacity = 0
-                                // this.arm.stopAllActions()
-                                // this.tank.stopAllActions()
                                 console.log('游戏完成')
                                 gameConfig.maxLevel = 8
 

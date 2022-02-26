@@ -1,0 +1,43 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "eatRight",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.4,
+  "sample": 10,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "fd385787-e3bf-4f8f-934c-a5cd41e480ac"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "5a937d76-b3b1-499b-9179-7f03ff59f6ed"
+            }
+          },
+          {
+            "frame": 0.2,
+            "value": {
+              "__uuid__": "faafbb83-879b-4b89-b6c6-12a309c0749a"
+            }
+          },
+          {
+            "frame": 0.3,
+            "value": {
+              "__uuid__": "52e5d1f4-8ef9-4d46-9020-e21183647b2f"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

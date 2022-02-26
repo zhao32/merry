@@ -5,9 +5,10 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import hero from "../hero";
+import hero, { State } from "../hero";
 import EventMgr from "../utils/EventMgr";
 import { gameConfig, gameContext } from "../utils/GameTools";
+import operateUI from "./operateUI";
 
 
 const { ccclass, property } = cc._decorator;
@@ -117,11 +118,10 @@ export default class NewClass extends cc.Component {
 
     start() {
         this.Restart()
-        this.preStart()
     }
 
-   
-    onDisable(){
+
+    onDisable() {
         console.log('------------------第一关销毁------------------')
         this.toggle0.node.off('toggle')
         this.toggle1.node.off('toggle')
@@ -149,10 +149,7 @@ export default class NewClass extends cc.Component {
                     this[`toggle${i}`].isChecked = false
                 }
             }
-        } else {
-            // this.answer = ''
         }
-
         let check = false
         for (let i = 0; i < 3; i++) {
             if (this[`toggle${i}`].isChecked == true) {
@@ -161,13 +158,10 @@ export default class NewClass extends cc.Component {
         }
 
         if (!check) this.answer = ''
-
-        console.log(toggle.isChecked)
-        console.log('answer：' + this.answer)
     }
 
     doSelected() {
-      
+
         if (!this.answer) {
             gameContext.showToast('请选择答案')
         } else if (this.answer == this.toggle2.node.name) {
@@ -176,7 +170,6 @@ export default class NewClass extends cc.Component {
             this.selectMilk.active = false
             gameConfig.maxLevel = 1
             this.unscheduleAllCallbacks()
-
             cc.director.loadScene("startScene", () => {
                 gameContext.memoryLength = 1
                 gameContext.showMemoryUI()
@@ -198,18 +191,15 @@ export default class NewClass extends cc.Component {
         this.node.setPosition(0, 0)
         this.failPage.getChildByName('flight').x = -800
         gameConfig.currLevel = 0
-        this.weChatLeft.active = false
+        this.hasMask = false
+        this.death = false
 
+        this.weChatLeft.active = false
         this.weChatRight.active = false
         this.selectMilk.active = false
         this.chat.active = false
-
-        // this.Virus.active = true
         this.Mask.active = true
-
         this.Finish.active = true
-        this.hasMask = false
-        this.death = false
 
         this.failPage.active = false
         gameContext.playerNode.active = true
@@ -295,14 +285,23 @@ export default class NewClass extends cc.Component {
             this.distance += gameContext.viewSpeed
         }
 
-        if(this.node.x > 0){
+        if (this.node.x > 0) {
             this.node.x = 0
             this.distance = 0
             this.setSyncPosition()
         }
 
         if (this.distance > 1334) {
-            gameContext.moveType = 0
+            // gameContext.moveType = 0
+            let operateUI: operateUI = gameContext.operateUI
+            if (gameContext.moveType == 1) {
+                gameContext.moveType = 0
+                if ((gameContext.player as hero).state == State.walkRight) {
+                    operateUI.startRight()
+                } else if ((gameContext.player as hero).state == State.walkLeft) {
+                    operateUI.startLeft()
+                }
+            }
         }
     }
 
