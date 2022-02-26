@@ -187,7 +187,7 @@ export default class NewClass extends cc.Component {
         gameContext.hasFllow = false
 
         this.distance = 0
-        gameContext.moveType = 1
+        gameContext.moveType = 0
         this.node.setPosition(0, 0)
         this.failPage.getChildByName('flight').x = -800
         gameConfig.currLevel = 0
@@ -275,34 +275,102 @@ export default class NewClass extends cc.Component {
 
 
     update(dt) {
-
-        // this.node.x += 1
-        // this.setSyncPosition()
-
-        if (gameContext.moveType == 1) {
-            this.node.x -= gameContext.viewSpeed
-            this.setSyncPosition()
-            this.distance += gameContext.viewSpeed
-        }
-
-        if (this.node.x > 0) {
+        if (this.node.x >= 0) {
             this.node.x = 0
-            this.distance = 0
-            this.setSyncPosition()
-        }
-
-        if (this.distance > 1334) {
-            // gameContext.moveType = 0
-            let operateUI: operateUI = gameContext.operateUI
             if (gameContext.moveType == 1) {
                 gameContext.moveType = 0
+                // this.node.x = 0
+                let operateUI: operateUI = gameContext.operateUI
                 if ((gameContext.player as hero).state == State.walkRight) {
                     operateUI.startRight()
                 } else if ((gameContext.player as hero).state == State.walkLeft) {
                     operateUI.startLeft()
                 }
+
+            } else {
+                if (gameContext.playerNode.x > 300 && (gameContext.player as hero).state == State.walkRight) {
+                    gameContext.moveType = 1
+                    let operateUI: operateUI = gameContext.operateUI
+                    if ((gameContext.player as hero).state == State.walkRight) {
+                        operateUI.startRight()
+                    } else if ((gameContext.player as hero).state == State.walkLeft) {
+                        operateUI.startLeft()
+                    }
+
+                }
+
             }
         }
+
+        if (this.node.x <= -1334) {
+            this.node.x = -1334
+            if (gameContext.moveType == 1) {
+                gameContext.moveType = 0
+                let operateUI: operateUI = gameContext.operateUI
+                if ((gameContext.player as hero).state == State.walkRight) {
+                    operateUI.startRight()
+                } else if ((gameContext.player as hero).state == State.walkLeft) {
+                    operateUI.startLeft()
+                }
+            } else {
+                if (gameContext.playerNode.x <= 1100 && (gameContext.player as hero).state == State.walkLeft) {
+                    gameContext.moveType = 1
+                    let operateUI: operateUI = gameContext.operateUI
+                    if ((gameContext.player as hero).state == State.walkRight) {
+                        operateUI.startRight()
+                    } else if ((gameContext.player as hero).state == State.walkLeft) {
+                        operateUI.startLeft()
+                    }
+                }
+            }
+        }
+
+
+        if (gameContext.moveType == 1) {
+            this.node.x -= gameContext.viewSpeed
+            this.setSyncPosition()
+            // this.distance += gameContext.viewSpeed
+        }
+
+
+        // if (gameContext.playerNode.x <= 1100 && this.node.x == -1334) {
+        //     if (gameContext.moveType == 0) {
+        //         // this.distance = 0
+        //         gameContext.moveType = 1
+        //         let operateUI: operateUI = gameContext.operateUI
+        //         if ((gameContext.player as hero).state == State.walkRight) {
+        //             operateUI.startRight()
+        //         } else if ((gameContext.player as hero).state == State.walkLeft) {
+        //             operateUI.startLeft()
+        //         }
+        //     }
+
+        // }
+
+        // if (gameContext.moveType == 1) {
+        //     this.node.x -= gameContext.viewSpeed
+        //     this.setSyncPosition()
+        //     this.distance += gameContext.viewSpeed
+        // }
+
+        // if (this.node.x > 0) {
+        //     this.node.x = 0
+        //     this.distance = 0
+        //     this.setSyncPosition()
+        // }
+
+        // if (this.distance > 1334) {
+        //     // gameContext.moveType = 0
+        //     let operateUI: operateUI = gameContext.operateUI
+        //     if (gameContext.moveType == 1) {
+        //         gameContext.moveType = 0
+        //         if ((gameContext.player as hero).state == State.walkRight) {
+        //             operateUI.startRight()
+        //         } else if ((gameContext.player as hero).state == State.walkLeft) {
+        //             operateUI.startLeft()
+        //         }
+        //     }
+        // }
     }
 
     setSyncPosition() {

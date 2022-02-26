@@ -38,9 +38,9 @@ export default class NewClass extends cc.Component {
 
     isMove: Boolean = false//主角是否真实运动，在场景两边时主角移动，场景中间时场景移动
 
-    private readonly Velocity = 150
+    private readonly Velocity = 200
 
-    private readonly Speed = 5
+    private readonly Speed = 4
 
     private aniObj = {}
     // public aniType = "normal"
