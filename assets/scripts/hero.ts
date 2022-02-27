@@ -142,7 +142,7 @@ export default class NewClass extends cc.Component {
                 if (gameContext.moveType == 0) {
                     body.linearVelocity = new cc.Vec2(-this.Velocity, 0)
                 } else {
-                    gameContext.viewSpeed = 0
+                    gameContext.viewSpeed = -this.Speed
                 }
             }
             this.playJump()
@@ -154,7 +154,7 @@ export default class NewClass extends cc.Component {
                 if (gameContext.moveType == 0) {
                     body.linearVelocity = new cc.Vec2(this.Velocity, 0)
                 } else {
-                    gameContext.viewSpeed = 0
+                    gameContext.viewSpeed = this.Speed
                 }
             }
             this.playJump()

@@ -188,8 +188,12 @@ export default class NewClass extends cc.Component {
 
         this.distance = 0
         gameContext.moveType = 0
+        this.setSyncPosition()
+
         this.node.setPosition(0, 0)
-        this.failPage.getChildByName('flight').x = -800
+        this.setSyncPosition()
+
+        this.failPage.getChildByName('flight').x = -200
         gameConfig.currLevel = 0
         this.hasMask = false
         this.death = false
@@ -256,7 +260,8 @@ export default class NewClass extends cc.Component {
             this.failPage.active = true
             this.death = true
             gameContext.playerNode.active = false
-            this.failPage.getChildByName('flight').runAction(cc.moveTo(2, new cc.Vec2(800, 0)))
+            this.failPage.x = -this.node.x
+            this.failPage.getChildByName('flight').runAction(cc.moveTo(2, new cc.Vec2(1600, 0)))
             this.scheduleOnce(() => {
                 // this.setSyncPosition()
                 this.Restart()
