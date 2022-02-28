@@ -184,7 +184,7 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
-        gameContext.hasFllow = false
+        gameContext.hasFllow = false;
 
         this.distance = 0
         gameContext.moveType = 0
@@ -207,7 +207,9 @@ export default class NewClass extends cc.Component {
 
         this.failPage.active = false
         gameContext.playerNode.active = true
-        gameContext.playerNode.setPosition(100, -165)
+        gameContext.playerNode.setPosition(100, -165);
+        (gameContext.player as hero).state = State.standRight
+
         this.resetToggle()
         this.preStart()
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
@@ -262,6 +264,7 @@ export default class NewClass extends cc.Component {
             gameContext.playerNode.active = false
             this.failPage.x = -this.node.x
             this.failPage.getChildByName('flight').runAction(cc.moveTo(2, new cc.Vec2(1600, 0)))
+            EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
             this.scheduleOnce(() => {
                 // this.setSyncPosition()
                 this.Restart()
@@ -280,6 +283,7 @@ export default class NewClass extends cc.Component {
 
 
     update(dt) {
+        if (this.failPage.active == true) return
         if (this.node.x >= 0) {
             this.node.x = 0
             if (gameContext.moveType == 1) {

@@ -15,6 +15,7 @@ export enum DIR {
     NULL,
 }
 
+
 const { ccclass, property } = cc._decorator;
 import operateUI from "./operateUI";
 

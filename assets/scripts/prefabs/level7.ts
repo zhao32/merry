@@ -9,6 +9,7 @@ import hero from "../hero";
 import EventMgr from "../utils/EventMgr";
 import { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
+import { State } from "../hero";
 
 const { ccclass, property } = cc._decorator;
 
@@ -35,10 +36,13 @@ export default class NewClass extends cc.Component {
 
     tank: cc.Node
     arm: cc.Node
+    armRight: cc.Node
     tankHp: cc.Node
     tankHpNum: number
 
-    _touchArm: boolean
+    _touchArmLeft: boolean
+    _touchArmRight: boolean
+
     boxList = []
 
     init(data: any, callback) {
@@ -75,6 +79,8 @@ export default class NewClass extends cc.Component {
 
         this.tank = this.page1.getChildByName('tank')
         this.arm = this.page1.getChildByName('arm')
+        this.armRight = this.page1.getChildByName('armRight')
+
         this.tankHp = this.page1.getChildByName('tankHp')
 
     }
@@ -114,7 +120,12 @@ export default class NewClass extends cc.Component {
         this.arm.x = -100
 
 
-        this._touchArm = false
+        this._touchArmLeft = false
+        this._touchArmRight = false
+
+        this.tank.getChildByName('front').getComponent(cc.Animation).play('frontNo')
+        this.tank.getChildByName('back').getComponent(cc.Animation).play('backNo')
+
         this.schedule(this.tankMove, 10)
         this.armAttack()
 
@@ -145,6 +156,7 @@ export default class NewClass extends cc.Component {
                     jump: true
                 });
                 gameContext.playerNode.active = true
+                gameContext.player.state = State.standRight
                 this.page1.active = true
             })))
 
@@ -153,16 +165,26 @@ export default class NewClass extends cc.Component {
     }
 
     touchArm() {
-        console.log('手臂攻击')
-        if (this.arm.opacity == 255) {
-            this.arm.opacity = 254
-            EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
-            let operateUI: operateUI = gameContext.operateUI
-            if (operateUI.san <= 1) {
-                operateUI.san = 9
-                gameContext.showToast('鼠鼠会在暗中支持你！')
-            }
-        }
+        // console.log('手臂攻击')
+        // if (this.arm.opacity == 1) {
+        //     this.arm.opacity = 0
+        //     EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
+        //     let operateUI: operateUI = gameContext.operateUI
+        //     if (operateUI.san <= 1) {
+        //         operateUI.san = 9
+        //         gameContext.showToast('鼠鼠会在暗中支持你！')
+        //     }
+        // }
+
+        // if (this.armRight.opacity == 1) {
+        //     this.armRight.opacity = 0
+        //     EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
+        //     let operateUI: operateUI = gameContext.operateUI
+        //     if (operateUI.san <= 1) {
+        //         operateUI.san = 9
+        //         gameContext.showToast('鼠鼠会在暗中支持你！')
+        //     }
+        // }
     }
 
     tankMove() {
@@ -177,12 +199,19 @@ export default class NewClass extends cc.Component {
         let ani1 = ani0.clone()
         this.tank.runAction(ani0)
         this.arm.runAction(ani1)
+        this.armRight.runAction(ani1.clone())
     }
 
     armAttack() {
         let callF0 = cc.callFunc(() => {
-            this.arm.opacity = 255
-            this._touchArm = false
+            this.arm.opacity = 1
+            this.armRight.opacity = 0
+            this._touchArmLeft = false
+            this._touchArmRight = false
+
+            this.tank.getChildByName('front').getComponent(cc.Animation).play('frontAttack')
+            this.tank.getChildByName('back').getComponent(cc.Animation).play('backNo')
+
         })
 
         let delay0 = cc.delayTime(2)
@@ -190,15 +219,23 @@ export default class NewClass extends cc.Component {
 
         let callF1 = cc.callFunc(() => {
             this.arm.opacity = 0
+            this.armRight.opacity = 1
+            this._touchArmLeft = false
+            this._touchArmRight = false
+            this.tank.getChildByName('front').getComponent(cc.Animation).play('frontNo')
+            this.tank.getChildByName('back').getComponent(cc.Animation).play('backAttack')
+
         })
         this.arm.runAction(cc.repeatForever(cc.sequence(delay0, callF0, delay1, callF1)))
     }
 
 
     update(dt) {
-        let armPos = this.page1.convertToWorldSpaceAR(this.arm.getPosition())
-        if (this._touchArm == false && Math.abs(armPos.x - gameContext.playerNode.x) < 100) {
-            this._touchArm = true
+        let armPos = this.page1.convertToWorldSpaceAR(this.arm.getPosition());
+        let armRightPos = this.page1.convertToWorldSpaceAR(this.armRight.getPosition());
+        
+        if (this._touchArmRight == false && Math.abs(armRightPos.x - gameContext.playerNode.x) < 100) {
+            this._touchArmRight = true
             EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
             let operateUI: operateUI = gameContext.operateUI
             if (operateUI.san <= 2) {
@@ -224,6 +261,37 @@ export default class NewClass extends cc.Component {
                 }
             }
         }
+
+
+        if (this._touchArmLeft == false && Math.abs(armPos.x - gameContext.playerNode.x) < 100) {
+            this._touchArmLeft = true
+            EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
+            let operateUI: operateUI = gameContext.operateUI
+            if (operateUI.san <= 2) {
+                operateUI.san = 10
+                gameContext.showToast('淘宝达鼠')
+                for (let i = 0; i < this.boxList.length; i++) {
+                    let box = this.boxList[i]
+                    cc.tween(box)
+                        .by(2 + Math.random() * 2, { position: cc.v3(0, -1400, 0) }, { easing: 'CubicIn' })
+                        .call(() => {
+                            box.y += 1400
+                            if (i == 0) {
+                                console.log('游戏完成')
+                                gameConfig.maxLevel = 8
+
+                                cc.director.loadScene("startScene", () => {
+                                    gameContext.memoryLength = 8
+                                    gameContext.showMemoryUI()
+                                });
+                            }
+                        })
+                        .start()
+                }
+            }
+        }
+
+       
 
         let tankPos = this.page1.convertToWorldSpaceAR(this.arm.getPosition())
         if (Math.abs(tankPos.x - gameContext.playerNode.x) < 100) {

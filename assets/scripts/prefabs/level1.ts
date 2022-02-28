@@ -129,7 +129,8 @@ export default class NewClass extends cc.Component {
         gameContext.moveType = 1
         this.node.setPosition(0, 0)
         gameContext.playerNode.active = true
-        gameContext.playerNode.setPosition(100, -165)
+        gameContext.playerNode.setPosition(300, -165);
+        (gameContext.player as hero).state = State.standRight
         this.preStart()
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
     }

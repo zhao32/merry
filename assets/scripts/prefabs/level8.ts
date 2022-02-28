@@ -9,6 +9,7 @@ import hero from "../hero";
 import EventMgr from "../utils/EventMgr";
 import { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
+import { State } from "../hero";
 
 const { ccclass, property } = cc._decorator;
 
@@ -211,7 +212,9 @@ export default class NewClass extends cc.Component {
                     fight: true,
                     jump: true
                 });
-                gameContext.playerNode.active = true
+                gameContext.playerNode.active = true;
+                gameContext.player.state = State.standRight
+
                 this.page1.active = true
                 console.log('启用生成子弹回调')
                 this.schedule(this.hookAttack, 5)

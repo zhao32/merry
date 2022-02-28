@@ -30,7 +30,7 @@ export default class NewClass extends cc.Component {
     onLoad() {
         gameConfig.openPhysics(true)
         gameConfig.setGravity(20)
-        gameConfig.openPhysicsDebug()
+        // gameConfig.openPhysicsDebug()
         
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
@@ -45,7 +45,7 @@ export default class NewClass extends cc.Component {
         gameContext.showLevel(gameConfig.currLevel)
 
         let hero
-        if (gameConfig.currLevel == 5) {
+        if (gameConfig.currLevel == 4) {
             hero = cc.instantiate(this.ratPfb)
             gameContext.player = hero.getComponent('rat')
         } else {

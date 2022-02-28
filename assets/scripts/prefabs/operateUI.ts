@@ -89,6 +89,21 @@ export default class NewClass extends cc.Component {
         if (!parms.jump && !parms.fight) btnBg1.active = false
         else btnBg1.active = true
         btnBg0.active = true
+
+        this.btnLeft.on(cc.Node.EventType.TOUCH_START, this.startLeft, this)
+        this.btnLeft.on(cc.Node.EventType.TOUCH_END, this.endLeft, this)
+        this.btnLeft.on(cc.Node.EventType.TOUCH_CANCEL, this.endLeft, this)
+
+        this.btnRight.on(cc.Node.EventType.TOUCH_START, this.startRight, this)
+        this.btnRight.on(cc.Node.EventType.TOUCH_END, this.endRight, this)
+        this.btnRight.on(cc.Node.EventType.TOUCH_CANCEL, this.endRight, this)
+
+        this.btnFight.on(cc.Node.EventType.TOUCH_START, this.startFight, this)
+        this.btnFight.on(cc.Node.EventType.TOUCH_END, this.endFight, this)
+        // this.btnFight.on(cc.Node.EventType.TOUCH_CANCEL, this.endFight, this)
+
+
+    
     }
 
     public set san(num: number) {
@@ -125,6 +140,23 @@ export default class NewClass extends cc.Component {
         let btnBg1 = this.node.getChildByName('btnBg1')
         btnBg0.active = btnBg1.active = false
         console.log('关闭玩家操作')
+
+        this.btnLeft.off(cc.Node.EventType.TOUCH_START, this.startLeft, this)
+        this.btnLeft.off(cc.Node.EventType.TOUCH_END, this.endLeft, this)
+        this.btnLeft.off(cc.Node.EventType.TOUCH_CANCEL, this.endLeft, this)
+
+        this.btnRight.off(cc.Node.EventType.TOUCH_START, this.startRight, this)
+        this.btnRight.off(cc.Node.EventType.TOUCH_END, this.endRight, this)
+        this.btnRight.off(cc.Node.EventType.TOUCH_CANCEL, this.endRight, this)
+
+        this.btnFight.off(cc.Node.EventType.TOUCH_START, this.startFight, this)
+        this.btnFight.off(cc.Node.EventType.TOUCH_END, this.endFight, this)
+        // this.btnFight.on(cc.Node.EventType.TOUCH_CANCEL, this.endFight, this)
+
+
+        this.btnJump.off(cc.Node.EventType.TOUCH_END, this.endJump, this)
+       
+
     }
 
     callback: any
@@ -141,19 +173,6 @@ export default class NewClass extends cc.Component {
     onLoad() {
         this.san = 10
         this._fightTouch = true
-
-        this.btnLeft.on(cc.Node.EventType.TOUCH_START, this.startLeft, this)
-        this.btnLeft.on(cc.Node.EventType.TOUCH_END, this.endLeft, this)
-        this.btnLeft.on(cc.Node.EventType.TOUCH_CANCEL, this.endLeft, this)
-
-        this.btnRight.on(cc.Node.EventType.TOUCH_START, this.startRight, this)
-        this.btnRight.on(cc.Node.EventType.TOUCH_END, this.endRight, this)
-        this.btnRight.on(cc.Node.EventType.TOUCH_CANCEL, this.endRight, this)
-
-        this.btnFight.on(cc.Node.EventType.TOUCH_START, this.startFight, this)
-        this.btnFight.on(cc.Node.EventType.TOUCH_END, this.endFight, this)
-        // this.btnFight.on(cc.Node.EventType.TOUCH_CANCEL, this.endFight, this)
-
 
         this.btnJump.on(cc.Node.EventType.TOUCH_END, this.endJump, this)
         this.btnMusic.on(cc.Node.EventType.TOUCH_END, this.checkMusic, this)
@@ -179,7 +198,10 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().unRegisterListener(EventMgr.CLOSEOPERATE, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.UPDATESAN, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.OPENOPERATE, this)
-
+        this.btnMusic.off(cc.Node.EventType.TOUCH_END, this.checkMusic, this)
+        this.btnPause.off(cc.Node.EventType.TOUCH_END, this.checkPause, this)
+        this.btnReplay.off(cc.Node.EventType.TOUCH_END, this.doReplay, this)
+        this.btnHome.off(cc.Node.EventType.TOUCH_END, this.doHome, this)
     }
 
     setHp() {
