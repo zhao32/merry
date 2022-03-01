@@ -29,7 +29,7 @@ export default class NewClass extends cc.Component {
 
     onLoad() {
         gameConfig.openPhysics(true)
-        gameConfig.setGravity(20)
+        gameConfig.setGravity(30)
         // gameConfig.openPhysicsDebug()
         
         let manager = cc.director.getCollisionManager();
