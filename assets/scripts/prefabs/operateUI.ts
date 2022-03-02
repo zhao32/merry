@@ -101,6 +101,7 @@ export default class NewClass extends cc.Component {
         this.btnFight.on(cc.Node.EventType.TOUCH_START, this.startFight, this)
         this.btnFight.on(cc.Node.EventType.TOUCH_END, this.endFight, this)
         // this.btnFight.on(cc.Node.EventType.TOUCH_CANCEL, this.endFight, this)
+        this.btnJump.on(cc.Node.EventType.TOUCH_END, this.endJump, this)
 
 
     
@@ -174,7 +175,6 @@ export default class NewClass extends cc.Component {
         this.san = 10
         this._fightTouch = true
 
-        this.btnJump.on(cc.Node.EventType.TOUCH_END, this.endJump, this)
         this.btnMusic.on(cc.Node.EventType.TOUCH_END, this.checkMusic, this)
         this.btnPause.on(cc.Node.EventType.TOUCH_END, this.checkPause, this)
         this.btnReplay.on(cc.Node.EventType.TOUCH_END, this.doReplay, this)

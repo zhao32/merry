@@ -170,10 +170,17 @@ export default class NewClass extends cc.Component {
     update(dt) {
         // this.node.x += 1
         // this.setSyncPosition()
+        
         if (gameContext.moveType == 1) {
             this.node.x -= gameContext.viewSpeed
             this.setSyncPosition()
             this.distance += gameContext.viewSpeed
+        }
+
+        if(this.node.x > 0){
+            this.node.x = 0
+            this.distance = 0
+            this.setSyncPosition()
         }
 
         if (this.distance > 1334) {

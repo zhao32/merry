@@ -7,7 +7,7 @@
 
 import hero, { State } from "../hero";
 import EventMgr from "../utils/EventMgr";
-import { gameConfig, gameContext } from "../utils/GameTools";
+import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
 
 
@@ -118,6 +118,8 @@ export default class NewClass extends cc.Component {
 
     start() {
         this.Restart()
+        GameTools.loadSound('sound/bgm/bgm1',0,true)
+
     }
 
 
@@ -221,13 +223,14 @@ export default class NewClass extends cc.Component {
         this.scheduleOnce(() => {
             this.weChatLeft.active = true
             console.log('播放音效')
+            GameTools.loadSound('sound/level/wechat0',1,false)
 
         }, preTime + 1)
         console.log('播放音效')
         this.scheduleOnce(() => {
             this.weChatRight.active = true
             console.log('播放音效')
-
+            GameTools.loadSound('sound/level/wechat1',1,false)
         }, preTime + 2)
 
         this.scheduleOnce(() => {
@@ -247,12 +250,15 @@ export default class NewClass extends cc.Component {
 
     touchMask(self: this, params) {
         console.log('触碰口罩回调')
+        GameTools.loadSound('sound/level/1/touchMask',1,false)
+
         self.hasMask = true
         self.Mask.active = false;
         (gameContext.player as hero).aniType = 'mask'
     }
 
     touchVirus() {
+        GameTools.loadSound('sound/level/1/touchVirus',1,false)
         console.log('触碰病毒回调')
         if (this.death) return
         if (this.hasMask) {
@@ -275,6 +281,8 @@ export default class NewClass extends cc.Component {
 
     touchFinish() {
         console.log('达成通关')
+        GameTools.loadSound('sound/level/1/touchFinish',1,false)
+        
         this.chat.active = true
         this.scheduleOnce(() => {
             this.selectMilk.active = true
