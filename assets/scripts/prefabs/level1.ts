@@ -8,7 +8,7 @@
 import hero from "../hero";
 import { State } from "../rat";
 import EventMgr from "../utils/EventMgr";
-import { gameConfig, gameContext } from "../utils/GameTools";
+import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
 
 
@@ -48,7 +48,7 @@ export default class NewClass extends cc.Component {
         this.initNode()
     }
 
-    
+
     initNode() {
         this.boat = this.node.getChildByName('boat')
         this.weChat = this.node.getChildByName('weChat')
@@ -57,12 +57,19 @@ export default class NewClass extends cc.Component {
     }
 
     preStart() {
-        let move = cc.moveTo(4, new cc.Vec2(2200, -150))
-        this.boat.runAction(cc.sequence(move, cc.callFunc(() => { this.boat.setPosition(115, 500) })))
+        GameTools.loadSound('sound/level/2/ufoPass', 1, false)
+
+        let move = cc.moveTo(3, new cc.Vec2(1800, -100))
+        this.boat.runAction(cc.sequence(move, cc.callFunc(() => {
+            this.boat.setPosition(-120, 200);
+             GameTools.loadSound('sound/level/2/ufoboom', 1, false)
+        })))
         let self = this
         this.scheduleOnce(() => {
             self.weChat.active = true
             console.log('start weChat0：' + self.weChat)
+            GameTools.loadSound('sound/level/wechat0', 1, false)
+
         }, 2)
 
         this.scheduleOnce(() => {
@@ -75,6 +82,10 @@ export default class NewClass extends cc.Component {
                 fight: false,
                 jump: true
             });
+
+            gameContext.playerNode.active = true
+            gameContext.playerNode.setPosition(300, -165);
+            (gameContext.player as hero).state = State.standRight
 
             console.log('start weChat1：' + self.weChat)
 
@@ -92,7 +103,7 @@ export default class NewClass extends cc.Component {
             this.distance += gameContext.viewSpeed
         }
 
-        if(this.node.x > 0){
+        if (this.node.x > 0) {
             this.node.x = 0
             this.distance = 0
             this.setSyncPosition()
@@ -114,7 +125,7 @@ export default class NewClass extends cc.Component {
     }
 
 
-    onDisable(){
+    onDisable() {
         console.log('------------------第2关销毁------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHTHORNS, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHFINISH, this)
@@ -128,15 +139,15 @@ export default class NewClass extends cc.Component {
         this.distance = 0
         gameContext.moveType = 1
         this.node.setPosition(0, 0)
-        gameContext.playerNode.active = true
-        gameContext.playerNode.setPosition(300, -165);
-        (gameContext.player as hero).state = State.standRight
+
         this.preStart()
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
     }
 
     touchThorns() {
         console.log('触碰荆棘')
+        GameTools.loadSound('sound/level/2/attacked', 1, false)
+
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -1 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san == 1) {
@@ -147,14 +158,16 @@ export default class NewClass extends cc.Component {
 
     touchFinish() {
         console.log('达成通关')
+        GameTools.loadSound('sound/level/2/finish', 1, false)
+
         this.scheduleOnce(() => {
             console.log('游戏完成')
             // gameContext.showToast('进入记忆宝典')
             gameConfig.maxLevel = 2
-            cc.director.loadScene("startScene",()=>{
+            cc.director.loadScene("startScene", () => {
                 gameContext.memoryLength = 2
                 gameContext.showMemoryUI()
-            });           
+            });
         }, 1)
     }
 

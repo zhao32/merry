@@ -56,6 +56,9 @@ export default class NewClass extends cc.Component {
         } else if (otherCollider.tag == 4) {//荆棘
             console.log('接触荆棘')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS);
+        }else if (otherCollider.tag == 14) {//荆棘
+            console.log('接触奶茶店')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHTSHOP);
         }
         // else if (otherCollider.tag == 5) {//酒瓶
         //     console.log('老鼠接触酒瓶')

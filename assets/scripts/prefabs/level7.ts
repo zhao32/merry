@@ -7,7 +7,7 @@
 
 import hero from "../hero";
 import EventMgr from "../utils/EventMgr";
-import { gameConfig, gameContext } from "../utils/GameTools";
+import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
 import { State } from "../hero";
 
@@ -200,6 +200,8 @@ export default class NewClass extends cc.Component {
         this.tank.runAction(ani0)
         this.arm.runAction(ani1)
         this.armRight.runAction(ani1.clone())
+        GameTools.loadSound('sound/level/8/bossmove', 1, false)
+
     }
 
     armAttack() {
@@ -211,6 +213,7 @@ export default class NewClass extends cc.Component {
 
             this.tank.getChildByName('front').getComponent(cc.Animation).play('frontAttack')
             this.tank.getChildByName('back').getComponent(cc.Animation).play('backNo')
+            GameTools.loadSound('sound/level/8/bossattack', 1, false)
 
         })
 
@@ -224,6 +227,7 @@ export default class NewClass extends cc.Component {
             this._touchArmRight = false
             this.tank.getChildByName('front').getComponent(cc.Animation).play('frontNo')
             this.tank.getChildByName('back').getComponent(cc.Animation).play('backAttack')
+            GameTools.loadSound('sound/level/8/bossattack', 1, false)
 
         })
         this.arm.runAction(cc.repeatForever(cc.sequence(delay0, callF0, delay1, callF1)))
@@ -241,6 +245,8 @@ export default class NewClass extends cc.Component {
             if (operateUI.san <= 2) {
                 operateUI.san = 10
                 gameContext.showToast('淘宝达鼠')
+                GameTools.loadSound('sound/level/8/boxfall', 1, false)
+
                 for (let i = 0; i < this.boxList.length; i++) {
                     let box = this.boxList[i]
                     cc.tween(box)
@@ -270,6 +276,7 @@ export default class NewClass extends cc.Component {
             if (operateUI.san <= 2) {
                 operateUI.san = 10
                 gameContext.showToast('淘宝达鼠')
+                GameTools.loadSound('sound/level/8/boxfall', 1, false)
                 for (let i = 0; i < this.boxList.length; i++) {
                     let box = this.boxList[i]
                     cc.tween(box)

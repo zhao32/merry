@@ -43,7 +43,7 @@ export default class NewClass extends cc.Component {
     }
 
     showMemory() {
-        gameContext.showToast('打开记忆宝典')
+        // gameContext.showToast('打开记忆宝典')
         gameContext.showMemoryUI()
     }
 

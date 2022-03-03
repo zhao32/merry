@@ -104,7 +104,7 @@ export default class NewClass extends cc.Component {
         this.btnJump.on(cc.Node.EventType.TOUCH_END, this.endJump, this)
 
 
-    
+
     }
 
     public set san(num: number) {
@@ -156,7 +156,7 @@ export default class NewClass extends cc.Component {
 
 
         this.btnJump.off(cc.Node.EventType.TOUCH_END, this.endJump, this)
-       
+
 
     }
 
@@ -174,6 +174,20 @@ export default class NewClass extends cc.Component {
     onLoad() {
         this.san = 10
         this._fightTouch = true
+
+        let frame: string
+        if (gameContext.isPause) {
+            gameContext.isPause = false
+            frame = 'pic/kongzhi-3'
+        } else {
+            gameContext.isPause = true
+            frame = 'pic/kongzhi-2'
+        }
+        let sprite = this.btnPause.getComponent(cc.Sprite) as cc.Sprite;
+        cc.resources.load(frame, cc.SpriteFrame, (err, spriteFrame) => {
+            sprite.spriteFrame = spriteFrame as any;
+        });
+
 
         this.btnMusic.on(cc.Node.EventType.TOUCH_END, this.checkMusic, this)
         this.btnPause.on(cc.Node.EventType.TOUCH_END, this.checkPause, this)
@@ -251,12 +265,14 @@ export default class NewClass extends cc.Component {
             this._fightTouch = false
 
             this.scheduleOnce(() => {
-                this._fightTouch = true
-            }, 1)
+                this._fightTouch = true;
+                (gameContext.player as hero).state = this._preState
+
+            }, .5)
             this._preState = (gameContext.player as hero)._state as number
             (gameContext.player as hero).state = State.fight
         } else {
-            gameContext.showToast('冷却时间1s')
+            // gameContext.showToast('冷却时间1s')
 
         }
 
@@ -265,7 +281,7 @@ export default class NewClass extends cc.Component {
 
     endFight() {
         if (!this._canOperate) return
-        (gameContext.player as hero).state = this._preState
+        // (gameContext.player as hero).state = this._preState
     }
 
     checkMusic() {
@@ -289,11 +305,11 @@ export default class NewClass extends cc.Component {
         let frame: string
         if (gameContext.isPause) {
             gameContext.isPause = false
-            frame = 'pic/kongzhi-2'
+            frame = 'pic/kongzhi-3'
             cc.director.resume()
         } else {
             gameContext.isPause = true
-            frame = 'pic/kongzhi-3'
+            frame = 'pic/kongzhi-2'
             cc.director.pause()
         }
         let sprite = this.btnPause.getComponent(cc.Sprite) as cc.Sprite;

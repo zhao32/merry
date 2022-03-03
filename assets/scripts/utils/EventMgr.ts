@@ -22,6 +22,8 @@ export default class EventMgr extends cc.Component {
     public static UPDATESAN: string = 'updateSan'
     public static TOUCHMASK: string = 'touchMask'
     public static TOUCHVIRUS: string = 'touchVirus'
+    public static TOUCHTSHOP: string = 'touchshop'
+
     public static TOUCHFINISH: string = 'touchFinish'
     /**碰撞荆棘 */
     public static TOUCHTHORNS: string = 'touchthorns'
@@ -52,18 +54,18 @@ export default class EventMgr extends cc.Component {
     /**食物砸到玩家 */
     public static FOODGPLAYER: string = 'foodplayer'
 
-    public static TOUCHBULLET:string = 'bullet'
+    public static TOUCHBULLET: string = 'bullet'
 
 
 
     public static RESTART: string = 'restart'
 
-    public static MISSSTONE:string = 'stone'
-    public static MISSSMILK:string = 'milk'
-    public static MISSSYUYANG:string = 'yueyang'
-    public static MISSSMUSEUM:string = 'museum'
-    public static MISSSSTAB:string = 'stab'
-    public static MISSSSFLY:string = 'fly'
+    public static MISSSTONE: string = 'stone'
+    public static MISSSMILK: string = 'milk'
+    public static MISSSYUYANG: string = 'yueyang'
+    public static MISSSMUSEUM: string = 'museum'
+    public static MISSSSTAB: string = 'stab'
+    public static MISSSSFLY: string = 'fly'
 
     protected static instance: EventMgr;
     public static getInstance(): EventMgr {

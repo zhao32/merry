@@ -1606,8 +1606,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -487,
-        -195,
+        -512,
+        -220,
         0,
         0,
         0,
@@ -1664,8 +1664,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 70,
-      "height": 70
+      "width": 80,
+      "height": 80
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1755,7 +1755,7 @@
     "alignMode": 1,
     "_target": null,
     "_alignFlags": 8,
-    "_left": 20,
+    "_left": 15,
     "_right": 0,
     "_top": 0,
     "_bottom": 0,
@@ -1815,8 +1815,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 70,
-      "height": 70
+      "width": 80,
+      "height": 80
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1907,7 +1907,7 @@
     "_target": null,
     "_alignFlags": 32,
     "_left": 155,
-    "_right": 20,
+    "_right": 15,
     "_top": 95,
     "_bottom": 95,
     "_verticalCenter": 0,
@@ -1966,8 +1966,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 70,
-      "height": 70
+      "width": 80,
+      "height": 80
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2059,7 +2059,7 @@
     "_alignFlags": 1,
     "_left": 0,
     "_right": 0,
-    "_top": 20,
+    "_top": 15,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
@@ -2117,8 +2117,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 70,
-      "height": 70
+      "width": 80,
+      "height": 80
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2200,7 +2200,7 @@
     "_left": 0,
     "_right": 0,
     "_top": 0,
-    "_bottom": 20,
+    "_bottom": 15,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -2278,10 +2278,10 @@
     "alignMode": 1,
     "_target": null,
     "_alignFlags": 12,
-    "_left": 50,
+    "_left": 25,
     "_right": 0,
     "_top": 0,
-    "_bottom": 50,
+    "_bottom": 25,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,

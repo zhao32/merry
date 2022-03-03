@@ -6,7 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import EventMgr from "../utils/EventMgr";
-import { gameConfig, gameContext } from "../utils/GameTools";
+import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import { State } from "../hero";
 
 
@@ -80,7 +80,7 @@ export default class NewClass extends cc.Component {
         this.water = this.page2.getChildByName('water')
     }
 
-    onDisable(){
+    onDisable() {
         console.log('------------------第6关注销监听------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHSHEEP, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
@@ -123,10 +123,12 @@ export default class NewClass extends cc.Component {
         let preTime = 1
         this.scheduleOnce(() => {
             this.label0.string = '【鼠】:我想吃小羊羔'
+            GameTools.loadSound('sound/level/5/hulu', 1, false)
         }, preTime)
         console.log('播放音效')
         this.scheduleOnce(() => {
             this.label1.string = '【猴】:好哦，盐水吊完就去吃'
+
         }, preTime + 2)
 
         this.scheduleOnce(() => {
@@ -134,6 +136,7 @@ export default class NewClass extends cc.Component {
             this.page1.active = true
             gameContext.playerNode.active = true
             gameContext.player.state = State.standRight;
+            GameTools.loadSound('sound/level/5/sheepbgm', 0, true)
 
             EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
                 left: true,
@@ -152,11 +155,19 @@ export default class NewClass extends cc.Component {
         let endPos = this.couldList[(this.idX) % this.couldList.length].getPosition()
         this._touchSheep = true
         console.log('碰到小羊')
+        GameTools.loadSound('sound/level/5/sheepjump', 1, false)
+
         endPos.y += 60
         this.sheep.runAction(cc.sequence(cc.moveTo(1, endPos), cc.callFunc(() => { this._touchSheep = false })))
         this.hpNum--
         this.hp.scaleX = this.hpNum / 10
-        if (this.hpNum == 1) {
+        if (this.hpNum == 7) {
+            GameTools.loadSound('sound/level/5/hp7', 1, false)
+
+        } else if (this.hpNum == 4) {
+            GameTools.loadSound('sound/level/5/hp4', 1, false)
+
+        } else if (this.hpNum == 1) {
             this.sheep.runAction(cc.sequence(cc.moveTo(1, new cc.Vec2(0, 500)), cc.callFunc(() => {
                 console.log('追样结束')
                 this.page1.active = false
@@ -167,11 +178,14 @@ export default class NewClass extends cc.Component {
     }
 
     showOverPage() {
+        
+        GameTools.loadSound('sound/level/5/rattaer', 1, false)
+
         this.page2.active = true
         this.ratTear.active = true
-        cc.tween(this.sheepMis)
-            .to(2, { y: -60 }, { easing: 'sineOutIn' })
-            .start()
+        // cc.tween(this.sheepMis)
+        //     .to(2, { y: -60 }, { easing: 'sineOutIn' })
+        //     .start()
 
         cc.tween(this.water)
             .to(2, { height: 350 }, { easing: 'sineOutIn' })

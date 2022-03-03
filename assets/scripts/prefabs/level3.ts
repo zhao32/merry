@@ -7,7 +7,7 @@
 
 import hero from "../hero";
 import EventMgr from "../utils/EventMgr";
-import { gameConfig, gameContext } from "../utils/GameTools";
+import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
 import { State } from "../hero";
 
@@ -65,9 +65,10 @@ export default class NewClass extends cc.Component {
         this.wave1 = this.page1.getChildByName('wave1')
         this.batHp = this.page1.getChildByName('batHp')
         this.bat = this.page1.getChildByName('bat')
+
     }
 
-    onDisable(){
+    onDisable() {
         console.log('------------------第5关注销监听------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHWAVE, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
@@ -118,6 +119,7 @@ export default class NewClass extends cc.Component {
         gameContext.playerNode.setPosition(300, -165);
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         this.preStart()
+        GameTools.loadSound('sound/level/4/startbgm', 0, true)
     }
 
     /**前情提要 */
@@ -126,6 +128,7 @@ export default class NewClass extends cc.Component {
         this.role0.scale = 1.5
         this.role0.x = -95
         this.role1.x = 0
+        this.bat.y = -90
         this.unscheduleAllCallbacks()
         this.role0.stopAllActions()
         this.role1.stopAllActions()
@@ -138,6 +141,8 @@ export default class NewClass extends cc.Component {
             let callF = cc.callFunc(() => {
                 this.page0.active = false
                 this.page1.active = true
+                GameTools.loadSound('sound/level/4/bossbgm', 0, true)
+
                 this.showWave()
 
                 EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
@@ -180,6 +185,8 @@ export default class NewClass extends cc.Component {
             this.wave0.active = false
             this.wave1.active = false
         })
+        GameTools.loadSound('sound/level/4/batAttack', 1, false)
+
         this.node.runAction(cc.repeatForever(cc.sequence(delay0, callF0, delay1, callF1)))
     }
 
@@ -194,12 +201,19 @@ export default class NewClass extends cc.Component {
                     this.batHp.scaleX = this.batHpNum / 20
                 } else {
                     this.batHp.scaleX = 0
+                    let moveby = cc.moveBy(2, new cc.Vec2(0, -500));
+                    let callback = cc.callFunc(() => {
+                        GameTools.loadSound('sound/level/4/finish', 1, false)
+                        gameConfig.maxLevel = 5
+                        cc.director.loadScene("startScene", () => {
+                            gameContext.memoryLength = 5
+                            gameContext.showMemoryUI()
+                        });
+                    })
+                    this.setSyncPosition()
+                    this.bat.runAction(cc.sequence(moveby, callback))
                     console.log('打死蝙蝠，通关！')
-                    gameConfig.maxLevel = 5
-                    cc.director.loadScene("startScene", () => {
-                        gameContext.memoryLength = 5
-                        gameContext.showMemoryUI()
-                    });
+
 
                 }
             }

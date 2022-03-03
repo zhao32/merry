@@ -7,7 +7,7 @@
 
 import { State } from "../hero";
 import EventMgr from "../utils/EventMgr";
-import { gameConfig, gameContext } from "../utils/GameTools";
+import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
 
 
@@ -110,12 +110,16 @@ export default class NewClass extends cc.Component {
         this.scheduleOnce(() => {
             this.weChatLeft.active = true
             console.log('播放音效')
+            GameTools.loadSound('sound/level/wechat0', 1, false)
+
 
         }, preTime + 1)
         console.log('播放音效')
         this.scheduleOnce(() => {
             this.weChatRight.active = true
             console.log('播放音效')
+            GameTools.loadSound('sound/level/wechat1', 1, false)
+
 
         }, preTime + 2)
 
@@ -141,6 +145,7 @@ export default class NewClass extends cc.Component {
         if (operateUI.san <= 0) {
 
             gameContext.showToast('叔叔我吃不下了')
+            GameTools.loadSound('sound/level/6/finish', 1, false)
 
             console.log('游戏结束')
             this.unscheduleAllCallbacks()
@@ -151,10 +156,14 @@ export default class NewClass extends cc.Component {
                 gameContext.showMemoryUI()
             });
         }
+
+        GameTools.loadSound('sound/level/6/touchground', 1, false)
     }
 
     touchPlayer(self: this, params) {
         gameContext.player.state = State.eat
+        GameTools.loadSound('sound/level/6/eatfood', 1, false)
+
     }
 
 

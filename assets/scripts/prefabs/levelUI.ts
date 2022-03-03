@@ -37,8 +37,10 @@ export default class NewClass extends cc.Component {
             let nameLabel = box.getChildByName('name')
             if (i > gameConfig.maxLevel) {
                 nameLabel.active = false
+                box.active = false
             } else {
                 nameLabel.active = true
+                box.active = true
                 nameLabel.getComponent(cc.Label).string = gameConfig.levelData[i].name
             }
 

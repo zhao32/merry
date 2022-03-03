@@ -8,7 +8,7 @@
 import hero from "../hero";
 import { State } from "../rat";
 import EventMgr from "../utils/EventMgr";
-import { gameConfig, gameContext } from "../utils/GameTools";
+import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
 
 
@@ -102,6 +102,8 @@ export default class NewClass extends cc.Component {
 
     touchFinish() {
         console.log('游戏结束')
+        GameTools.loadSound('sound/level/3/finish', 1, false)
+
         gameConfig.maxLevel = 3
         this.unscheduleAllCallbacks()
         this.clear()
@@ -131,20 +133,27 @@ export default class NewClass extends cc.Component {
     }
 
     touchBottle() {
+        GameTools.loadSound('sound/level/3/attacked', 1, false)
+
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 0) {
             operateUI.san = 2
             gameContext.showToast('鼠鼠醒醒！')
+            GameTools.loadSound('sound/level/3/1blood', 1, false)
         }
     }
 
     touchBerrl() {
+        GameTools.loadSound('sound/level/3/attacked', 1, false)
+
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -4 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 0) {
             operateUI.san = 2
             gameContext.showToast('鼠鼠醒醒！')
+            GameTools.loadSound('sound/level/3/1blood', 1, false)
+
         }
     }
 
@@ -207,7 +216,7 @@ export default class NewClass extends cc.Component {
             this._barrelNum = 3
             this.createrBarrel(new cc.Vec2(this.distance + gameContext.playerNode.x, 500))
         } else if (gameContext.playerNode.x >= 800 && this._foodNum == 0) {
-            this.createrFood()
+            // this.createrFood()
         }
 
         if (this._bottleNum == 0) {
@@ -245,7 +254,7 @@ export default class NewClass extends cc.Component {
                 let bottle = cc.instantiate(this.bottlePfb)
                 // bottle.opacity = 255
                 this.node.addChild(bottle)
-                bottle.setPosition(1500, -180)
+                bottle.setPosition(2000, -180)
                 this.bottleList.push(bottle)
             }, i * 3)
         }
