@@ -22,6 +22,7 @@ export default class NewClass extends cc.Component {
     weChat: cc.Node = null
     // @property(cc.Node)
     weChatLeft: cc.Node = null;
+    weChatCenter: cc.Node = null;
 
     // @property(cc.Node)
     weChatRight: cc.Node = null;
@@ -73,6 +74,8 @@ export default class NewClass extends cc.Component {
         this.weChat = this.node.getChildByName('weChat')
         this.weChatLeft = this.weChat.getChildByName('weChatLeft')
         this.weChatRight = this.weChat.getChildByName('weChatRight')
+        this.weChatCenter = this.weChat.getChildByName('weChatCenter')
+
     }
 
 
@@ -92,10 +95,13 @@ export default class NewClass extends cc.Component {
 
 
     Restart() {
+        this.unscheduleAllCallbacks()
         gameContext.moveType = 0
         gameConfig.currLevel = 3
+        this.weChat.active = false
         this.weChatLeft.active = false
         this.weChatRight.active = false
+        this.weChatCenter.active = false
 
         gameContext.playerNode.active = true
         gameContext.playerNode.setPosition(100, -165);
@@ -107,6 +113,9 @@ export default class NewClass extends cc.Component {
     /**前情提要 */
     preStart() {
         let preTime = 1
+        this.scheduleOnce(() => {
+            this.weChat.active = true
+        }, 1)
         this.scheduleOnce(() => {
             this.weChatLeft.active = true
             console.log('播放音效')
@@ -121,7 +130,7 @@ export default class NewClass extends cc.Component {
             GameTools.loadSound('sound/level/wechat1', 1, false)
 
 
-        }, preTime + 2)
+        }, preTime + 4)
 
         this.scheduleOnce(() => {
             this.weChatLeft.active = false
@@ -136,25 +145,33 @@ export default class NewClass extends cc.Component {
             });
 
             this.initFood()
-        }, preTime + 4)
+            this.weChat.active = false
+
+        }, preTime + 7)
     }
 
     touchGround(self: this, params) {
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -1 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 0) {
-
-            gameContext.showToast('叔叔我吃不下了')
+            // gameContext.showToast('叔叔我吃不下了')
+            this.weChat.active = true
+            this.weChatCenter.active = true
+            GameTools.loadSound('sound/level/wechat0', 1, false)
             GameTools.loadSound('sound/level/6/finish', 1, false)
 
             console.log('游戏结束')
             this.unscheduleAllCallbacks()
+            gameContext.playerNode.active = false
             this.destoryFood()
-            gameConfig.maxLevel = 4
-            cc.director.loadScene("startScene", () => {
-                gameContext.memoryLength = 4
-                gameContext.showMemoryUI()
-            });
+            this.scheduleOnce(() => {
+                gameConfig.maxLevel = 4
+                cc.director.loadScene("startScene", () => {
+                    gameContext.memoryLength = 4
+                    gameContext.showMemoryUI(true)
+                });
+            }, 3)
+
         }
 
         GameTools.loadSound('sound/level/6/touchground', 1, false)

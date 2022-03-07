@@ -29,8 +29,8 @@ export default class NewClass extends cc.Component {
 
     page0: cc.Node
     page1: cc.Node
-    label0: cc.Label
-    label1: cc.Label
+    // label0: cc.Label
+    // label1: cc.Label
 
     hpNum: number
 
@@ -39,6 +39,11 @@ export default class NewClass extends cc.Component {
     armRight: cc.Node
     tankHp: cc.Node
     tankHpNum: number
+
+    talkBload: cc.Node
+    talkRat: cc.Node
+    talkMon: cc.Node
+    // talkDisplay: cc.Label
 
     _touchArmLeft: boolean
     _touchArmRight: boolean
@@ -74,15 +79,36 @@ export default class NewClass extends cc.Component {
         this.page0 = this.node.getChildByName('page0')
         this.page1 = this.node.getChildByName('page1')
 
-        this.label0 = this.page0.getChildByName('label0').getComponent(cc.Label)
-        this.label1 = this.page0.getChildByName('label1').getComponent(cc.Label)
+        // this.label0 = this.page0.getChildByName('label0').getComponent(cc.Label)
+        // this.label1 = this.page0.getChildByName('label1').getComponent(cc.Label)
 
         this.tank = this.page1.getChildByName('tank')
         this.arm = this.page1.getChildByName('arm')
         this.armRight = this.page1.getChildByName('armRight')
 
         this.tankHp = this.page1.getChildByName('tankHp')
+        this.talkBload = this.node.getChildByName('talkbg')
+        this.talkRat = this.talkBload.getChildByName('ratTalk')
+        this.talkMon = this.talkBload.getChildByName('monkeyTalk')
 
+    }
+    /**type 0 猴 1 鼠 2 隐藏  */
+    showTalkBload(type: number, str?: string) {
+        if (type == 0) {
+            this.talkBload.active = true
+            this.talkMon.active = true
+            this.talkRat.active = false
+            let talkDisplay = this.talkMon.getChildByName('label').getComponent(cc.Label)
+            talkDisplay.string = str
+        } else if (type == 1) {
+            this.talkBload.active = true
+            this.talkRat.active = true
+            this.talkMon.active = false
+            let talkDisplay = this.talkRat.getChildByName('label').getComponent(cc.Label)
+            talkDisplay.string = str
+        } else {
+            this.talkBload.active = false
+        }
     }
 
     onDisable() {
@@ -103,6 +129,8 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        this.showTalkBload(2)
+        this.unscheduleAllCallbacks()
         gameContext.moveType = 0
         this.unschedule(this.tankMove)
         this.tank.stopAllActions()
@@ -110,7 +138,7 @@ export default class NewClass extends cc.Component {
         this.tankHpNum = 20
         this.tankHp.scaleX = 1
 
-        this.label0.string = this.label1.string = ''
+        // this.label0.string = this.label1.string = ''
 
         this.page0.active = true
         this.page1.active = false
@@ -142,7 +170,8 @@ export default class NewClass extends cc.Component {
         this.scheduleOnce(() => {
             // this.weChatLeft.active = true
             // console.log('播放音效')
-            this.label0.string = '【猴】:装修太累了吧！'
+            // this.label0.string = '【猴】:装修太累了吧！'
+            this.showTalkBload(0, ':装修太累了吧，睡一会儿休息一下zzz....')
         }, preTime)
         console.log('播放音效')
         this.scheduleOnce(() => {
@@ -158,6 +187,7 @@ export default class NewClass extends cc.Component {
                 gameContext.playerNode.active = true
                 gameContext.player.state = State.standRight
                 this.page1.active = true
+                this.showTalkBload(2)
             })))
 
         }, preTime + 2)
@@ -233,72 +263,114 @@ export default class NewClass extends cc.Component {
         this.arm.runAction(cc.repeatForever(cc.sequence(delay0, callF0, delay1, callF1)))
     }
 
+    overCharge() {
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI.san <= 2) {
+            EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+            this.unscheduleAllCallbacks()
+            this.arm.stopAllActions()
+            this.showTalkBload(0, ':装修怪...')
+            GameTools.loadSound('sound/level/wechat0', 1, false)
+
+            this.scheduleOnce(() => {
+                this.showTalkBload(0, ':是不可能被打败的...')
+                GameTools.loadSound('sound/level/wechat0', 1, false)
+            }, 2)
+
+            this.scheduleOnce(() => {
+                this.showTalkBload(0, ':它是无敌的！')
+                GameTools.loadSound('sound/level/wechat0', 1, false)
+
+            }, 4)
+
+            this.scheduleOnce(() => {
+                this.showTalkBload(1, ':谁让你动我的猴子的！')
+                GameTools.loadSound('sound/level/wechat1', 1, false)
+            }, 6)
+
+            this.scheduleOnce(() => {
+                this.fallBox()
+                operateUI.san = 10
+                gameContext.showToast('淘宝达鼠')
+                GameTools.loadSound('sound/level/8/boxfall', 1, false)
+                let callF = cc.callFunc(() => {
+                    console.log('游戏完成')
+                    gameConfig.maxLevel = 8
+                    cc.director.loadScene("startScene", () => {
+                        gameContext.memoryLength = 8
+                        gameContext.showMemoryUI(true)
+                    });
+                })
+                this.tank.runAction(cc.sequence(cc.delayTime(1), cc.blink(1, 5), callF))
+            }, 8)
+
+        }
+    }
+
+    fallBox() {
+        for (let i = 0; i < this.boxList.length; i++) {
+            let box = this.boxList[i]
+            cc.tween(box)
+                .by(1.5 + Math.random() * 2, { position: cc.v3(0, -1400, 0) }, { easing: 'CubicIn' })
+                .call(() => {
+                    box.y += 1400
+                    // if (i == 0) {
+                    //     console.log('游戏完成')
+                    //     gameConfig.maxLevel = 8
+
+                    //     cc.director.loadScene("startScene", () => {
+                    //         gameContext.memoryLength = 8
+                    //         gameContext.showMemoryUI(true)
+                    //     });
+                    // }
+                })
+                .start()
+        }
+    }
+
 
     update(dt) {
         let armPos = this.page1.convertToWorldSpaceAR(this.arm.getPosition());
         let armRightPos = this.page1.convertToWorldSpaceAR(this.armRight.getPosition());
-        
+
         if (this._touchArmRight == false && Math.abs(armRightPos.x - gameContext.playerNode.x) < 100) {
             this._touchArmRight = true
             EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
-            let operateUI: operateUI = gameContext.operateUI
-            if (operateUI.san <= 2) {
-                operateUI.san = 10
-                gameContext.showToast('淘宝达鼠')
-                GameTools.loadSound('sound/level/8/boxfall', 1, false)
 
-                for (let i = 0; i < this.boxList.length; i++) {
-                    let box = this.boxList[i]
-                    cc.tween(box)
-                        .by(2 + Math.random() * 2, { position: cc.v3(0, -1400, 0) }, { easing: 'CubicIn' })
-                        .call(() => {
-                            box.y += 1400
-                            if (i == 0) {
-                                console.log('游戏完成')
-                                gameConfig.maxLevel = 8
-
-                                cc.director.loadScene("startScene", () => {
-                                    gameContext.memoryLength = 8
-                                    gameContext.showMemoryUI()
-                                });
-                            }
-                        })
-                        .start()
-                }
-            }
         }
 
 
         if (this._touchArmLeft == false && Math.abs(armPos.x - gameContext.playerNode.x) < 100) {
             this._touchArmLeft = true
             EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
-            let operateUI: operateUI = gameContext.operateUI
-            if (operateUI.san <= 2) {
-                operateUI.san = 10
-                gameContext.showToast('淘宝达鼠')
-                GameTools.loadSound('sound/level/8/boxfall', 1, false)
-                for (let i = 0; i < this.boxList.length; i++) {
-                    let box = this.boxList[i]
-                    cc.tween(box)
-                        .by(2 + Math.random() * 2, { position: cc.v3(0, -1400, 0) }, { easing: 'CubicIn' })
-                        .call(() => {
-                            box.y += 1400
-                            if (i == 0) {
-                                console.log('游戏完成')
-                                gameConfig.maxLevel = 8
+            this.overCharge()
+            // let operateUI: operateUI = gameContext.operateUI
+            // if (operateUI.san <= 2) {
+            //     operateUI.san = 10
+            //     gameContext.showToast('淘宝达鼠')
+            //     GameTools.loadSound('sound/level/8/boxfall', 1, false)
+            //     for (let i = 0; i < this.boxList.length; i++) {
+            //         let box = this.boxList[i]
+            //         cc.tween(box)
+            //             .by(2 + Math.random() * 2, { position: cc.v3(0, -1400, 0) }, { easing: 'CubicIn' })
+            //             .call(() => {
+            //                 box.y += 1400
+            //                 if (i == 0) {
+            //                     console.log('游戏完成')
+            //                     gameConfig.maxLevel = 8
 
-                                cc.director.loadScene("startScene", () => {
-                                    gameContext.memoryLength = 8
-                                    gameContext.showMemoryUI()
-                                });
-                            }
-                        })
-                        .start()
-                }
-            }
+            //                     cc.director.loadScene("startScene", () => {
+            //                         gameContext.memoryLength = 8
+            //                         gameContext.showMemoryUI(true)
+            //                     });
+            //                 }
+            //             })
+            //             .start()
+            //     }
+            // }
         }
 
-       
+
 
         let tankPos = this.page1.convertToWorldSpaceAR(this.arm.getPosition())
         if (Math.abs(tankPos.x - gameContext.playerNode.x) < 100) {
@@ -311,12 +383,22 @@ export default class NewClass extends cc.Component {
                     this.tankHp.scaleX = this.tankHpNum / 20
                 } else {
                     this.tankHp.scaleX = 0
-                    console.log('打死装修怪，通关！')
-                    gameConfig.maxLevel = 8
-                    cc.director.loadScene("startScene", () => {
-                        gameContext.memoryLength = 8
-                        gameContext.showMemoryUI()
-                    });
+                    // console.log('打死装修怪，通关！')
+                    // gameConfig.maxLevel = 8
+                    // cc.director.loadScene("startScene", () => {
+                    //     gameContext.memoryLength = 8
+                    //     gameContext.showMemoryUI(true)
+                    // });
+
+                    let callF = cc.callFunc(() => {
+                        console.log('游戏完成')
+                        gameConfig.maxLevel = 8
+                        cc.director.loadScene("startScene", () => {
+                            gameContext.memoryLength = 8
+                            gameContext.showMemoryUI(true)
+                        });
+                    })
+                    this.tank.runAction(cc.sequence(cc.delayTime(1), cc.blink(1, 5), callF))
 
                 }
             }

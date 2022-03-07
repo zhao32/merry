@@ -45,9 +45,11 @@ export default class NewClass extends cc.Component {
     page2: cc.Node
     page3: cc.Node
 
+    talkBload: cc.Node
+    talkRat: cc.Node
+    talkDeath: cc.Node
+    talkDeath1: cc.Node
 
-    label0: cc.Label
-    label1: cc.Label
 
     // hp: cc.Node
     hpNum: number
@@ -114,7 +116,7 @@ export default class NewClass extends cc.Component {
                 gameConfig.maxLevel = 9
                 cc.director.loadScene("startScene", () => {
                     gameContext.memoryLength = 9
-                    gameContext.showMemoryUI()
+                    gameContext.showMemoryUI(true)
                 });
                 // rat.spriteFrame = new cc.SpriteFrame()
             })
@@ -139,18 +141,41 @@ export default class NewClass extends cc.Component {
 
 
         this.death = this.page0.getChildByName('death')
-        this.label0 = this.page0.getChildByName('label0').getComponent(cc.Label)
-        this.label1 = this.page0.getChildByName('label1').getComponent(cc.Label)
-        this.label0.string = this.label1.string = ''
+        this.talkBload = this.node.getChildByName('talkbg')
+        this.talkRat = this.talkBload.getChildByName('ratTalk')
+        this.talkDeath = this.talkBload.getChildByName('deathTalk')
+        this.talkDeath1 = this.talkBload.getChildByName('deathTalk1')
 
         this.enemy = this.page1.getChildByName('enemy')
-        this.hook = this.page1.getChildByName('hook')
+        this.hook = this.enemy.getChildByName('hook')
         this.enemyHp = this.page1.getChildByName('enemyHp')
         this.angleRat = this.page1.getChildByName('angleRat')
         this.bullet = cc.instantiate(this.bulletPfb)
         this.page1.addChild(this.bullet)
-
     }
+
+    showTalkBload(type) {
+        if (type == 0) {
+            this.talkBload.active = true
+            this.talkDeath.active = true
+            this.talkDeath1.active = false
+            this.talkRat.active = false
+        } else if (type == 1) {
+            this.talkBload.active = true
+            this.talkDeath.active = false
+            this.talkDeath1.active = true
+            this.talkRat.active = false
+        } else if (type == 2) {
+            this.talkBload.active = true
+            this.talkDeath.active = false
+            this.talkDeath1.active = false
+            this.talkRat.active = true
+        } else {
+            this.talkBload.active = false
+        }
+    }
+
+
 
     onDisable() {
         console.log('------------------第9关注销监听------------------')
@@ -168,14 +193,21 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
-        gameContext.moveType = 0
+        this.showTalkBload(-1)
+
         this.unscheduleAllCallbacks()
+        gameContext.moveType = 0
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 10 });
+        let rat: cc.Node = gameContext.playerNode.getChildByName('fllow')
+        let blood = rat.getChildByName('blood')
+        blood.setScale(1)
+
 
         this.bullet.setPosition(320, -95)
         this.bullet.active = false
 
         this.page0.active = true
+        this.page0.opacity = 255
         this.page1.active = false
         this.page2.active = false
         this.page3.active = false
@@ -199,10 +231,11 @@ export default class NewClass extends cc.Component {
         this.death.runAction(cc.moveBy(3, new cc.Vec2(-300, 0)))
 
         this.scheduleOnce(() => {
-            this.label0.string = '【死神】:我来接人了！'
+            this.showTalkBload(0)
         }, preTime + 1)
         console.log('播放音效')
         this.scheduleOnce(() => {
+            this.showTalkBload(-1)
             this.page0.runAction(cc.sequence(cc.fadeOut(2), cc.callFunc(() => {
                 EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
                     left: true,
@@ -239,8 +272,11 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 1) {
-            operateUI.san = 10
-            gameContext.showToast('不要丢下鼠鼠一个人！')
+            this.showTalkBload(2)
+            this.scheduleOnce(() => {
+                this.showTalkBload(-1)
+                operateUI.san = 10
+            }, 2)
         }
     }
 
@@ -314,18 +350,37 @@ export default class NewClass extends cc.Component {
                 } else {
                     this.enemyHp.scaleX = 0
                     gameConfig.maxLevel = 9
-                    gameContext.showToast('坦然面对死亡吧')
+                    EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+
+                    // gameContext.showToast('坦然面对死亡吧')
+                    this.showTalkBload(1)
+                    cc.tween(this.hook)
+                        .by(.5, { position: cc.v3(200, -45, 0), angle: -100 })
+                        .delay(1)
+                        .by(1, { position: cc.v3(-200, 45, 0), angle: 100 })
+                        .start()
+
                     let rat = gameContext.playerNode.getChildByName('fllow')
                     rat.getComponent(cc.Animation).play('angleRat').repeatCount = Infinity
-                    EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
-                    let moveBy = cc.moveBy(3, new cc.Vec2(0, 400))
+                    let blood = rat.getChildByName('blood')
+
+                    this.page1.runAction(cc.sequence(cc.delayTime(2), cc.blink(2, 5), cc.callFunc(() => {
+                        blood.runAction(cc.scaleTo(2, 0, 1))
+                    })))
+
+
+                    this.unscheduleAllCallbacks()
+
                     let callF = cc.callFunc(() => {
                         // rat.y -= 500
                         // rat.getComponent(cc.Animation).stop('angleRat')
                         // rat.spriteFrame = new cc.SpriteFrame()
+                        this.showTalkBload(-1)
                         this.page2.active = true
                     })
-                    rat.runAction(cc.sequence(moveBy, callF))
+                    let moveBy = cc.moveBy(3, new cc.Vec2(0, 400))
+                    let delay = cc.delayTime(4)
+                    rat.runAction(cc.sequence(delay, moveBy, callF))
 
                 }
             }

@@ -32,8 +32,8 @@ export default class NewClass extends cc.Component {
     page0: cc.Node
     page1: cc.Node
     page2: cc.Node
-    label0: cc.Label
-    label1: cc.Label
+    label0: cc.Node
+    label1: cc.Node
 
     sheepMis: cc.Node
     water: cc.Node
@@ -65,8 +65,8 @@ export default class NewClass extends cc.Component {
         this.page1 = this.node.getChildByName('page1')
         this.page2 = this.node.getChildByName('page2')
 
-        this.label0 = this.page0.getChildByName('label0').getComponent(cc.Label)
-        this.label1 = this.page0.getChildByName('label1').getComponent(cc.Label)
+        this.label0 = this.page0.getChildByName('label0')
+        this.label1 = this.page0.getChildByName('label1')
 
         this.hp = this.page1.getChildByName('hp')
         for (let i = 0; i < 4; i++) {
@@ -92,13 +92,15 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        this.unscheduleAllCallbacks()
         gameContext.moveType = 0
         this.page0.active = true
         this.page1.active = false
         this.page2.active = false
+        this.label0.active = this.label1.active = false
 
-        this.label0.string = ''
-        this.label1.string = ''
+        // this.label0.string = ''
+        // this.label1.string = ''
 
         this.idX = 0
         this.hpNum = 10
@@ -122,12 +124,12 @@ export default class NewClass extends cc.Component {
     preStart() {
         let preTime = 1
         this.scheduleOnce(() => {
-            this.label0.string = '【鼠】:我想吃小羊羔'
+            this.label0.active = true
             GameTools.loadSound('sound/level/5/hulu', 1, false)
         }, preTime)
         console.log('播放音效')
         this.scheduleOnce(() => {
-            this.label1.string = '【猴】:好哦，盐水吊完就去吃'
+            this.label1.active = true
 
         }, preTime + 2)
 
@@ -168,7 +170,10 @@ export default class NewClass extends cc.Component {
             GameTools.loadSound('sound/level/5/hp4', 1, false)
 
         } else if (this.hpNum == 1) {
-            this.sheep.runAction(cc.sequence(cc.moveTo(1, new cc.Vec2(0, 500)), cc.callFunc(() => {
+            let move0 = cc.moveBy(.5, new cc.Vec2(0, 50))
+            let move1 = cc.moveBy(.5, new cc.Vec2(0, -50))
+
+            this.sheep.runAction(cc.sequence(move0, move1, move0, move1, cc.moveTo(2, new cc.Vec2(0, 500)), cc.callFunc(() => {
                 console.log('追样结束')
                 this.page1.active = false
                 gameContext.playerNode.active = false
@@ -178,7 +183,7 @@ export default class NewClass extends cc.Component {
     }
 
     showOverPage() {
-        
+
         GameTools.loadSound('sound/level/5/rattaer', 1, false)
 
         this.page2.active = true
@@ -188,13 +193,13 @@ export default class NewClass extends cc.Component {
         //     .start()
 
         cc.tween(this.water)
-            .to(2, { height: 350 }, { easing: 'sineOutIn' })
+            .to(3, { height: 350 }, { easing: 'sineOutIn' })
             .delay(1)
             .call(() => {
                 gameConfig.maxLevel = 6
                 cc.director.loadScene("startScene", () => {
                     gameContext.memoryLength = 6
-                    gameContext.showMemoryUI()
+                    gameContext.showMemoryUI(true)
                 });
             })
             .start()

@@ -6,7 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import EventMgr from "../utils/EventMgr";
-import { gameConfig, gameContext } from "../utils/GameTools";
+import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 export enum DIR {
     UP,
     DOWN,
@@ -33,8 +33,12 @@ export default class NewClass extends cc.Component {
     player: cc.Node
     page0: cc.Node
     page1: cc.Node
-    label0: cc.Label
-    label1: cc.Label
+    // label0: cc.Label
+    // label1: cc.Label
+
+    talkBload: cc.Node
+    talkRat: cc.Node
+    talkMon: cc.Node
 
     op: cc.Node
     btnUp: cc.Node
@@ -90,8 +94,8 @@ export default class NewClass extends cc.Component {
         this.role = this.page0.getChildByName('role')
 
 
-        this.label0 = this.page0.getChildByName('label0').getComponent(cc.Label)
-        this.label1 = this.page0.getChildByName('label1').getComponent(cc.Label)
+        // this.label0 = this.page0.getChildByName('label0').getComponent(cc.Label)
+        // this.label1 = this.page0.getChildByName('label1').getComponent(cc.Label)
         this.op = this.node.getChildByName('op')
         this.btnLeft = this.op.getChildByName('left')
         this.btnRight = this.op.getChildByName('right')
@@ -121,8 +125,32 @@ export default class NewClass extends cc.Component {
         this.btnDown.on(cc.Node.EventType.TOUCH_END, this.endDown, this)
         this.btnDown.on(cc.Node.EventType.TOUCH_CANCEL, this.endDown, this)
 
+        this.talkBload = this.node.getChildByName('talkbg')
+        this.talkRat = this.talkBload.getChildByName('ratTalk')
+        this.talkMon = this.talkBload.getChildByName('monkeyTalk')
+
+
         // gameContext.playerNode.active = false
         // this.schedule(this.tankMove, 10)
+    }
+
+    /**type 0 猴 1 鼠 2 隐藏  */
+    showTalkBload(type: number, str?: string) {
+        if (type == 0) {
+            this.talkBload.active = true
+            this.talkMon.active = true
+            this.talkRat.active = false
+            let talkDisplay = this.talkMon.getChildByName('label').getComponent(cc.Label)
+            talkDisplay.string = str
+        } else if (type == 1) {
+            this.talkBload.active = true
+            this.talkRat.active = true
+            this.talkMon.active = false
+            let talkDisplay = this.talkRat.getChildByName('label').getComponent(cc.Label)
+            talkDisplay.string = str
+        } else {
+            this.talkBload.active = false
+        }
     }
 
 
@@ -200,6 +228,7 @@ export default class NewClass extends cc.Component {
 
     touchMuseum() {
         if (!this._reachMuseum) {
+            // this.museum.getComponent(cc.BoxCollider).enabled = false
             this.museum.getChildByName('label').active = true
             this.player.getChildByName('label').active = true
             EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -7 });
@@ -214,15 +243,25 @@ export default class NewClass extends cc.Component {
 
     touchFly() {
         if (!this._reachMuseum || !this._reachYueYang) {
-            gameContext.showToast('还没玩够呢！')
-        } else if (this._milkNum != 2) {
-            gameContext.showToast('还想喝lai茶')
+            // gameContext.showToast('还没玩够呢！')
+            this.showTalkBload(1, ':还没玩够呢！')
+            GameTools.loadSound('sound/level/wechat0', 1, false)
+            this.scheduleOnce(() => {
+                this.showTalkBload(2)
+            }, 2)
+        } else if (this._milkNum != 3) {
+            // gameContext.showToast('还想喝lai茶')
+            this.showTalkBload(1, ':还想喝lai茶')
+            GameTools.loadSound('sound/level/wechat0', 1, false)
+            this.scheduleOnce(() => {
+                this.showTalkBload(2)
+            }, 2)
 
         } else {
             gameConfig.maxLevel = 7
             cc.director.loadScene("startScene", () => {
                 gameContext.memoryLength = 7
-                gameContext.showMemoryUI()
+                gameContext.showMemoryUI(true)
             });
         }
 
@@ -240,7 +279,10 @@ export default class NewClass extends cc.Component {
             let operateUI: operateUI = gameContext.operateUI
             if (operateUI.san <= 1) {
                 operateUI.san = 10
-                gameContext.showToast('贴贴')
+                // gameContext.showToast('贴贴')
+                this.showTalkBload(1, ':贴贴')
+                GameTools.loadSound('sound/level/wechat0', 1, false)
+
             }
             this._reachYueYang = true
         }
@@ -251,14 +293,13 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 1 });
     }
 
-
-
-
     start() {
         this.Restart()
     }
 
     Restart() {
+        this.showTalkBload(2)
+        this.unscheduleAllCallbacks()
         gameContext.moveType = 0
         this.op.active = false
         this.role.active = false
@@ -267,7 +308,7 @@ export default class NewClass extends cc.Component {
         this._reachMuseum = false
         this._reachYueYang = false
         this._milkNum = 0
-        this.label0.string = this.label1.string = ''
+        // this.label0.string = this.label1.string = ''
 
         this.page0.active = true
         this.page1.active = false
@@ -290,13 +331,16 @@ export default class NewClass extends cc.Component {
     preStart() {
         this.fly.runAction(cc.sequence(cc.moveTo(3, new cc.Vec2(1200, 0)), cc.callFunc(() => {
             this.role.active = true
-            this.label0.string = '【鼠鼠】:好喝奶茶我来了！'
+            // this.label0.string = '【鼠鼠】:好喝奶茶我来了！'
+            this.showTalkBload(1, ':好喝奶茶我来了！')
+            GameTools.loadSound('sound/level/wechat0', 1, false)
         })))
 
         console.log('播放音效')
         this.scheduleOnce(() => {
             this.page1.active = true
             this.op.active = true
+            this.showTalkBload(2)
         }, 6)
 
     }

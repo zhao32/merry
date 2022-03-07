@@ -82,6 +82,7 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        this.unscheduleAllCallbacks()
         this.node.setPosition(0, 0)
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 10 });
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
@@ -109,7 +110,7 @@ export default class NewClass extends cc.Component {
         this.clear()
         cc.director.loadScene("startScene", () => {
             gameContext.memoryLength = 3
-            gameContext.showMemoryUI()
+            gameContext.showMemoryUI(true)
         });
     }
 

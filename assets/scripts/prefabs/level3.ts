@@ -39,6 +39,10 @@ export default class NewClass extends cc.Component {
     batHpNum: number
     bat: cc.Node
 
+    talkBload: cc.Node
+    talkRat: cc.Node
+    talkMon: cc.Node
+
 
     init(data: any, callback) {
         this.callback = callback
@@ -66,6 +70,28 @@ export default class NewClass extends cc.Component {
         this.batHp = this.page1.getChildByName('batHp')
         this.bat = this.page1.getChildByName('bat')
 
+        this.talkBload = this.node.getChildByName('talkbg')
+        this.talkRat = this.talkBload.getChildByName('ratTalk')
+        this.talkMon = this.talkBload.getChildByName('monkeyTalk')
+    }
+
+      /**type 0 猴 1 鼠 2 隐藏  */
+      showTalkBload(type: number, str?: string) {
+        if (type == 0) {
+            this.talkBload.active = true
+            this.talkMon.active = true
+            this.talkRat.active = false
+            let talkDisplay = this.talkMon.getChildByName('label').getComponent(cc.Label)
+            talkDisplay.string = str
+        } else if (type == 1) {
+            this.talkBload.active = true
+            this.talkRat.active = true
+            this.talkMon.active = false
+            let talkDisplay = this.talkRat.getChildByName('label').getComponent(cc.Label)
+            talkDisplay.string = str
+        } else {
+            this.talkBload.active = false
+        }
     }
 
     onDisable() {
@@ -101,13 +127,19 @@ export default class NewClass extends cc.Component {
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 1) {
             operateUI.san = 9
-            gameContext.showToast('鼠鼠会在暗中支持你！')
+            // gameContext.showToast('鼠鼠会在暗中支持你！')
+            this.showTalkBload(0,'鼠鼠会在暗中支持你！')
+            this.scheduleOnce(()=>{
+                this.showTalkBload(2)
+            },3)
         }
     }
 
 
 
     Restart() {
+        this.showTalkBload(2)
+        this.unscheduleAllCallbacks()
         gameContext.moveType = 0
         gameConfig.currLevel = 4
         this.distance = 0
@@ -129,6 +161,10 @@ export default class NewClass extends cc.Component {
         this.role0.x = -95
         this.role1.x = 0
         this.bat.y = -90
+        this.bat.active = false
+        this.wave0.active = false
+        this.wave1.active = false
+
         this.unscheduleAllCallbacks()
         this.role0.stopAllActions()
         this.role1.stopAllActions()
@@ -141,24 +177,27 @@ export default class NewClass extends cc.Component {
             let callF = cc.callFunc(() => {
                 this.page0.active = false
                 this.page1.active = true
-                GameTools.loadSound('sound/level/4/bossbgm', 0, true)
+                this.page1.runAction(cc.sequence(cc.delayTime(0.5), cc.blink(1, 5), cc.callFunc(() => {
+                    this.showWave()
+                    EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
+                        left: true,
+                        right: true,
+                        top: false,
+                        down: false,
+                        fight: true,
+                        jump: true
+                    });
 
-                this.showWave()
-
-                EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
-                    left: true,
-                    right: true,
-                    top: false,
-                    down: false,
-                    fight: true,
-                    jump: true
-                });
+                    this.bat.active = true
+                })))
                 gameContext.playerNode.active = true
                 gameContext.player.state = State.standRight
+                GameTools.loadSound('sound/level/4/bossbgm', 0, true)
+
+
             });
             this.role0.runAction(cc.sequence(moveBy, callF))
             this.role1.runAction(moveBy.clone())
-
         }, preTime + 1)
     }
 
@@ -201,20 +240,20 @@ export default class NewClass extends cc.Component {
                     this.batHp.scaleX = this.batHpNum / 20
                 } else {
                     this.batHp.scaleX = 0
-                    let moveby = cc.moveBy(2, new cc.Vec2(0, -500));
+                    let moveby = cc.moveBy(5, new cc.Vec2(0, -500));
+                    this.node.stopAllActions()
+                    this.wave0.active = this.wave1.active = false
                     let callback = cc.callFunc(() => {
                         GameTools.loadSound('sound/level/4/finish', 1, false)
                         gameConfig.maxLevel = 5
                         cc.director.loadScene("startScene", () => {
                             gameContext.memoryLength = 5
-                            gameContext.showMemoryUI()
+                            gameContext.showMemoryUI(true)
                         });
                     })
                     this.setSyncPosition()
                     this.bat.runAction(cc.sequence(moveby, callback))
                     console.log('打死蝙蝠，通关！')
-
-
                 }
             }
         }

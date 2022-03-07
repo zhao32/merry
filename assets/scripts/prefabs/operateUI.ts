@@ -224,22 +224,48 @@ export default class NewClass extends cc.Component {
 
     startLeft() {
         if (!this._canOperate) return
-        (gameContext.player as hero).state = State.walkLeft
+        if (gameContext.isChaos) {
+            Math.random() * 1 > 0.5 ? (gameContext.player as hero).state = State.walkLeft : (gameContext.player as hero).state = State.walkRight
+        } else {
+            (gameContext.player as hero).state = State.walkLeft
+        }
     }
 
     endLeft() {
         if (!this._canOperate) return
-        (gameContext.player as hero).state = State.standLeft
+        if (gameContext.isChaos) {
+            if (gameContext.player.state == State.walkLeft) {
+                (gameContext.player as hero).state = State.standLeft
+            } else if (gameContext.player.state == State.walkRight) {
+                (gameContext.player as hero).state = State.standRight
+            }
+        } else {
+            (gameContext.player as hero).state = State.standLeft
+        }
     }
 
     startRight() {
         if (!this._canOperate) return
-        (gameContext.player as hero).state = State.walkRight
+        if (gameContext.isChaos) {
+            Math.random() * 1 > 0.5 ? (gameContext.player as hero).state = State.walkLeft : (gameContext.player as hero).state = State.walkRight
+        } else {
+            (gameContext.player as hero).state = State.walkRight
+        }
+        // (gameContext.player as hero).state = State.walkRight
     }
 
     endRight() {
         if (!this._canOperate) return
-        (gameContext.player as hero).state = State.standRight
+        // (gameContext.player as hero).state = State.standRight
+        if (gameContext.isChaos) {
+            if (gameContext.player.state == State.walkLeft) {
+                (gameContext.player as hero).state = State.standLeft
+            } else if (gameContext.player.state == State.walkRight) {
+                (gameContext.player as hero).state = State.standRight
+            }
+        } else {
+            (gameContext.player as hero).state = State.standRight
+        }
     }
 
     endJump() {

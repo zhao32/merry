@@ -17,17 +17,13 @@ export default class NewClass extends cc.Component {
 
     @property(cc.Label)
     label: cc.Label = null;
-    @property(cc.Node)
-
-    content: cc.Node = null;
 
     @property
     text: string = 'hello';
 
-    @property({ type: cc.ScrollView })
-    scroll: cc.ScrollView = null;
-
     callback: any
+
+    private memoryList: List;         //排行榜
 
     btnRetrun: cc.Node
     btnNext: cc.Node
@@ -44,6 +40,8 @@ export default class NewClass extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.memoryList = this.node.getChildByName('ScrollView').getComponent(List)
+        // cc.find("ScrollView", this.node).getComponent(List);
         this.displayItem = this.node.getChildByName('itemShow')
         this.mask = this.node.getChildByName('mask')
 
@@ -52,29 +50,12 @@ export default class NewClass extends cc.Component {
 
         this.btnRetrun.on(cc.Node.EventType.TOUCH_END, this.doReturn, this)
         this.btnNext.on(cc.Node.EventType.TOUCH_END, this.doNext, this)
+
         this.mask.on(cc.Node.EventType.TOUCH_END, this.hideItem, this)
 
         this.mask.active = false
         this.displayItem.active = false
         EventMgr.getInstance().registerListener(EventMgr.SHOWMEMRY, this, this.showItem.bind(this))
-
-        for (let i = 0; i < 10; i++) {
-            let item = this.content.getChildByName(`Item${i}`)
-            let itemMask = item.getChildByName('itemMask')
-            let itemShow = item.getChildByName('item')
-            let itemSelect = item.getChildByName('itemSelect')
-
-            itemShow.on(cc.Node.EventType.TOUCH_END, () => {
-                this.showItem(i)
-                for (let k = 0; k < 10; k++) {
-                    let item = this.content.getChildByName(`Item${k}`)
-                    let itemSelect = item.getChildByName('itemSelect')
-                    itemSelect.active = false
-                }
-                itemSelect.active = true
-            }, this)
-            itemMask.active = true
-        }
 
     }
 
@@ -83,34 +64,19 @@ export default class NewClass extends cc.Component {
     }
 
     doNext() {
-        cc.director.loadScene("playScene", () => {
+        cc.director.loadScene("playScene",()=>{
             gameContext.showLevel(gameConfig.currLevel + 1)
         });
     }
 
     start() {
         // let data = [0, 1, 2, 3, 4, 5, 6]
-        gameContext.memoryLength = 6
         console.log('gameContext.memoryLength:' + gameContext.memoryLength)
         let data = new Array(gameContext.memoryLength)
-        this.scroll.scrollTo(cc.v2((gameContext.memoryLength) / 5, 0), 0.1);
-
         for (let i = 0; i < data.length; i++) {
             data[i] = `pic/item${i}`
-            let item = this.content.getChildByName(`Item${i}`)
-            let itemMask = item.getChildByName('itemMask')
-            let itemShow = item.getChildByName('item')
-            GameTools.loadItemIcon(data[i], itemShow)
-            if (i == data.length - 1) {
-                itemMask.runAction(cc.sequence(cc.fadeOut(1), cc.callFunc(() => {
-                    itemMask.active = false
-                    itemMask.opacity = 255
-                    itemShow.runAction(cc.sequence(cc.delayTime(.5), cc.blink(1, 3)))
-                })))
-            } else {
-                itemMask.active = false
-            }
         }
+        this.memoryList.setData(data)
 
         if (this.isFromGame) {
             this.btnNext.active = true
@@ -140,10 +106,11 @@ export default class NewClass extends cc.Component {
         }
     }
 
-    showItem(idx: number) {
+    showItem(self, param) {
         this.displayItem.active = true
         this.mask.active = true
-        GameTools.loadItemIcon(`pic/item${idx}`, this.displayItem)
+        console.log('param:' + param)
+        GameTools.loadItemIcon(param.data, this.displayItem)
     }
 
     hideItem() {

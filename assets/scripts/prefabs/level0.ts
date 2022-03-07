@@ -192,6 +192,7 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        this.unscheduleAllCallbacks()
         gameContext.hasFllow = false;
 
         this.distance = 0
@@ -303,7 +304,7 @@ export default class NewClass extends cc.Component {
         this.unscheduleAllCallbacks()
         cc.director.loadScene("startScene", () => {
             gameContext.memoryLength = 1
-            gameContext.showMemoryUI()
+            gameContext.showMemoryUI(true)
         });
 
     }
