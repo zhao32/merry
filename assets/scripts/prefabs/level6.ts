@@ -179,6 +179,9 @@ export default class NewClass extends cc.Component {
         this.btnRight.off(cc.Node.EventType.TOUCH_START)
         this.btnRight.off(cc.Node.EventType.TOUCH_CANCEL)
         this.btnRight.off(cc.Node.EventType.TOUCH_END)
+
+        GameTools.destroyNode(this.node)
+
     }
 
     startLeft() {
@@ -260,7 +263,8 @@ export default class NewClass extends cc.Component {
         } else {
             gameConfig.maxLevel = 7
             cc.director.loadScene("startScene", () => {
-                gameContext.memoryLength = 7
+                gameConfig.memoryLength = 7
+                gameConfig.currMemory = 7
                 gameContext.showMemoryUI(true)
             });
         }

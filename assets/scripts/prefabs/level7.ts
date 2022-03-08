@@ -120,6 +120,8 @@ export default class NewClass extends cc.Component {
             let node = this.boxList.pop()
             if (node) node.destroy()
         }
+
+        GameTools.destroyNode(this.node)
     }
 
 
@@ -297,7 +299,8 @@ export default class NewClass extends cc.Component {
                     console.log('游戏完成')
                     gameConfig.maxLevel = 8
                     cc.director.loadScene("startScene", () => {
-                        gameContext.memoryLength = 8
+                        gameConfig.memoryLength = 8
+                        gameConfig.currMemory = 8
                         gameContext.showMemoryUI(true)
                     });
                 })
@@ -394,7 +397,8 @@ export default class NewClass extends cc.Component {
                         console.log('游戏完成')
                         gameConfig.maxLevel = 8
                         cc.director.loadScene("startScene", () => {
-                            gameContext.memoryLength = 8
+                            gameConfig.memoryLength = 8
+                            gameConfig.currMemory = 8
                             gameContext.showMemoryUI(true)
                         });
                     })

@@ -144,6 +144,8 @@ export default class NewClass extends cc.Component {
 
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHFINISH, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+        GameTools.destroyNode(this.node)
+
     }
 
 
@@ -303,7 +305,8 @@ export default class NewClass extends cc.Component {
         gameConfig.maxLevel = 1
         this.unscheduleAllCallbacks()
         cc.director.loadScene("startScene", () => {
-            gameContext.memoryLength = 1
+            gameConfig.memoryLength = 1
+            gameConfig.currMemory = 1
             gameContext.showMemoryUI(true)
         });
 

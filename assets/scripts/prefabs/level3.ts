@@ -98,6 +98,7 @@ export default class NewClass extends cc.Component {
         console.log('------------------第5关注销监听------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHWAVE, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+        GameTools.destroyNode(this.node)
     }
 
 
@@ -141,7 +142,7 @@ export default class NewClass extends cc.Component {
         this.showTalkBload(2)
         this.unscheduleAllCallbacks()
         gameContext.moveType = 0
-        gameConfig.currLevel = 4
+        gameConfig.currLevel = 3
         this.distance = 0
         this.batHp.setScale(1)
         this.batHpNum = 20
@@ -245,9 +246,10 @@ export default class NewClass extends cc.Component {
                     this.wave0.active = this.wave1.active = false
                     let callback = cc.callFunc(() => {
                         GameTools.loadSound('sound/level/4/finish', 1, false)
-                        gameConfig.maxLevel = 5
+                        gameConfig.maxLevel = 4
                         cc.director.loadScene("startScene", () => {
-                            gameContext.memoryLength = 5
+                            gameConfig.memoryLength = 4
+                            gameConfig.currMemory = 4
                             gameContext.showMemoryUI(true)
                         });
                     })

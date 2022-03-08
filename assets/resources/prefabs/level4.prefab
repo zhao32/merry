@@ -1735,7 +1735,7 @@
         "__id__": 84
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [],
     "_prefab": {
       "__id__": 97
@@ -2921,8 +2921,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -258.109,
-        -57.388,
+        -96.845,
+        -214.408,
         0,
         0,
         0,

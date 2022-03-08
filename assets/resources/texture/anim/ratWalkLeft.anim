@@ -20,7 +20,7 @@
           {
             "frame": 0.1,
             "value": {
-              "__uuid__": "853ed1b6-62c9-4135-857f-30515dcbe860"
+              "__uuid__": "b42dfd7a-cfc2-4c08-a7c5-c502c72547ad"
             }
           },
           {
@@ -61,6 +61,14 @@
           }
         ]
       }
+    },
+    "props": {
+      "anchorX": [
+        {
+          "frame": 0,
+          "value": 0.3
+        }
+      ]
     }
   },
   "events": []

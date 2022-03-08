@@ -7,7 +7,7 @@
 
 import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
-import { State } from "../hero";
+import hero, { State } from "../hero";
 
 
 const { ccclass, property } = cc._decorator;
@@ -84,6 +84,7 @@ export default class NewClass extends cc.Component {
         console.log('------------------第6关注销监听------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHSHEEP, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+        GameTools.destroyNode(this.node)
     }
 
 
@@ -111,7 +112,7 @@ export default class NewClass extends cc.Component {
         this.water.height = 100
         this.ratTear.active = true
 
-        gameConfig.currLevel = 5
+        gameConfig.currLevel = 4
         gameContext.playerNode.setPosition(200, -185)
         gameContext.playerNode.active = false
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
@@ -145,17 +146,17 @@ export default class NewClass extends cc.Component {
                 right: true,
                 top: false,
                 down: false,
-                fight: false,
+                fight: true,
                 jump: true
             });
 
         }, preTime + 4)
     }
 
-    touchSheep() {
+    fight() {
+        this._touchSheep = false
         this.idX++
         let endPos = this.couldList[(this.idX) % this.couldList.length].getPosition()
-        this._touchSheep = true
         console.log('碰到小羊')
         GameTools.loadSound('sound/level/5/sheepjump', 1, false)
 
@@ -180,6 +181,17 @@ export default class NewClass extends cc.Component {
                 this.showOverPage()
             })))
         }
+
+    }
+
+    touchSheep() {
+        console.log('gameContext.player.x:' + gameContext.playerNode.x)
+        console.log('sheep.x:' + this.sheep.x)
+
+        // if ((gameContext.player as hero).state != State.fight) return
+        this._touchSheep = true
+
+       
     }
 
     showOverPage() {
@@ -196,9 +208,10 @@ export default class NewClass extends cc.Component {
             .to(3, { height: 350 }, { easing: 'sineOutIn' })
             .delay(1)
             .call(() => {
-                gameConfig.maxLevel = 6
+                gameConfig.maxLevel = 5
                 cc.director.loadScene("startScene", () => {
-                    gameContext.memoryLength = 6
+                    gameConfig.memoryLength = 5
+                    gameConfig.currMemory = 5
                     gameContext.showMemoryUI(true)
                 });
             })
@@ -208,6 +221,9 @@ export default class NewClass extends cc.Component {
     update(dt) {
         // this.node.x += 1
         // this.setSyncPosition()
+        if ((gameContext.player as hero).state == State.fight && this._touchSheep == true){
+            this.fight()
+        }
 
 
         // let sheepPos = this.page1.convertToWorldSpaceAR(this.sheep.getPosition())

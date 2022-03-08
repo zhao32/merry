@@ -47,6 +47,7 @@ export default class NewClass extends cc.Component {
         } else {
             gameContext.isChaos = false
         }
+        console.log('-------------------playScene--------------------')
 
         let hero
         if (gameConfig.currLevel == 4) {

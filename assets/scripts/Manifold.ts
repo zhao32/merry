@@ -80,7 +80,7 @@ export default class NewClass extends cc.Component {
             console.log('触碰蝙蝠超声波')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHWAVE);
         } else if (otherCollider.tag == 10) {//羊
-            console.log('触碰羊')
+            console.log('触碰羊--')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHSHEEP);
         }
         // else if (otherCollider.tag == 11) {//装修怪手臂
@@ -128,6 +128,11 @@ export default class NewClass extends cc.Component {
             console.log('触碰装修怪手臂')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHTANKARM);
         }
+
+        // if (otherCollider.tag == 10) {//羊
+        //     console.log('触碰羊**')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHSHEEP);
+        // }
     }
 
     // 每次处理完碰撞体接触逻辑时被调用
@@ -135,6 +140,10 @@ export default class NewClass extends cc.Component {
         // if (otherCollider.tag == 8) {//蝙蝠
         //     console.log('onPostSolve 触碰蝙蝠')
         //     EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
+        // }
+        // if (otherCollider.tag == 10) {//羊
+        //     console.log('触碰羊**')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHSHEEP);
         // }
 
     }

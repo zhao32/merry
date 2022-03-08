@@ -1,0 +1,51 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "ratFightLeft",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.4,
+  "sample": 10,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "65698440-7227-4eea-90fd-95f27340216e"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "a4871bc9-ea34-4040-8e20-71c62e0e8b49"
+            }
+          },
+          {
+            "frame": 0.2,
+            "value": {
+              "__uuid__": "40787f4b-0f98-40ee-9b0d-53c31235be8d"
+            }
+          },
+          {
+            "frame": 0.3,
+            "value": {
+              "__uuid__": "92ab76b3-cdea-4592-a078-1bcd966e6da8"
+            }
+          }
+        ]
+      }
+    },
+    "props": {
+      "anchorX": [
+        {
+          "frame": 0,
+          "value": 0.3
+        }
+      ]
+    }
+  },
+  "events": []
+}

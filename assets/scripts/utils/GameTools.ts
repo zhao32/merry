@@ -109,8 +109,8 @@ var gameContext = {
         let gameUI = cc.director.getScene()
           .getChildByName("Canvas")
           .getChildByName("gameUI");
+          console.log()
         gameUI.addChild(node);
-
       })
     });
   },
@@ -157,6 +157,7 @@ var gameConfig = {
 
   levelData: null,
   currLevel: 0,
+  currMemory:0,
 
 
   get maxLevel() {
@@ -167,6 +168,16 @@ var gameConfig = {
     if (!localStorage.getItem('MAXLEVEL')) localStorage.setItem('MAXLEVEL', '0')
     let level = Math.max(parseInt(localStorage.getItem('MAXLEVEL')), value)
     localStorage.setItem('MAXLEVEL', String(level))
+  },
+
+  get memoryLength() {
+    return localStorage.getItem('memoryLength') ? parseInt(localStorage.getItem('memoryLength')) : 0
+  },
+
+  set memoryLength(value: number) {
+    if (!localStorage.getItem('memoryLength')) localStorage.setItem('memoryLength', '0')
+    let level = Math.max(parseInt(localStorage.getItem('memoryLength')), value)
+    localStorage.setItem('memoryLength', String(level))
   },
 
   openPhysics(open: boolean) {

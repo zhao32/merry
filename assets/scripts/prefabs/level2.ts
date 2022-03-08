@@ -29,6 +29,9 @@ export default class NewClass extends cc.Component {
     @property({ type: cc.Prefab })
     bottlePfb: cc.Prefab = null;
 
+    weChat: cc.Node = null
+
+
     @property
     text: string = 'hello';
     _barrelNum = 0
@@ -64,6 +67,10 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().registerListener(EventMgr.TOUCHBOTTLE, this, this.touchBottle.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHBERRL, this, this.touchBerrl.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFOOD, this, this.touchFood.bind(this))
+
+        this.weChat = this.node.getChildByName('weChat')
+        this.weChat.active = false
+        this.weChat.parent = this.node.parent.parent
     }
 
     onDisable() {
@@ -74,6 +81,8 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHBERRL, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
         this.clear()
+        GameTools.destroyNode(this.node)
+
     }
 
 
@@ -82,6 +91,7 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        gameConfig.currLevel = 2
         this.unscheduleAllCallbacks()
         this.node.setPosition(0, 0)
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 10 });
@@ -109,7 +119,8 @@ export default class NewClass extends cc.Component {
         this.unscheduleAllCallbacks()
         this.clear()
         cc.director.loadScene("startScene", () => {
-            gameContext.memoryLength = 3
+            gameConfig.memoryLength = 3
+            gameConfig.currMemory = 3
             gameContext.showMemoryUI(true)
         });
     }
@@ -140,8 +151,18 @@ export default class NewClass extends cc.Component {
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 0) {
             operateUI.san = 2
-            gameContext.showToast('鼠鼠醒醒！')
+            // gameContext.showToast('鼠鼠醒醒！')
             GameTools.loadSound('sound/level/3/1blood', 1, false)
+
+            GameTools.loadSound('sound/level/wechat0', 1, false)
+            this.weChat.parent = this.node.parent.parent
+            this.weChat.active = true
+            // this.weChat.x = 667
+
+            this.scheduleOnce(() => {
+                this.weChat.active = false
+                this.weChat.removeFromParent()
+            }, 3)
         }
     }
 
@@ -152,9 +173,18 @@ export default class NewClass extends cc.Component {
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 0) {
             operateUI.san = 2
-            gameContext.showToast('鼠鼠醒醒！')
+            // gameContext.showToast('鼠鼠醒醒！')
             GameTools.loadSound('sound/level/3/1blood', 1, false)
 
+            GameTools.loadSound('sound/level/wechat0', 1, false)
+            this.weChat.parent = this.node.parent.parent
+            this.weChat.active = true
+            // this.weChat.x = 667
+
+            this.scheduleOnce(() => {
+                this.weChat.active = false
+                this.weChat.removeFromParent()
+            }, 3)
         }
     }
 

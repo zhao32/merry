@@ -53,26 +53,34 @@ export default class NewClass extends cc.Component {
         this.boat = this.node.getChildByName('boat')
         this.weChat = this.node.getChildByName('weChat')
         this.weChat.active = false
+        this.weChat.parent = this.node.parent.parent
         this.Finish = this.node.getChildByName('Finish')
     }
 
     preStart() {
         GameTools.loadSound('sound/level/2/ufoPass', 1, false)
+        this.weChat.x = 667
+        this.weChat.getChildByName('weChatLeft')
+            .getChildByName('label')
+            .getComponent(cc.Label)
+            .string = ':救救老鼠！'
+        this.weChat.getChildByName('weChatLeft').active = true
+        this.weChat.getChildByName('weChatRight').active = false
 
         let move = cc.moveTo(3, new cc.Vec2(1800, -100))
         this.boat.runAction(cc.sequence(move, cc.callFunc(() => {
             this.boat.setPosition(-120, 200);
-             GameTools.loadSound('sound/level/2/ufoboom', 1, false)
+            GameTools.loadSound('sound/level/2/ufoboom', 1, false)
         })))
         let self = this
         this.scheduleOnce(() => {
             self.weChat.active = true
             console.log('start weChat0：' + self.weChat)
             GameTools.loadSound('sound/level/wechat0', 1, false)
-
         }, 2)
 
         this.scheduleOnce(() => {
+            self.weChat.removeFromParent()
             self.weChat.active = false
             EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
                 left: true,
@@ -125,11 +133,14 @@ export default class NewClass extends cc.Component {
     }
 
 
+
     onDisable() {
         console.log('------------------第2关销毁------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHTHORNS, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHFINISH, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
+        GameTools.destroyNode(this.node)
+        // this.unscheduleAllCallbacks()        
     }
 
 
@@ -152,8 +163,34 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -1 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san == 1) {
-            operateUI.san = 9
-            gameContext.showToast('老鼠需要猴子！')
+
+            // gameContext.showToast('老鼠需要猴子！')
+            GameTools.loadSound('sound/level/wechat0', 1, false)
+            this.weChat.parent = this.node.parent.parent
+            this.weChat.active = true
+            // this.weChat.x = 2001
+
+            this.weChat.getChildByName('weChatLeft').active = false
+            this.weChat.getChildByName('weChatRight').active = true
+
+            this.weChat.getChildByName('weChatLeft')
+                .getChildByName('label')
+                .getComponent(cc.Label)
+                .string = ':老鼠需要猴子！'
+            this.scheduleOnce(() => {
+                operateUI.san = 9
+                // this.weChat.parent = this.node
+                this.weChat.active = false
+                this.weChat.removeFromParent()
+                // EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
+                //     left: true,
+                //     right: true,
+                //     top: false,
+                //     down: false,
+                //     fight: false,
+                //     jump: true
+                // });
+            }, 3)
         }
     }
 
@@ -166,7 +203,8 @@ export default class NewClass extends cc.Component {
             // gameContext.showToast('进入记忆宝典')
             gameConfig.maxLevel = 2
             cc.director.loadScene("startScene", () => {
-                gameContext.memoryLength = 2
+                gameConfig.memoryLength = 2
+                gameConfig.currMemory = 2
                 gameContext.showMemoryUI(true)
             });
         }, 1)

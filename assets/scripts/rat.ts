@@ -72,6 +72,8 @@ export default class NewClass extends cc.Component {
                 standRight: 'ratStandRight',
                 walkLeft: 'ratWalkLeft',
                 walkRight: 'ratWalkRight',
+                fightLeft: 'ratFightLeft',
+                fightRight: 'ratFightRight',
             }
 
         }
@@ -108,9 +110,9 @@ export default class NewClass extends cc.Component {
             ani = null
             repeatCount = 1
             if (preState == State.walkLeft || preState == State.standLeft) {
-                ani = 'fightLeft'
+                ani = 'ratFightLeft'
             } else if (preState == State.walkRight || preState == State.standRight) {
-                ani = 'fightRight'
+                ani = 'ratFightRight'
             }
             console.log('ani:' + ani)
             this.attack = true

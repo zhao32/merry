@@ -75,7 +75,6 @@ export default class NewClass extends cc.Component {
             }, this)
             itemMask.active = true
         }
-
     }
 
     doReturn() {
@@ -84,16 +83,21 @@ export default class NewClass extends cc.Component {
 
     doNext() {
         cc.director.loadScene("playScene", () => {
-            gameContext.showLevel(gameConfig.currLevel + 1)
+            gameConfig.currLevel += 1
+            // gameContext.showLevel(gameConfig.currLevel + 1)
         });
     }
 
     start() {
         // let data = [0, 1, 2, 3, 4, 5, 6]
-        gameContext.memoryLength = 6
-        console.log('gameContext.memoryLength:' + gameContext.memoryLength)
-        let data = new Array(gameContext.memoryLength)
-        this.scroll.scrollTo(cc.v2((gameContext.memoryLength) / 5, 0), 0.1);
+        // gameContext.memoryLength = 6
+        // console.log('gameContext.memoryLength:' + gameContext.memoryLength)
+        let data = new Array(gameConfig.memoryLength)
+        if (this.isFromGame) {
+            this.scroll.scrollTo(cc.v2((gameConfig.currMemory) / 5, 0), 0.1);
+        } else {
+            this.scroll.scrollTo(cc.v2((gameConfig.memoryLength) / 5, 0), 0.1);
+        }
 
         for (let i = 0; i < data.length; i++) {
             data[i] = `pic/item${i}`
@@ -101,7 +105,7 @@ export default class NewClass extends cc.Component {
             let itemMask = item.getChildByName('itemMask')
             let itemShow = item.getChildByName('item')
             GameTools.loadItemIcon(data[i], itemShow)
-            if (i == data.length - 1) {
+            if (i == gameConfig.currMemory && this.isFromGame) {
                 itemMask.runAction(cc.sequence(cc.fadeOut(1), cc.callFunc(() => {
                     itemMask.active = false
                     itemMask.opacity = 255
@@ -126,19 +130,19 @@ export default class NewClass extends cc.Component {
 
     }
 
-    selectPass(touch: any) {
-        // console.log(touch)
-        let name: string = touch.target.name
-        let level = parseInt(name.charAt(name.length - 1))
-        if (level > gameConfig.maxLevel) {
-            gameContext.showToast('请先通关之前关卡')
-        } else {
-            console.log('打开关卡' + level)
-            gameConfig.currLevel = level
-            cc.director.loadScene("playScene");
-            // console.log(cc.director.runScene())
-        }
-    }
+    // selectPass(touch: any) {
+    //     // console.log(touch)
+    //     let name: string = touch.target.name
+    //     let level = parseInt(name.charAt(name.length - 1))
+    //     if (level > gameConfig.maxLevel) {
+    //         gameContext.showToast('请先通关之前关卡')
+    //     } else {
+    //         console.log('打开关卡' + level)
+    //         gameConfig.currLevel = level
+    //         cc.director.loadScene("playScene");
+    //         // console.log(cc.director.runScene())
+    //     }
+    // }
 
     showItem(idx: number) {
         this.displayItem.active = true

@@ -90,6 +90,7 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
         this.unscheduleAllCallbacks()
         this.destoryFood()
+        GameTools.destroyNode(this.node)
     }
 
 
@@ -97,7 +98,7 @@ export default class NewClass extends cc.Component {
     Restart() {
         this.unscheduleAllCallbacks()
         gameContext.moveType = 0
-        gameConfig.currLevel = 3
+        gameConfig.currLevel = 5
         this.weChat.active = false
         this.weChatLeft.active = false
         this.weChatRight.active = false
@@ -165,9 +166,10 @@ export default class NewClass extends cc.Component {
             gameContext.playerNode.active = false
             this.destoryFood()
             this.scheduleOnce(() => {
-                gameConfig.maxLevel = 4
+                gameConfig.maxLevel = 6
                 cc.director.loadScene("startScene", () => {
-                    gameContext.memoryLength = 4
+                    gameConfig.memoryLength = 6
+                    gameConfig.currMemory = 6
                     gameContext.showMemoryUI(true)
                 });
             }, 3)

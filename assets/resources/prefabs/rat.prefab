@@ -152,6 +152,12 @@
       },
       {
         "__uuid__": "bde232ef-eca2-4ebe-9aed-63e194b28210"
+      },
+      {
+        "__uuid__": "39c38e45-9697-4f5d-8fad-8758bf28d85a"
+      },
+      {
+        "__uuid__": "83f755c6-6632-44f2-958f-b5615853b892"
       }
     ],
     "playOnLoad": false,
@@ -203,7 +209,7 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 50,
+      "width": 40,
       "height": 110
     },
     "_id": ""

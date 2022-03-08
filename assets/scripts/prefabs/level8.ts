@@ -7,7 +7,7 @@
 
 import hero from "../hero";
 import EventMgr from "../utils/EventMgr";
-import { gameConfig, gameContext } from "../utils/GameTools";
+import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
 import { State } from "../hero";
 
@@ -115,7 +115,8 @@ export default class NewClass extends cc.Component {
                 gameContext.playerNode.getComponent(cc.Animation).play('standRight')
                 gameConfig.maxLevel = 9
                 cc.director.loadScene("startScene", () => {
-                    gameContext.memoryLength = 9
+                    gameConfig.memoryLength = 9
+                    gameConfig.currMemory = 9
                     gameContext.showMemoryUI(true)
                 });
                 // rat.spriteFrame = new cc.SpriteFrame()
@@ -185,6 +186,7 @@ export default class NewClass extends cc.Component {
         this.btnContine.off(cc.Node.EventType.TOUCH_END)
         this.btnGiveUp.off(cc.Node.EventType.TOUCH_END)
         this.btnRestart.off(cc.Node.EventType.TOUCH_END)
+        GameTools.destroyNode(this.node)
     }
 
 
