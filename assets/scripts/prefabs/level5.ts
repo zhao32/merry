@@ -42,8 +42,13 @@ export default class NewClass extends cc.Component {
         this.schedule(() => {
             let food = cc.instantiate(this.foodPfb)
             this.node.addChild(food)
+            food.opacity = 255
             food.setPosition(400 + Math.random() * 634, 500)
             this.foodList.push(food)
+            cc.tween(food)
+                .to(1.5, { y: -200 }, { easing: 'cubicIn' })
+                .call(() => { food.opacity = 0; this.touchGround() })
+                .start()
         }, 1.5 - i * 20)
     }
 
@@ -85,7 +90,7 @@ export default class NewClass extends cc.Component {
 
     onDisable() {
         console.log('------------------第4关注销监听------------------')
-        EventMgr.getInstance().unRegisterListener(EventMgr.FOODGROUND, this)
+        // EventMgr.getInstance().unRegisterListener(EventMgr.FOODGROUND, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.FOODGPLAYER, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
         this.unscheduleAllCallbacks()
@@ -121,16 +126,12 @@ export default class NewClass extends cc.Component {
             this.weChatLeft.active = true
             console.log('播放音效')
             GameTools.loadSound('sound/level/wechat0', 1, false)
-
-
         }, preTime + 1)
         console.log('播放音效')
         this.scheduleOnce(() => {
             this.weChatRight.active = true
             console.log('播放音效')
             GameTools.loadSound('sound/level/wechat1', 1, false)
-
-
         }, preTime + 4)
 
         this.scheduleOnce(() => {
@@ -151,7 +152,7 @@ export default class NewClass extends cc.Component {
         }, preTime + 7)
     }
 
-    touchGround(self: this, params) {
+    touchGround() {
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -1 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 0) {
@@ -159,20 +160,21 @@ export default class NewClass extends cc.Component {
             this.weChat.active = true
             this.weChatCenter.active = true
             GameTools.loadSound('sound/level/wechat0', 1, false)
-            GameTools.loadSound('sound/level/6/finish', 1, false)
+            GameTools.loadSound('sound/level/6/finish', 5, false)
 
             console.log('游戏结束')
             this.unscheduleAllCallbacks()
             gameContext.playerNode.active = false
             this.destoryFood()
-            this.scheduleOnce(() => {
-                gameConfig.maxLevel = 6
+
+            gameConfig.maxLevel = 6
+            gameConfig.memoryLength = 6
+            gameConfig.currMemory = 6
+            this.scheduleOnce(() => {   
                 cc.director.loadScene("startScene", () => {
-                    gameConfig.memoryLength = 6
-                    gameConfig.currMemory = 6
                     gameContext.showMemoryUI(true)
                 });
-            }, 3)
+            }, 2)
 
         }
 
@@ -182,7 +184,6 @@ export default class NewClass extends cc.Component {
     touchPlayer(self: this, params) {
         gameContext.player.state = State.eat
         GameTools.loadSound('sound/level/6/eatfood', 1, false)
-
     }
 
 
@@ -191,10 +192,10 @@ export default class NewClass extends cc.Component {
         // this.setSyncPosition()
     }
 
-    setSyncPosition() {
-        let bodys = this.node.getComponentsInChildren(cc.RigidBody)
-        for (let i = 0; i < bodys.length; i++) {
-            bodys[i].syncPosition(true)
-        }
-    }
+    // setSyncPosition() {
+    //     let bodys = this.node.getComponentsInChildren(cc.RigidBody)
+    //     for (let i = 0; i < bodys.length; i++) {
+    //         bodys[i].syncPosition(true)
+    //     }
+    // }
 }

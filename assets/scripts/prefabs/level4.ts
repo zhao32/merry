@@ -113,7 +113,7 @@ export default class NewClass extends cc.Component {
         this.ratTear.active = true
 
         gameConfig.currLevel = 4
-        gameContext.playerNode.setPosition(200, -185)
+        gameContext.playerNode.setPosition(200, -210)
         gameContext.playerNode.active = false
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         this.unscheduleAllCallbacks()
@@ -126,13 +126,16 @@ export default class NewClass extends cc.Component {
         let preTime = 1
         this.scheduleOnce(() => {
             this.label0.active = true
-            GameTools.loadSound('sound/level/5/hulu', 1, false)
+            GameTools.loadSound('sound/level/wechat0', 1, false)
         }, preTime)
+        this.scheduleOnce(() => {
+            GameTools.loadSound('sound/level/5/hulu', 1, false)
+        }, preTime + 1)
         console.log('播放音效')
         this.scheduleOnce(() => {
             this.label1.active = true
-
-        }, preTime + 2)
+            GameTools.loadSound('sound/level/wechat1', 1, false)
+        }, preTime + 3)
 
         this.scheduleOnce(() => {
             this.page0.active = false
@@ -150,7 +153,7 @@ export default class NewClass extends cc.Component {
                 jump: true
             });
 
-        }, preTime + 4)
+        }, preTime + 8)
     }
 
     fight() {
@@ -166,10 +169,8 @@ export default class NewClass extends cc.Component {
         this.hp.scaleX = this.hpNum / 10
         if (this.hpNum == 7) {
             GameTools.loadSound('sound/level/5/hp7', 1, false)
-
         } else if (this.hpNum == 4) {
             GameTools.loadSound('sound/level/5/hp4', 1, false)
-
         } else if (this.hpNum == 1) {
             let move0 = cc.moveBy(.5, new cc.Vec2(0, 50))
             let move1 = cc.moveBy(.5, new cc.Vec2(0, -50))
@@ -191,7 +192,7 @@ export default class NewClass extends cc.Component {
         // if ((gameContext.player as hero).state != State.fight) return
         this._touchSheep = true
 
-       
+
     }
 
     showOverPage() {
@@ -205,13 +206,13 @@ export default class NewClass extends cc.Component {
         //     .start()
 
         cc.tween(this.water)
-            .to(3, { height: 350 }, { easing: 'sineOutIn' })
+            .to(10, { height: 350 }, { easing: 'cubicIn' })
             .delay(1)
             .call(() => {
                 gameConfig.maxLevel = 5
+                gameConfig.memoryLength = 5
+                gameConfig.currMemory = 5
                 cc.director.loadScene("startScene", () => {
-                    gameConfig.memoryLength = 5
-                    gameConfig.currMemory = 5
                     gameContext.showMemoryUI(true)
                 });
             })
@@ -221,7 +222,7 @@ export default class NewClass extends cc.Component {
     update(dt) {
         // this.node.x += 1
         // this.setSyncPosition()
-        if ((gameContext.player as hero).state == State.fight && this._touchSheep == true){
+        if ((gameContext.player as hero).state == State.fight && this._touchSheep == true) {
             this.fight()
         }
 

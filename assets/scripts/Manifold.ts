@@ -44,22 +44,23 @@ export default class NewClass extends cc.Component {
                 body.linearVelocity = new cc.Vec2(0, 0)
 
             }
-        } else if (otherCollider.tag == 1) {//完成
-            console.log('到达完成地点')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHFINISH);
-        } else if (otherCollider.tag == 2) {//口罩
-            console.log('接触口罩')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHMASK, {});
-        } else if (otherCollider.tag == 3) {//病毒
-            console.log('接触病毒')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHVIRUS);
-        } else if (otherCollider.tag == 4) {//荆棘
-            console.log('接触荆棘')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS);
-        }else if (otherCollider.tag == 14) {//荆棘
-            console.log('接触奶茶店')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHTSHOP);
-        }
+        } 
+        // else if (otherCollider.tag == 1) {//完成
+        //     console.log('到达完成地点')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHFINISH);
+        // } else if (otherCollider.tag == 2) {//口罩
+        //     console.log('接触口罩')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHMASK, {});
+        // } else if (otherCollider.tag == 3) {//病毒
+        //     console.log('接触病毒')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHVIRUS);
+        // } else if (otherCollider.tag == 4) {//荆棘
+        //     console.log('接触荆棘')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS);
+        // }else if (otherCollider.tag == 14) {//荆棘
+        //     console.log('接触奶茶店')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHTSHOP);
+        // }
         // else if (otherCollider.tag == 5) {//酒瓶
         //     console.log('老鼠接触酒瓶')
         //     otherCollider.node.destroy()
@@ -72,17 +73,19 @@ export default class NewClass extends cc.Component {
         //     EventMgr.getInstance().sendListener(EventMgr.TOUCHFOOD);
         // }
 
-        else if (otherCollider.tag == 8) {//蝙蝠
-            // console.log('触碰蝙蝠')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
-        }
-        else if (otherCollider.tag == 9) {//蝙蝠超声波
-            console.log('触碰蝙蝠超声波')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHWAVE);
-        } else if (otherCollider.tag == 10) {//羊
-            console.log('触碰羊--')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHSHEEP);
-        }
+        // else if (otherCollider.tag == 8) {//蝙蝠
+        //     // console.log('触碰蝙蝠')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
+        // }
+        // else if (otherCollider.tag == 9) {//蝙蝠超声波
+        //     console.log('触碰蝙蝠超声波')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHWAVE);
+        // }
+        
+        // else if (otherCollider.tag == 10) {//羊
+        //     console.log('触碰羊--')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHSHEEP);
+        // }
         // else if (otherCollider.tag == 11) {//装修怪手臂
         //     console.log('触碰装修怪手臂')
         //     EventMgr.getInstance().sendListener(EventMgr.TOUCHTANKARM);
@@ -124,10 +127,10 @@ export default class NewClass extends cc.Component {
         //     EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
         // }
 
-        if (otherCollider.tag == 11) {//装修怪手臂
-            console.log('触碰装修怪手臂')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHTANKARM);
-        }
+        // if (otherCollider.tag == 11) {//装修怪手臂
+        //     console.log('触碰装修怪手臂')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHTANKARM);
+        // }
 
         // if (otherCollider.tag == 10) {//羊
         //     console.log('触碰羊**')

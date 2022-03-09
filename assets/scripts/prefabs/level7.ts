@@ -174,6 +174,8 @@ export default class NewClass extends cc.Component {
             // console.log('播放音效')
             // this.label0.string = '【猴】:装修太累了吧！'
             this.showTalkBload(0, ':装修太累了吧，睡一会儿休息一下zzz....')
+            GameTools.loadSound('sound/level/8/hulu', 1, false)
+
         }, preTime)
         console.log('播放音效')
         this.scheduleOnce(() => {
@@ -192,7 +194,7 @@ export default class NewClass extends cc.Component {
                 this.showTalkBload(2)
             })))
 
-        }, preTime + 2)
+        }, preTime + 4)
 
     }
 
@@ -271,24 +273,35 @@ export default class NewClass extends cc.Component {
             EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
             this.unscheduleAllCallbacks()
             this.arm.stopAllActions()
-            this.showTalkBload(0, ':装修怪...')
-            GameTools.loadSound('sound/level/wechat0', 1, false)
+            GameTools.loadSound('sound/level/8/bgmFail', 0, false)//14
+
+            this.scheduleOnce(() => {
+                this.showTalkBload(0, ':装修怪...')
+                GameTools.loadSound('sound/level/wechat0', 1, false)
+
+            }, 2)
+
 
             this.scheduleOnce(() => {
                 this.showTalkBload(0, ':是不可能被打败的...')
                 GameTools.loadSound('sound/level/wechat0', 1, false)
-            }, 2)
+            }, 4)
 
             this.scheduleOnce(() => {
                 this.showTalkBload(0, ':它是无敌的！')
                 GameTools.loadSound('sound/level/wechat0', 1, false)
 
-            }, 4)
+            }, 6)
 
             this.scheduleOnce(() => {
                 this.showTalkBload(1, ':谁让你动我的猴子的！')
                 GameTools.loadSound('sound/level/wechat1', 1, false)
-            }, 6)
+            }, 8)
+
+            this.scheduleOnce(() => {
+                GameTools.loadSound('sound/level/8/jineng', 1, false)
+
+            }, 9)
 
             this.scheduleOnce(() => {
                 this.fallBox()
@@ -298,14 +311,15 @@ export default class NewClass extends cc.Component {
                 let callF = cc.callFunc(() => {
                     console.log('游戏完成')
                     gameConfig.maxLevel = 8
+                    gameConfig.memoryLength = 8
+                    gameConfig.currMemory = 8
                     cc.director.loadScene("startScene", () => {
-                        gameConfig.memoryLength = 8
-                        gameConfig.currMemory = 8
+
                         gameContext.showMemoryUI(true)
                     });
                 })
-                this.tank.runAction(cc.sequence(cc.delayTime(1), cc.blink(1, 5), callF))
-            }, 8)
+                this.tank.runAction(cc.sequence(cc.delayTime(1), cc.blink(1.5, 5), callF))
+            }, 11)
 
         }
     }

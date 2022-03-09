@@ -74,7 +74,7 @@ export default class NewClass extends cc.Component {
         return this._canOperate
     }
 
-    public resetBtn(self, parms) {
+    public openOperate(self, parms) {
         console.log('执行OPENOPERATE')
         this._canOperate = true
         console.log('重置按钮状态')
@@ -101,7 +101,7 @@ export default class NewClass extends cc.Component {
         this.btnFight.on(cc.Node.EventType.TOUCH_START, this.startFight, this)
         this.btnFight.on(cc.Node.EventType.TOUCH_END, this.endFight, this)
         // this.btnFight.on(cc.Node.EventType.TOUCH_CANCEL, this.endFight, this)
-        this.btnJump.on(cc.Node.EventType.TOUCH_END, this.endJump, this)
+        this.btnJump.on(cc.Node.EventType.TOUCH_START, this.endJump, this)
 
 
 
@@ -121,6 +121,19 @@ export default class NewClass extends cc.Component {
         this._san = Math.max(0, this._san)
         this.blood.width = 240 * (this._san / 10)
         console.log('this._san:' + this._san)
+        if (params.disSan > 0) {
+            GameTools.loadSound('sound/op/huixie', 1, false)
+        } else {
+            if (gameConfig.currLevel == 1) {//老鼠
+                if (this._san <= 0) {
+                    GameTools.loadSound('sound/level/3/1blood', 1, false)
+                } else {
+                    GameTools.loadSound('sound/level/3/attacked', 1, false)
+                }
+            } else {//猴子
+                GameTools.loadSound('sound/op/diaoxie', 1, false)
+            }
+        }
     }
 
     public get san() {
@@ -155,7 +168,7 @@ export default class NewClass extends cc.Component {
         // this.btnFight.on(cc.Node.EventType.TOUCH_CANCEL, this.endFight, this)
 
 
-        this.btnJump.off(cc.Node.EventType.TOUCH_END, this.endJump, this)
+        this.btnJump.off(cc.Node.EventType.TOUCH_START, this.endJump, this)
 
 
     }
@@ -198,7 +211,7 @@ export default class NewClass extends cc.Component {
 
         EventMgr.getInstance().registerListener(EventMgr.UPDATESAN, this, this.updateSan.bind(this))
         console.log('注册OPENOPERATE')
-        EventMgr.getInstance().registerListener(EventMgr.OPENOPERATE, this, this.resetBtn.bind(this))
+        EventMgr.getInstance().registerListener(EventMgr.OPENOPERATE, this, this.openOperate.bind(this))
 
         let btnBg0 = this.node.getChildByName('btnBg0')
         let btnBg1 = this.node.getChildByName('btnBg1')
@@ -229,6 +242,12 @@ export default class NewClass extends cc.Component {
         } else {
             (gameContext.player as hero).state = State.walkLeft
         }
+
+        if (gameConfig.currLevel == 4) {//老鼠
+            GameTools.loadSound('sound/op/ratback', 1, false)
+        } else {//猴子
+            GameTools.loadSound('sound/op/click', 1, false)
+        }
     }
 
     endLeft() {
@@ -236,7 +255,7 @@ export default class NewClass extends cc.Component {
         if (gameContext.isChaos) {
             if (gameContext.player.state == State.walkLeft) {
                 (gameContext.player as hero).state = State.standLeft
-            } else if (gameContext.player.state == State.walkRight) {
+            } else {
                 (gameContext.player as hero).state = State.standRight
             }
         } else {
@@ -252,6 +271,12 @@ export default class NewClass extends cc.Component {
             (gameContext.player as hero).state = State.walkRight
         }
         // (gameContext.player as hero).state = State.walkRight
+
+        if (gameConfig.currLevel == 4) {//老鼠
+            GameTools.loadSound('sound/op/ratfront', 1, false)
+        } else {//猴子
+            GameTools.loadSound('sound/op/click', 1, false)
+        }
     }
 
     endRight() {
@@ -260,7 +285,7 @@ export default class NewClass extends cc.Component {
         if (gameContext.isChaos) {
             if (gameContext.player.state == State.walkLeft) {
                 (gameContext.player as hero).state = State.standLeft
-            } else if (gameContext.player.state == State.walkRight) {
+            } else {
                 (gameContext.player as hero).state = State.standRight
             }
         } else {
@@ -283,6 +308,8 @@ export default class NewClass extends cc.Component {
             (gameContext.player as hero).isMove = false;
             (gameContext.player as hero).state = State.jumpRight
         }
+        GameTools.loadSound('sound/op/jump', 1, false)
+
     }
 
     startFight() {
@@ -300,6 +327,12 @@ export default class NewClass extends cc.Component {
         } else {
             // gameContext.showToast('冷却时间1s')
 
+        }
+
+        if (gameConfig.currLevel == 4) {//老鼠
+            GameTools.loadSound('sound/op/ratAttack', 1, false)
+        } else {//猴子
+            GameTools.loadSound('sound/op/monkeyAttack', 1, false)
         }
 
 
@@ -325,6 +358,8 @@ export default class NewClass extends cc.Component {
         cc.resources.load(frame, cc.SpriteFrame, (err, spriteFrame) => {
             sprite.spriteFrame = spriteFrame as any;
         });
+        GameTools.loadSound('sound/op/click', 1, false)
+
     }
 
     checkPause() {
@@ -342,12 +377,14 @@ export default class NewClass extends cc.Component {
         cc.resources.load(frame, cc.SpriteFrame, (err, spriteFrame) => {
             sprite.spriteFrame = spriteFrame as any;
         });
+        GameTools.loadSound('sound/op/click', 1, false)
+
     }
 
     doReplay() {
-
         EventMgr.getInstance().sendListener(EventMgr.RESTART, {});
         console.log('重新开始游戏')
+        GameTools.loadSound('sound/op/click', 1, false)
     }
 
     doHome() {

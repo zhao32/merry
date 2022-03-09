@@ -58,8 +58,9 @@ export default class NewClass extends cc.Component {
     }
 
     preStart() {
+        GameTools.loadSound('sound/level/2/start/ling', 1, false)
         GameTools.loadSound('sound/level/2/ufoPass', 1, false)
-        this.weChat.x = 667
+        this.weChat.x = 0
         this.weChat.getChildByName('weChatLeft')
             .getChildByName('label')
             .getComponent(cc.Label)
@@ -76,8 +77,9 @@ export default class NewClass extends cc.Component {
         this.scheduleOnce(() => {
             self.weChat.active = true
             console.log('start weChat0：' + self.weChat)
-            GameTools.loadSound('sound/level/wechat0', 1, false)
-        }, 2)
+            // GameTools.loadSound('sound/level/wechat0', 1, false)
+            GameTools.loadSound('sound/level/2/start/help', 1, false)
+        }, 3)
 
         this.scheduleOnce(() => {
             self.weChat.removeFromParent()
@@ -97,7 +99,7 @@ export default class NewClass extends cc.Component {
 
             console.log('start weChat1：' + self.weChat)
 
-        }, 4)
+        }, 5)
     }
 
     start() {
@@ -105,6 +107,9 @@ export default class NewClass extends cc.Component {
     }
 
     update(dt) {
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI && !operateUI.canOperate) return
+
         if (gameContext.moveType == 1) {
             this.node.x -= gameContext.viewSpeed
             this.setSyncPosition()
@@ -166,6 +171,7 @@ export default class NewClass extends cc.Component {
 
             // gameContext.showToast('老鼠需要猴子！')
             GameTools.loadSound('sound/level/wechat0', 1, false)
+
             this.weChat.parent = this.node.parent.parent
             this.weChat.active = true
             // this.weChat.x = 2001
@@ -182,14 +188,6 @@ export default class NewClass extends cc.Component {
                 // this.weChat.parent = this.node
                 this.weChat.active = false
                 this.weChat.removeFromParent()
-                // EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
-                //     left: true,
-                //     right: true,
-                //     top: false,
-                //     down: false,
-                //     fight: false,
-                //     jump: true
-                // });
             }, 3)
         }
     }
@@ -198,16 +196,16 @@ export default class NewClass extends cc.Component {
         console.log('达成通关')
         GameTools.loadSound('sound/level/2/finish', 1, false)
 
+        gameConfig.maxLevel = 2
+        gameConfig.memoryLength = 2
+        gameConfig.currMemory = 2
         this.scheduleOnce(() => {
             console.log('游戏完成')
             // gameContext.showToast('进入记忆宝典')
-            gameConfig.maxLevel = 2
             cc.director.loadScene("startScene", () => {
-                gameConfig.memoryLength = 2
-                gameConfig.currMemory = 2
                 gameContext.showMemoryUI(true)
             });
-        }, 1)
+        }, 5)
     }
 
 

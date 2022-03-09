@@ -128,8 +128,6 @@ export default class NewClass extends cc.Component {
         this.talkBload = this.node.getChildByName('talkbg')
         this.talkRat = this.talkBload.getChildByName('ratTalk')
         this.talkMon = this.talkBload.getChildByName('monkeyTalk')
-
-
         // gameContext.playerNode.active = false
         // this.schedule(this.tankMove, 10)
     }
@@ -186,6 +184,7 @@ export default class NewClass extends cc.Component {
 
     startLeft() {
         this._dir = DIR.LEFT
+        GameTools.loadSound('sound/level/7/move', 1, true, null, true)
     }
 
     endLeft() {
@@ -194,6 +193,7 @@ export default class NewClass extends cc.Component {
 
     startRight() {
         this._dir = DIR.RIGHT
+        GameTools.loadSound('sound/level/7/move', 1, true, null, true)
     }
 
     endRight() {
@@ -202,6 +202,7 @@ export default class NewClass extends cc.Component {
 
     startUp() {
         this._dir = DIR.UP
+        GameTools.loadSound('sound/level/7/move', 1, true, null, true)
     }
     endUp() {
         this._dir = DIR.NULL
@@ -209,6 +210,7 @@ export default class NewClass extends cc.Component {
 
     startDown() {
         this._dir = DIR.DOWN
+        GameTools.loadSound('sound/level/7/move', 1, true, null, true)
     }
 
     endDown() {
@@ -238,9 +240,12 @@ export default class NewClass extends cc.Component {
             let operateUI: operateUI = gameContext.operateUI
             if (operateUI.san <= 1) {
                 operateUI.san = 10
-                gameContext.showToast('贴贴')
+                // gameContext.showToast('贴贴')
+                this.showTalkBload(1, ':贴贴')
+                GameTools.loadSound('sound/level/7/tietie', 1, false)
             }
             this._reachMuseum = true
+            GameTools.loadSound('sound/level/7/tanqi', 1, false)
         }
     }
 
@@ -259,14 +264,17 @@ export default class NewClass extends cc.Component {
             this.scheduleOnce(() => {
                 this.showTalkBload(2)
             }, 2)
-
         } else {
+            GameTools.loadSound('sound/level/7/fly', 1, false)
             gameConfig.maxLevel = 7
-            cc.director.loadScene("startScene", () => {
-                gameConfig.memoryLength = 7
-                gameConfig.currMemory = 7
-                gameContext.showMemoryUI(true)
-            });
+            gameConfig.memoryLength = 7
+            gameConfig.currMemory = 7
+            this.scheduleOnce(() => {
+                cc.director.loadScene("startScene", () => {
+                    gameContext.showMemoryUI(true)
+                });
+            }, 3)
+
         }
 
     }
@@ -285,16 +293,20 @@ export default class NewClass extends cc.Component {
                 operateUI.san = 10
                 // gameContext.showToast('贴贴')
                 this.showTalkBload(1, ':贴贴')
-                GameTools.loadSound('sound/level/wechat0', 1, false)
-
+                GameTools.loadSound('sound/level/7/tietie', 1, false)
+                // GameTools.loadSound('sound/level/wechat0', 1, false)
             }
             this._reachYueYang = true
+            GameTools.loadSound('sound/level/7/tanqi', 1, false)
+
         }
     }
 
     touchMilk() {
         this._milkNum++
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 1 });
+        GameTools.loadSound('sound/level/7/get', 1, false)
+
     }
 
     start() {
@@ -339,6 +351,8 @@ export default class NewClass extends cc.Component {
             this.showTalkBload(1, ':好喝奶茶我来了！')
             GameTools.loadSound('sound/level/wechat0', 1, false)
         })))
+        GameTools.loadSound('sound/level/7/fly', 1, false)
+
 
         console.log('播放音效')
         this.scheduleOnce(() => {
@@ -386,10 +400,10 @@ export default class NewClass extends cc.Component {
     }
 
 
-    setSyncPosition() {
-        let bodys = this.node.getComponentsInChildren(cc.RigidBody)
-        for (let i = 0; i < bodys.length; i++) {
-            bodys[i].syncPosition(true)
-        }
-    }
+    // setSyncPosition() {
+    //     let bodys = this.node.getComponentsInChildren(cc.RigidBody)
+    //     for (let i = 0; i < bodys.length; i++) {
+    //         bodys[i].syncPosition(true)
+    //     }
+    // }
 }

@@ -5,7 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { gameConfig, gameContext } from "../utils/GameTools";
+import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 
 
 const { ccclass, property } = cc._decorator;
@@ -45,10 +45,13 @@ export default class NewClass extends cc.Component {
     showMemory() {
         // gameContext.showToast('打开记忆宝典')
         gameContext.showMemoryUI(false)
+        GameTools.loadSound('sound/op/click', 1, false)
+
     }
 
     showLevel() {
         gameContext.showLevelUI()
+        GameTools.loadSound('sound/op/click', 1, false)
     }
 
     // update (dt) {}

@@ -72,13 +72,16 @@ export default class NewClass extends cc.Component {
                     itemSelect.active = false
                 }
                 itemSelect.active = true
+                GameTools.loadSound('sound/op/click', 1, false)
             }, this)
             itemMask.active = true
         }
+        GameTools.loadSound(`sound/bgm/bgmMenoy`, 0, true)
     }
 
     doReturn() {
         gameContext.showStartUI()
+        GameTools.loadSound('sound/op/click', 1, false)
     }
 
     doNext() {
@@ -86,6 +89,7 @@ export default class NewClass extends cc.Component {
             gameConfig.currLevel += 1
             // gameContext.showLevel(gameConfig.currLevel + 1)
         });
+        GameTools.loadSound('sound/op/click', 1, false)
     }
 
     start() {
@@ -153,6 +157,7 @@ export default class NewClass extends cc.Component {
     hideItem() {
         this.displayItem.active = false
         this.mask.active = false
+        GameTools.loadSound('sound/op/click', 1, false)
     }
 
     // update (dt) {}

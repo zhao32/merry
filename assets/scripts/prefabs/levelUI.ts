@@ -5,7 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { gameConfig, gameContext } from "../utils/GameTools";
+import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 
 
 const { ccclass, property } = cc._decorator;
@@ -60,9 +60,14 @@ export default class NewClass extends cc.Component {
         } else {
             console.log('打开关卡' + level)
             gameConfig.currLevel = level
-            cc.director.loadScene("playScene");
+            GameTools.loadSound(`sound/level/${level + 1}/levelname`, 1, false, null, true)
+            this.scheduleOnce(()=>{
+                cc.director.loadScene("playScene");
+            },5)
+
             // console.log(cc.director.runScene())
         }
+        GameTools.loadSound('sound/op/click', 1, false)
     }
 
     // update (dt) {}

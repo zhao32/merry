@@ -125,8 +125,6 @@ export default class NewClass extends cc.Component {
 
     start() {
         this.Restart()
-        GameTools.loadSound('sound/bgm/bgm1', 0, true)
-
     }
 
 
@@ -156,6 +154,7 @@ export default class NewClass extends cc.Component {
     }
 
     doToggle(event: cc.Toggle) {
+        GameTools.loadSound('sound/op/click', 1, false)
         var toggle = event;
         if (toggle.isChecked) {
             this.answer = toggle.node.name
@@ -176,15 +175,14 @@ export default class NewClass extends cc.Component {
     }
 
     doSelected() {
-
+        GameTools.loadSound('sound/op/click', 1, false)
         if (!this.answer) {
             gameContext.showToast('请选择答案')
         } else if (this.answer == this.toggle2.node.name) {
             console.log('选择正确')
             this.chat.active = false
             this.selectMilk.active = false
-
-
+            GameTools.loadSound('sound/level/1/money', 1, false)
         } else {
             console.log('选择错误')
             this.chat.active = false
@@ -196,13 +194,12 @@ export default class NewClass extends cc.Component {
     Restart() {
         this.unscheduleAllCallbacks()
         gameContext.hasFllow = false;
-
         this.distance = 0
         gameContext.moveType = 1
         this.setSyncPosition()
 
         this.node.setPosition(-400, 0)
-        this.weChat.x = 1067
+        // this.weChat.x = 1067
         this.setSyncPosition()
 
         this.failPage.getChildByName('flight').x = -200
@@ -212,13 +209,16 @@ export default class NewClass extends cc.Component {
         this.weChat.active = false
         this.weChatLeft.active = false
         this.weChatRight.active = false
+        this.weChat.parent = this.node.parent.parent
+
         this.selectMilk.active = false
         this.chat.active = false
         this.Mask.active = true
         this.Finish.active = true
 
         this.failPage.active = false
-       
+
+        gameContext.playerNode.active = false;
 
         this.resetToggle()
         this.preStart()
@@ -231,6 +231,7 @@ export default class NewClass extends cc.Component {
 
         this.scheduleOnce(() => {
             this.weChat.active = true
+            this.weChat.x = 0
         }, 1)
         console.log('播放音效')
 
@@ -249,9 +250,11 @@ export default class NewClass extends cc.Component {
 
         this.scheduleOnce(() => {
             this.weChat.active = false
+            this.weChat.removeFromParent()
             this.weChatLeft.active = false
             this.weChatRight.active = false
-            gameContext.playerNode.active = true
+            gameContext.playerNode.active = true;
+            (gameContext.player as hero).aniType = 'normal'
             gameContext.playerNode.setPosition(400, -165);
             (gameContext.player as hero).state = State.standRight
             EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
@@ -273,6 +276,8 @@ export default class NewClass extends cc.Component {
         self.hasMask = true
         self.Mask.active = false;
         (gameContext.player as hero).aniType = 'mask'
+
+
     }
 
     touchVirus() {
@@ -282,13 +287,12 @@ export default class NewClass extends cc.Component {
         if (this.hasMask) {
             console.log('免疫病毒')
         } else {
-            `   `
             console.log('血量减少')
             this.failPage.active = true
             this.death = true
             gameContext.playerNode.active = false
             this.failPage.x = -this.node.x
-            this.failPage.getChildByName('flight').runAction(cc.moveBy(2, new cc.Vec2(1600, 0)))
+            this.failPage.getChildByName('flight').runAction(cc.moveBy(2, new cc.Vec2(2000, 0)))
             EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
             this.scheduleOnce(() => {
                 // this.setSyncPosition()
@@ -303,13 +307,14 @@ export default class NewClass extends cc.Component {
         console.log('达成通关')
         GameTools.loadSound('sound/level/1/touchFinish', 1, false)
         gameConfig.maxLevel = 1
+        gameConfig.memoryLength = 1
+        gameConfig.currMemory = 1
         this.unscheduleAllCallbacks()
-        cc.director.loadScene("startScene", () => {
-            gameConfig.memoryLength = 1
-            gameConfig.currMemory = 1
-            gameContext.showMemoryUI(true)
-        });
-
+        this.scheduleOnce(() => {
+            cc.director.loadScene("startScene", () => {
+                gameContext.showMemoryUI(true)
+            });
+        }, 5)
     }
 
     touchShop() {
@@ -324,6 +329,8 @@ export default class NewClass extends cc.Component {
 
 
     update(dt) {
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI && !operateUI.canOperate) return
         if (this.failPage.active == true) return
         if (this.node.x >= 0) {
             this.node.x = 0
@@ -376,7 +383,7 @@ export default class NewClass extends cc.Component {
         }
 
 
-        if (gameContext.moveType == 1) {
+        if (gameContext.moveType == 1 && gameContext.playerNode.active == true) {
             this.node.x -= gameContext.viewSpeed
             this.setSyncPosition()
             // this.distance += gameContext.viewSpeed

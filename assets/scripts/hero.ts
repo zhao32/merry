@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { gameConfig, gameContext } from "./utils/GameTools";
+import operateUI from "./prefabs/operateUI";
 
 const { ccclass, property } = cc._decorator;
 
@@ -40,7 +41,7 @@ export default class NewClass extends cc.Component {
 
     private readonly Velocity = 200
 
-    private readonly Speed = 4
+    private readonly Speed = 3
 
     private aniObj = {}
     // public aniType = "normal"
@@ -279,6 +280,13 @@ export default class NewClass extends cc.Component {
 
 
     update(dt) {
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI &&!operateUI.canOperate) {
+            gameContext.viewSpeed = 0
+            let body = this.node.getComponent(cc.RigidBody)
+            body.linearVelocity = new cc.Vec2(0, 0)
+            return
+        }
 
         if (this.node.x < 20) {
             this.node.x = 20

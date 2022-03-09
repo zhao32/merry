@@ -33,6 +33,7 @@ export default class NewClass extends cc.Component {
         // gameConfig.openPhysicsDebug()
 
         let manager = cc.director.getCollisionManager();
+
         manager.enabled = true;
         // manager.enabledDebugDraw = true;
 
@@ -41,7 +42,6 @@ export default class NewClass extends cc.Component {
         gameConfig.maxLevel = 9
 
 
-        gameContext.showOperateUI()
         if (gameConfig.currLevel == 5) {
             gameContext.isChaos = true
         } else {
@@ -49,20 +49,7 @@ export default class NewClass extends cc.Component {
         }
         console.log('-------------------playScene--------------------')
 
-        let hero
-        if (gameConfig.currLevel == 4) {
-            hero = cc.instantiate(this.ratPfb)
-            gameContext.player = hero.getComponent('rat')
-        } else {
-            hero = cc.instantiate(this.heroPfb)
-            gameContext.player = hero.getComponent('hero')
-        }
-        hero.setPosition(100, -165)
-        hero.setAnchorPoint(0.5, 0.5)
-        hero.zIndex = cc.macro.MAX_ZINDEX
-        hero.active = false
-        this.node.getChildByName('gameUI').addChild(hero)
-        gameContext.playerNode = hero
+
 
     }
 
@@ -71,6 +58,26 @@ export default class NewClass extends cc.Component {
             cc.log("Next scene startScene preloaded");
         });
         gameContext.showLevel(gameConfig.currLevel)
+        gameContext.showOperateUI()
+        GameTools.loadSound(`sound/bgm/bgm${gameConfig.currLevel + 1}`, 0, true)
+
+
+        let hero
+        if (gameConfig.currLevel == 4) {
+            hero = cc.instantiate(this.ratPfb)
+            gameContext.player = hero.getComponent('rat')
+            hero.setPosition(100, -210)
+
+        } else {
+            hero = cc.instantiate(this.heroPfb)
+            gameContext.player = hero.getComponent('hero')
+            hero.setPosition(100, -165)
+        }
+        hero.setAnchorPoint(0.5, 0.5)
+        hero.zIndex = cc.macro.MAX_ZINDEX
+        hero.active = false
+        this.node.getChildByName('gameUI').addChild(hero)
+        gameContext.playerNode = hero
 
         // this.scheduleOnce(()=>{
         //     gameContext.showLevel(gameConfig.currLevel)

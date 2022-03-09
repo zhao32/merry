@@ -252,6 +252,8 @@ export default class NewClass extends cc.Component {
 
                 this.page1.active = true
                 console.log('启用生成子弹回调')
+                GameTools.loadSound('sound/level/9/bossbgm', 0, true)
+
                 this.schedule(this.hookAttack, 5)
             })))
         }, preTime + 3)
@@ -296,6 +298,8 @@ export default class NewClass extends cc.Component {
         // console.log('生成子弹')
         this.bullet.active = true
         this.bullet.setPosition(320, -95)
+        GameTools.loadSound('sound/level/9/bossAttack', 1, false)
+
         // this.bulletList.push(bullet)
     }
 
@@ -356,6 +360,7 @@ export default class NewClass extends cc.Component {
 
                     // gameContext.showToast('坦然面对死亡吧')
                     this.showTalkBload(1)
+                    GameTools.loadSound('sound/level/9/bossAttackBig', 1, false)
                     cc.tween(this.hook)
                         .by(.5, { position: cc.v3(200, -45, 0), angle: -100 })
                         .delay(1)

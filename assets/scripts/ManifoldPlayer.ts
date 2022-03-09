@@ -25,6 +25,7 @@ export default class NewClass extends cc.Component {
     // onLoad () {}
 
     start() {
+        console.log('--------人物碰撞--------·')
 
     }
 
@@ -55,25 +56,33 @@ export default class NewClass extends cc.Component {
         // // 以下属性为 矩形 和 多边形 碰撞组件特有属性
         // var ps = world.points;
 
-        if (other.tag == 0) {//墙
-            console.log('撞墙')
-            EventMgr.getInstance().sendListener(EventMgr.MISSSTONE);
-        } else if (other.tag == 1) {//奶茶
-            other.node.active = false
-            console.log('奶茶')
-            EventMgr.getInstance().sendListener(EventMgr.MISSSMILK);
-        } else if (other.tag == 2) {//岳阳楼
-            console.log('岳阳楼')
-            EventMgr.getInstance().sendListener(EventMgr.MISSSYUYANG);
-        } else if (other.tag == 3) {//博物馆
-            console.log('博物馆')
-            EventMgr.getInstance().sendListener(EventMgr.MISSSMUSEUM);
-        } else if (other.tag == 4) {//刺
-            console.log('刺')
-            EventMgr.getInstance().sendListener(EventMgr.MISSSSTAB);
-        }else if (other.tag == 5) {//
-            console.log('飞机')
-            EventMgr.getInstance().sendListener(EventMgr.MISSSSFLY);
+        if (other.tag == 1) {//完成
+            console.log('到达完成地点')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHFINISH);
+        } else if (other.tag == 2) {//口罩
+            console.log('----接触口罩----')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHMASK, {});
+        } else if (other.tag == 3) {//病毒
+            console.log('接触病毒')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHVIRUS);
+        } else if (other.tag == 4) {//荆棘
+            console.log('接触荆棘')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS);
+        } else if (other.tag == 5) {//食物
+            console.log('接触食物')
+            EventMgr.getInstance().sendListener(EventMgr.FOODGPLAYER);
+        } else if (other.tag == 14) {//接触奶茶店
+            console.log('接触奶茶店')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHTSHOP);
+        } else if (other.tag == 8) {//蝙蝠
+            // console.log('触碰蝙蝠')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
+        } else if (other.tag == 9) {//蝙蝠超声波
+            console.log('触碰蝙蝠超声波')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHWAVE);
+        } else if (other.tag == 10) {//羊
+            console.log('触碰羊--')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHSHEEP);
         }
     }
 
@@ -93,16 +102,16 @@ export default class NewClass extends cc.Component {
      */
     onCollisionExit(other, self: cc.BoxCollider) {
         // console.log('on collision exit');
-        self.node.getChildByName('label').active = false
-        // if(other.tag == 2 || other.tag == 3){
-        //     other.node.getChildByName('label').active = false
-        // }
+        // self.node.getChildByName('label').active = false
+        // // if(other.tag == 2 || other.tag == 3){
+        // //     other.node.getChildByName('label').active = false
+        // // }
     }
 
 
     // 只在两个碰撞体开始接触时被调用一次
     onBeginContact(contact: cc.PhysicsContact, selfCollider: cc.PhysicsBoxCollider, otherCollider: cc.PhysicsBoxCollider) {
-       
+
     }
 
 

@@ -75,8 +75,8 @@ export default class NewClass extends cc.Component {
         this.talkMon = this.talkBload.getChildByName('monkeyTalk')
     }
 
-      /**type 0 猴 1 鼠 2 隐藏  */
-      showTalkBload(type: number, str?: string) {
+    /**type 0 猴 1 鼠 2 隐藏  */
+    showTalkBload(type: number, str?: string) {
         if (type == 0) {
             this.talkBload.active = true
             this.talkMon.active = true
@@ -129,10 +129,10 @@ export default class NewClass extends cc.Component {
         if (operateUI.san <= 1) {
             operateUI.san = 9
             // gameContext.showToast('鼠鼠会在暗中支持你！')
-            this.showTalkBload(0,'鼠鼠会在暗中支持你！')
-            this.scheduleOnce(()=>{
+            this.showTalkBload(0, '鼠鼠会在暗中支持你！')
+            this.scheduleOnce(() => {
                 this.showTalkBload(2)
-            },3)
+            }, 3)
         }
     }
 
@@ -194,8 +194,6 @@ export default class NewClass extends cc.Component {
                 gameContext.playerNode.active = true
                 gameContext.player.state = State.standRight
                 GameTools.loadSound('sound/level/4/bossbgm', 0, true)
-
-
             });
             this.role0.runAction(cc.sequence(moveBy, callF))
             this.role1.runAction(moveBy.clone())
@@ -241,21 +239,25 @@ export default class NewClass extends cc.Component {
                     this.batHp.scaleX = this.batHpNum / 20
                 } else {
                     this.batHp.scaleX = 0
-                    let moveby = cc.moveBy(5, new cc.Vec2(0, -500));
+                    let moveby = cc.moveBy(3, new cc.Vec2(0, -500));
                     this.node.stopAllActions()
                     this.wave0.active = this.wave1.active = false
-                    let callback = cc.callFunc(() => {
-                        GameTools.loadSound('sound/level/4/finish', 1, false)
-                        gameConfig.maxLevel = 4
+                    cc.tween(this.bat).by(2, { y: -500 }, { easing: 'cubicIn' }).start()
+
+                    this.bat.runAction(moveby)
+                    console.log('打死蝙蝠，通关！')
+                    EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {})
+                    GameTools.loadSound('sound/level/4/finish', 1, false)
+
+                    gameConfig.memoryLength = 4
+                    gameConfig.currMemory = 4
+                    gameConfig.maxLevel = 4
+
+                    this.scheduleOnce(() => {
                         cc.director.loadScene("startScene", () => {
-                            gameConfig.memoryLength = 4
-                            gameConfig.currMemory = 4
                             gameContext.showMemoryUI(true)
                         });
-                    })
-                    this.setSyncPosition()
-                    this.bat.runAction(cc.sequence(moveby, callback))
-                    console.log('打死蝙蝠，通关！')
+                    }, 5)
                 }
             }
         }

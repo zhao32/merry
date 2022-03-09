@@ -98,6 +98,8 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
 
         gameContext.playerNode.active = true
+        gameContext.playerNode.getChildByName('fllow')
+            .getChildByName('blood').active = false
         gameContext.playerNode.setPosition(300, -165)
         gameContext.moveType = 1
         gameContext.hasFllow = true;
@@ -116,13 +118,18 @@ export default class NewClass extends cc.Component {
         GameTools.loadSound('sound/level/3/finish', 1, false)
 
         gameConfig.maxLevel = 3
+        gameConfig.memoryLength = 3
+        gameConfig.currMemory = 3
         this.unscheduleAllCallbacks()
         this.clear()
-        cc.director.loadScene("startScene", () => {
-            gameConfig.memoryLength = 3
-            gameConfig.currMemory = 3
-            gameContext.showMemoryUI(true)
-        });
+        this.scheduleOnce(() => {
+            cc.director.loadScene("startScene", () => {
+                // gameConfig.memoryLength = 3
+                // gameConfig.currMemory = 3
+                gameContext.showMemoryUI(true)
+            });
+        }, 5)
+
     }
 
     clear() {
@@ -145,7 +152,7 @@ export default class NewClass extends cc.Component {
     }
 
     touchBottle() {
-        GameTools.loadSound('sound/level/3/attacked', 1, false)
+        // GameTools.loadSound('sound/level/3/attacked', 1, false)
 
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
         let operateUI: operateUI = gameContext.operateUI
@@ -154,7 +161,7 @@ export default class NewClass extends cc.Component {
             // gameContext.showToast('鼠鼠醒醒！')
             GameTools.loadSound('sound/level/3/1blood', 1, false)
 
-            GameTools.loadSound('sound/level/wechat0', 1, false)
+            // GameTools.loadSound('sound/level/wechat0', 1, false)
             this.weChat.parent = this.node.parent.parent
             this.weChat.active = true
             // this.weChat.x = 667
@@ -167,14 +174,14 @@ export default class NewClass extends cc.Component {
     }
 
     touchBerrl() {
-        GameTools.loadSound('sound/level/3/attacked', 1, false)
+        // GameTools.loadSound('sound/level/3/attacked', 1, false)
 
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -4 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 0) {
             operateUI.san = 2
             // gameContext.showToast('鼠鼠醒醒！')
-            GameTools.loadSound('sound/level/3/1blood', 1, false)
+            // GameTools.loadSound('sound/level/3/1blood', 1, false)
 
             GameTools.loadSound('sound/level/wechat0', 1, false)
             this.weChat.parent = this.node.parent.parent
@@ -210,14 +217,17 @@ export default class NewClass extends cc.Component {
     update(dt) {
         // this.node.x += 1
         // this.setSyncPosition()
-        
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI && !operateUI.canOperate) return
+
+
         if (gameContext.moveType == 1) {
             this.node.x -= gameContext.viewSpeed
             this.setSyncPosition()
             this.distance += gameContext.viewSpeed
         }
 
-        if(this.node.x > 0){
+        if (this.node.x > 0) {
             this.node.x = 0
             this.distance = 0
             this.setSyncPosition()
@@ -256,12 +266,12 @@ export default class NewClass extends cc.Component {
     }
 
     createrBarrel(pos: cc.Vec2) {
-
         let barrel = cc.instantiate(this.barrelPfb)
         // barrel.opacity = 255
         this.node.addChild(barrel)
         barrel.setPosition(pos)
         this.barrelList.push(barrel)
+        GameTools.loadSound('sound/level/3/barrelfall', 1, false)
     }
 
     createrFood() {
@@ -285,8 +295,9 @@ export default class NewClass extends cc.Component {
                 let bottle = cc.instantiate(this.bottlePfb)
                 // bottle.opacity = 255
                 this.node.addChild(bottle)
-                bottle.setPosition(2000, -180)
+                bottle.setPosition(3000, -180)
                 this.bottleList.push(bottle)
+                GameTools.loadSound('sound/level/3/bottleRoll', 1, false)
             }, i * 3)
         }
     }

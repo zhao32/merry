@@ -76,7 +76,7 @@ export default class NewClass extends cc.Component {
      * @param  {Collider} self  产生碰撞的自身的碰撞组件
      */
     onCollisionStay(other, self) {
-        console.log('on collision stay');
+        // console.log('on collision stay');
     }
 
     /**
@@ -105,48 +105,50 @@ export default class NewClass extends cc.Component {
                 body.linearVelocity = new cc.Vec2(0, 0)
 
             }
-        } else if (otherCollider.tag == 1) {//完成
-            console.log('到达完成地点')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHFINISH);
-        } else if (otherCollider.tag == 2) {//口罩
-            console.log('接触口罩')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHMASK, {});
-        } else if (otherCollider.tag == 3) {//病毒
-            console.log('接触病毒')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHVIRUS);
-        } else if (otherCollider.tag == 4) {//荆棘
-            console.log('接触荆棘')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS);
-        } else if (otherCollider.tag == 5) {//酒瓶
-            console.log('老鼠接触酒瓶')
-            otherCollider.node.active = false
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHBOTTLE);
-        } else if (otherCollider.tag == 6) {//酒桶
-            console.log('老鼠接触酒桶')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHBERRL);
-        } else if (otherCollider.tag == 7) {//食物
-            console.log('老鼠接触食物')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHFOOD);
-        }
-        else if (otherCollider.tag == 8) {//蝙蝠
-            // console.log('触碰蝙蝠')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
-        }
-        else if (otherCollider.tag == 9) {//蝙蝠超声波
-            console.log('触碰蝙蝠超声波')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHWAVE);
-        } else if (otherCollider.tag == 10) {//羊
-            console.log('触碰羊')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHSHEEP);
-        }
+        } 
+        // else if (otherCollider.tag == 1) {//完成
+        //     console.log('到达完成地点')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHFINISH);
+        // } else if (otherCollider.tag == 2) {//口罩
+        //     console.log('接触口罩')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHMASK, {});
+        // } else if (otherCollider.tag == 3) {//病毒
+        //     console.log('接触病毒')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHVIRUS);
+        // } else if (otherCollider.tag == 4) {//荆棘
+        //     console.log('接触荆棘')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS);
+        // } else if (otherCollider.tag == 5) {//酒瓶
+        //     console.log('老鼠接触酒瓶')
+        //     otherCollider.node.active = false
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHBOTTLE);
+        // } else if (otherCollider.tag == 6) {//酒桶
+        //     console.log('老鼠接触酒桶')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHBERRL);
+        // } else if (otherCollider.tag == 7) {//食物
+        //     console.log('老鼠接触食物')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHFOOD);
+        // }
+
+        // else if (otherCollider.tag == 8) {//蝙蝠
+        //     // console.log('触碰蝙蝠')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHBAT);
+        // }
+        // else if (otherCollider.tag == 9) {//蝙蝠超声波
+        //     console.log('触碰蝙蝠超声波')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHWAVE);
+        // } else if (otherCollider.tag == 10) {//羊
+        //     console.log('触碰羊')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHSHEEP);
+        // }
         // else if (otherCollider.tag == 11) {//装修怪手臂
         //     console.log('触碰装修怪手臂')
         //     EventMgr.getInstance().sendListener(EventMgr.TOUCHTANKARM);
         // }
-        else if (otherCollider.tag == 12) {//装修怪
-            console.log('触碰装修怪')
-            EventMgr.getInstance().sendListener(EventMgr.TOUCHTANK);
-        }
+        // else if (otherCollider.tag == 12) {//装修怪
+        //     console.log('触碰装修怪')
+        //     EventMgr.getInstance().sendListener(EventMgr.TOUCHTANK);
+        // }
     }
 
 
