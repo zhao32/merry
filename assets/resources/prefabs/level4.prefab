@@ -1735,7 +1735,7 @@
         "__id__": 83
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [],
     "_prefab": {
       "__id__": 96
@@ -2364,7 +2364,7 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 15
+      "y": 0
     },
     "_size": {
       "__type__": "cc.Size",
@@ -2528,7 +2528,7 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 15
+      "y": 0
     },
     "_size": {
       "__type__": "cc.Size",
@@ -2692,7 +2692,7 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 15
+      "y": 0
     },
     "_size": {
       "__type__": "cc.Size",
@@ -2856,7 +2856,7 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 15
+      "y": 0
     },
     "_size": {
       "__type__": "cc.Size",

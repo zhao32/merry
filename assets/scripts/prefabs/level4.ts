@@ -204,7 +204,7 @@ export default class NewClass extends cc.Component {
         // cc.tween(this.sheepMis)
         //     .to(2, { y: -60 }, { easing: 'sineOutIn' })
         //     .start()
-
+        EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {})
         cc.tween(this.water)
             .to(10, { height: 350 }, { easing: 'cubicIn' })
             .delay(1)

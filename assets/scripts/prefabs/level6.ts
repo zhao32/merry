@@ -184,7 +184,7 @@ export default class NewClass extends cc.Component {
 
     startLeft() {
         this._dir = DIR.LEFT
-        GameTools.loadSound('sound/level/7/move', 1, true, null, true)
+        GameTools.loadSound('sound/level/7/move', 1, false)
     }
 
     endLeft() {
@@ -193,7 +193,7 @@ export default class NewClass extends cc.Component {
 
     startRight() {
         this._dir = DIR.RIGHT
-        GameTools.loadSound('sound/level/7/move', 1, true, null, true)
+        GameTools.loadSound('sound/level/7/move', 1, false)
     }
 
     endRight() {
@@ -202,7 +202,7 @@ export default class NewClass extends cc.Component {
 
     startUp() {
         this._dir = DIR.UP
-        GameTools.loadSound('sound/level/7/move', 1, true, null, true)
+        GameTools.loadSound('sound/level/7/move', 1, false)
     }
     endUp() {
         this._dir = DIR.NULL
@@ -210,7 +210,7 @@ export default class NewClass extends cc.Component {
 
     startDown() {
         this._dir = DIR.DOWN
-        GameTools.loadSound('sound/level/7/move', 1, true, null, true)
+        GameTools.loadSound('sound/level/7/move', 1, false)
     }
 
     endDown() {
@@ -228,7 +228,6 @@ export default class NewClass extends cc.Component {
             this.player.y += this._dis
         }
         this._dir = DIR.NULL
-
     }
 
     touchMuseum() {
@@ -269,14 +268,13 @@ export default class NewClass extends cc.Component {
             gameConfig.maxLevel = 7
             gameConfig.memoryLength = 7
             gameConfig.currMemory = 7
+            EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {})
             this.scheduleOnce(() => {
                 cc.director.loadScene("startScene", () => {
                     gameContext.showMemoryUI(true)
                 });
             }, 3)
-
         }
-
     }
 
     touchStab() {

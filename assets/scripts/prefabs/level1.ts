@@ -107,33 +107,97 @@ export default class NewClass extends cc.Component {
     }
 
     update(dt) {
+        // let operateUI: operateUI = gameContext.operateUI
+        // if (operateUI && !operateUI.canOperate) return
+
+        // if (gameContext.moveType == 1) {
+        //     this.node.x -= gameContext.viewSpeed
+        //     this.setSyncPosition()
+        //     this.distance += gameContext.viewSpeed
+        // }
+
+        // if (this.node.x > 0) {
+        //     this.node.x = 0
+        //     this.distance = 0
+        //     this.setSyncPosition()
+        // }
+
+
+        // if (this.distance > 1334) {
+        //     // gameContext.moveType = 0
+        //     let operateUI: operateUI = gameContext.operateUI
+        //     if (gameContext.moveType == 1) {
+        //         gameContext.moveType = 0
+        //         if ((gameContext.player as hero).state == State.walkRight) {
+        //             operateUI.startRight()
+        //         } else if ((gameContext.player as hero).state == State.walkLeft) {
+        //             operateUI.startLeft()
+        //         }
+        //     }
+        // }
+
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI && !operateUI.canOperate) return
-
-        if (gameContext.moveType == 1) {
-            this.node.x -= gameContext.viewSpeed
-            this.setSyncPosition()
-            this.distance += gameContext.viewSpeed
-        }
-
-        if (this.node.x > 0) {
+        // if (this.failPage.active == true) return
+        if (this.node.x >= 0) {
             this.node.x = 0
-            this.distance = 0
-            this.setSyncPosition()
-        }
-
-
-        if (this.distance > 1334) {
-            // gameContext.moveType = 0
-            let operateUI: operateUI = gameContext.operateUI
             if (gameContext.moveType == 1) {
                 gameContext.moveType = 0
+                // this.node.x = 0
+                let operateUI: operateUI = gameContext.operateUI
                 if ((gameContext.player as hero).state == State.walkRight) {
                     operateUI.startRight()
                 } else if ((gameContext.player as hero).state == State.walkLeft) {
                     operateUI.startLeft()
                 }
+
+            } else {
+                if (gameContext.playerNode.x > 300 && (gameContext.player as hero).state == State.walkRight) {
+                    gameContext.moveType = 1
+                    let operateUI: operateUI = gameContext.operateUI
+                    if ((gameContext.player as hero).state == State.walkRight) {
+                        operateUI.startRight()
+                    } else if ((gameContext.player as hero).state == State.walkLeft) {
+                        operateUI.startLeft()
+                    }
+
+                }
+
             }
+        }
+
+        let nodeWidth = this.node.width
+        let sceneWidth = this.node.parent.width
+        let posRight =sceneWidth - nodeWidth
+
+        if (this.node.x <= posRight) {
+            this.node.x = posRight
+            if (gameContext.moveType == 1) {
+                gameContext.moveType = 0
+                let operateUI: operateUI = gameContext.operateUI
+                if ((gameContext.player as hero).state == State.walkRight) {
+                    operateUI.startRight()
+                } else if ((gameContext.player as hero).state == State.walkLeft) {
+                    operateUI.startLeft()
+                }
+            } else {
+                if (gameContext.playerNode.x <= 1100 && (gameContext.player as hero).state == State.walkLeft) {
+                    gameContext.moveType = 1
+                    let operateUI: operateUI = gameContext.operateUI
+                    if ((gameContext.player as hero).state == State.walkRight) {
+                        operateUI.startRight()
+                    } else if ((gameContext.player as hero).state == State.walkLeft) {
+                        operateUI.startLeft()
+                    }
+                }
+            }
+        }
+
+
+        if (gameContext.moveType == 1 && gameContext.playerNode.active == true) {
+            this.node.x -= gameContext.viewSpeed
+            this.setSyncPosition()
+            // this.distance += gameContext.viewSpeed
         }
     }
 
@@ -199,6 +263,7 @@ export default class NewClass extends cc.Component {
         gameConfig.maxLevel = 2
         gameConfig.memoryLength = 2
         gameConfig.currMemory = 2
+        EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         this.scheduleOnce(() => {
             console.log('游戏完成')
             // gameContext.showToast('进入记忆宝典')

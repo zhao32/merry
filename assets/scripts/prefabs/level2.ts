@@ -91,6 +91,7 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        this.weChat.x = 0
         gameConfig.currLevel = 2
         this.unscheduleAllCallbacks()
         this.node.setPosition(0, 0)
@@ -122,6 +123,7 @@ export default class NewClass extends cc.Component {
         gameConfig.currMemory = 3
         this.unscheduleAllCallbacks()
         this.clear()
+        EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         this.scheduleOnce(() => {
             cc.director.loadScene("startScene", () => {
                 // gameConfig.memoryLength = 3

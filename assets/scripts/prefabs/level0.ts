@@ -90,7 +90,6 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().registerListener(EventMgr.TOUCHVIRUS, this, this.touchVirus.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHFINISH, this, this.touchFinish.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.TOUCHTSHOP, this, this.touchShop.bind(this))
-
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
 
         this.Mask = this.node.getChildByName('Mask')
@@ -310,6 +309,7 @@ export default class NewClass extends cc.Component {
         gameConfig.memoryLength = 1
         gameConfig.currMemory = 1
         this.unscheduleAllCallbacks()
+        EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         this.scheduleOnce(() => {
             cc.director.loadScene("startScene", () => {
                 gameContext.showMemoryUI(true)
@@ -359,8 +359,12 @@ export default class NewClass extends cc.Component {
             }
         }
 
-        if (this.node.x <= -1334) {
-            this.node.x = -1334
+        let nodeWidth = this.node.width
+        let sceneWidth = this.node.parent.width
+        let posRight =sceneWidth - nodeWidth
+
+        if (this.node.x <= posRight) {
+            this.node.x = posRight
             if (gameContext.moveType == 1) {
                 gameContext.moveType = 0
                 let operateUI: operateUI = gameContext.operateUI

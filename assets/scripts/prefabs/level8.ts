@@ -37,6 +37,9 @@ export default class NewClass extends cc.Component {
     @property(cc.Prefab)
     bulletPfb: cc.Prefab = null;
 
+    @property(cc.Node)
+    btnHome: cc.Node = null;
+
 
     callback: any
 
@@ -97,6 +100,10 @@ export default class NewClass extends cc.Component {
         this.btnGiveUp = this.page2.getChildByName('btnGiveUp')
         this.btnRestart = this.page2.getChildByName('btnRestart')
 
+        this.btnHome.on(cc.Node.EventType.TOUCH_END, () => {
+            cc.director.loadScene("startScene");
+        }, this)
+
         this.btnGiveUp.on(cc.Node.EventType.TOUCH_END, () => {
             this.page2.active = false
             this.page1.active = true
@@ -114,9 +121,9 @@ export default class NewClass extends cc.Component {
                 gameContext.playerNode.y -= 400
                 gameContext.playerNode.getComponent(cc.Animation).play('standRight')
                 gameConfig.maxLevel = 9
+                gameConfig.memoryLength = 9
+                gameConfig.currMemory = 9
                 cc.director.loadScene("startScene", () => {
-                    gameConfig.memoryLength = 9
-                    gameConfig.currMemory = 9
                     gameContext.showMemoryUI(true)
                 });
                 // rat.spriteFrame = new cc.SpriteFrame()
@@ -126,12 +133,16 @@ export default class NewClass extends cc.Component {
         }, this)
         this.btnContine.on(cc.Node.EventType.TOUCH_END, () => {
             this.page2.active = false
-            this.page3.active = true
+            this.page1.active = true
+            this.enemy.runAction(cc.sequence(cc.moveBy(1, new cc.Vec2(300, 0)), cc.callFunc(() => {
+                this.page3.active = true
+            })))
+
             gameContext.playerNode.active = false
 
-            let rat = gameContext.playerNode.getChildByName('fllow')
-            rat.y -= 400
-            rat.getComponent(cc.Animation).play('ratstandRight')
+            // let rat = gameContext.playerNode.getChildByName('fllow')
+            // rat.y -= 400
+            // rat.getComponent(cc.Animation).play('ratstandRight')
         }, this)
         this.btnRestart.on(cc.Node.EventType.TOUCH_END, () => {
             this.Restart()
@@ -217,6 +228,7 @@ export default class NewClass extends cc.Component {
         this.enemyHpNum = 20
         this.enemyHp.scaleX = 1
         this.death.x = 800
+        this.enemy.x = 550
         gameContext.playerNode.active = false
         this._touchArm = false
 
@@ -368,7 +380,7 @@ export default class NewClass extends cc.Component {
                         .start()
 
                     let rat = gameContext.playerNode.getChildByName('fllow')
-                    rat.getComponent(cc.Animation).play('angleRat').repeatCount = Infinity
+
                     let blood = rat.getChildByName('blood')
 
                     this.page1.runAction(cc.sequence(cc.delayTime(2), cc.blink(2, 5), cc.callFunc(() => {
@@ -386,8 +398,11 @@ export default class NewClass extends cc.Component {
                         this.page2.active = true
                     })
                     let moveBy = cc.moveBy(3, new cc.Vec2(0, 400))
-                    let delay = cc.delayTime(4)
-                    rat.runAction(cc.sequence(delay, moveBy, callF))
+                    let delay = cc.delayTime(6)
+                    let callF0 = cc.callFunc(() => {
+                        rat.getComponent(cc.Animation).play('angleRat').repeatCount = Infinity
+                    })
+                    rat.runAction(cc.sequence(delay, callF0, moveBy, callF))
 
                 }
             }

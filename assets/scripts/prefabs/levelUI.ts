@@ -24,10 +24,12 @@ export default class NewClass extends cc.Component {
     init(data: any, callback) {
         this.callback = callback
     }
+    _canTouch:boolean = true
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this._canTouch = true
         for (let i = 0; i < 9; i++) {
             let box = this.node.getChildByName(`box${i}`)
             box.on(cc.Node.EventType.TOUCH_END, this.selectPass, this)
@@ -53,6 +55,8 @@ export default class NewClass extends cc.Component {
 
     selectPass(touch: any) {
         // console.log(touch)
+        if(this._canTouch == false)return
+        this._canTouch = false
         let name: string = touch.target.name
         let level = parseInt(name.charAt(name.length - 1))
         if (level > gameConfig.maxLevel) {
@@ -62,6 +66,7 @@ export default class NewClass extends cc.Component {
             gameConfig.currLevel = level
             GameTools.loadSound(`sound/level/${level + 1}/levelname`, 1, false, null, true)
             this.scheduleOnce(()=>{
+                this._canTouch = true
                 cc.director.loadScene("playScene");
             },5)
 

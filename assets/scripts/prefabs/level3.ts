@@ -246,13 +246,12 @@ export default class NewClass extends cc.Component {
 
                     this.bat.runAction(moveby)
                     console.log('打死蝙蝠，通关！')
-                    EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {})
                     GameTools.loadSound('sound/level/4/finish', 1, false)
 
                     gameConfig.memoryLength = 4
                     gameConfig.currMemory = 4
                     gameConfig.maxLevel = 4
-
+                    EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {})
                     this.scheduleOnce(() => {
                         cc.director.loadScene("startScene", () => {
                             gameContext.showMemoryUI(true)

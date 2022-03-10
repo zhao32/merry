@@ -42,12 +42,11 @@ export default class NewClass extends cc.Component {
         this.schedule(() => {
             let food = cc.instantiate(this.foodPfb)
             this.node.addChild(food)
-            food.opacity = 255
             food.setPosition(400 + Math.random() * 634, 500)
             this.foodList.push(food)
             cc.tween(food)
                 .to(1.5, { y: -200 }, { easing: 'cubicIn' })
-                .call(() => { food.opacity = 0; this.touchGround() })
+                .call(() => { this.touchGround(); })
                 .start()
         }, 1.5 - i * 20)
     }
@@ -59,8 +58,6 @@ export default class NewClass extends cc.Component {
             console.log('删除食物')
         }
     }
-
-
 
     init(data: any, callback) {
         this.callback = callback
@@ -170,7 +167,8 @@ export default class NewClass extends cc.Component {
             gameConfig.maxLevel = 6
             gameConfig.memoryLength = 6
             gameConfig.currMemory = 6
-            this.scheduleOnce(() => {   
+            EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {})
+            this.scheduleOnce(() => {
                 cc.director.loadScene("startScene", () => {
                     gameContext.showMemoryUI(true)
                 });
