@@ -182,6 +182,15 @@ export default class NewClass extends cc.Component {
             this.chat.active = false
             this.selectMilk.active = false
             GameTools.loadSound('sound/level/1/money', 1, false)
+
+            let naicha = gameContext.playerNode.getChildByName('naicha')
+            if (naicha) {
+                naicha.active = true
+                GameTools.loadSound('sound/level/1/touchMask', 1, false)
+                // this.scheduleOnce(() => {
+                //     naicha.active = false
+                // }, 1)
+            }
         } else {
             console.log('选择错误')
             this.chat.active = false
@@ -303,6 +312,12 @@ export default class NewClass extends cc.Component {
 
     touchFinish() {
         if (this.answer != this.toggle2.node.name) return
+        let naicha = gameContext.playerNode.getChildByName('naicha')
+        if (naicha.active == false) return
+        else {
+            naicha.active = false
+        }
+
         console.log('达成通关')
         GameTools.loadSound('sound/level/1/touchFinish', 1, false)
         gameConfig.maxLevel = 1
@@ -310,6 +325,7 @@ export default class NewClass extends cc.Component {
         gameConfig.currMemory = 1
         this.unscheduleAllCallbacks()
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+        (gameContext.player as hero).state = State.standRight
         this.scheduleOnce(() => {
             cc.director.loadScene("startScene", () => {
                 gameContext.showMemoryUI(true)
@@ -345,7 +361,7 @@ export default class NewClass extends cc.Component {
                 }
 
             } else {
-                if (gameContext.playerNode.x > 300 && (gameContext.player as hero).state == State.walkRight) {
+                if (gameContext.playerNode.x > 400 && (gameContext.player as hero).state == State.walkRight) {
                     gameContext.moveType = 1
                     let operateUI: operateUI = gameContext.operateUI
                     if ((gameContext.player as hero).state == State.walkRight) {
@@ -361,7 +377,7 @@ export default class NewClass extends cc.Component {
 
         let nodeWidth = this.node.width
         let sceneWidth = this.node.parent.width
-        let posRight =sceneWidth - nodeWidth
+        let posRight = sceneWidth - nodeWidth
 
         if (this.node.x <= posRight) {
             this.node.x = posRight

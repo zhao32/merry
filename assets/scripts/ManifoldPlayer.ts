@@ -70,6 +70,7 @@ export default class NewClass extends cc.Component {
             EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS);
         } else if (other.tag == 5) {//食物
             console.log('接触食物')
+            other.node.opacity = false
             EventMgr.getInstance().sendListener(EventMgr.FOODGPLAYER);
         } else if (other.tag == 14) {//接触奶茶店
             console.log('接触奶茶店')
@@ -83,6 +84,9 @@ export default class NewClass extends cc.Component {
         } else if (other.tag == 10) {//羊
             console.log('触碰羊--')
             EventMgr.getInstance().sendListener(EventMgr.TOUCHSHEEP);
+        }else if (other.tag == 12) {//装修怪
+            console.log('触碰装修怪')
+            EventMgr.getInstance().sendListener(EventMgr.TOUCHTANK);
         }
     }
 

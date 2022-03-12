@@ -152,7 +152,7 @@ export default class NewClass extends cc.Component {
                 }
 
             } else {
-                if (gameContext.playerNode.x > 300 && (gameContext.player as hero).state == State.walkRight) {
+                if (gameContext.playerNode.x > 400 && (gameContext.player as hero).state == State.walkRight) {
                     gameContext.moveType = 1
                     let operateUI: operateUI = gameContext.operateUI
                     if ((gameContext.player as hero).state == State.walkRight) {
@@ -214,12 +214,16 @@ export default class NewClass extends cc.Component {
 
 
     Restart() {
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI) operateUI.san = 10
         this.unscheduleAllCallbacks()
         gameContext.hasFllow = false
         gameConfig.currLevel = 1
         this.distance = 0
         gameContext.moveType = 1
+        this.setSyncPosition()
         this.node.setPosition(0, 0)
+        this.setSyncPosition()
 
         this.preStart()
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
@@ -264,6 +268,7 @@ export default class NewClass extends cc.Component {
         gameConfig.memoryLength = 2
         gameConfig.currMemory = 2
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+        (gameContext.player as hero).state = State.standRight
         this.scheduleOnce(() => {
             console.log('游戏完成')
             // gameContext.showToast('进入记忆宝典')

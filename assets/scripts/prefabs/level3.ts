@@ -29,6 +29,7 @@ export default class NewClass extends cc.Component {
 
     page0: cc.Node
     page1: cc.Node
+    ratHead:cc.Node
 
     wave0: cc.Node
     wave1: cc.Node
@@ -73,6 +74,9 @@ export default class NewClass extends cc.Component {
         this.talkBload = this.node.getChildByName('talkbg')
         this.talkRat = this.talkBload.getChildByName('ratTalk')
         this.talkMon = this.talkBload.getChildByName('monkeyTalk')
+
+        this.ratHead = this.page1.getChildByName('ratHead')
+        this.ratHead.active = false
     }
 
     /**type 0 猴 1 鼠 2 隐藏  */
@@ -130,8 +134,11 @@ export default class NewClass extends cc.Component {
             operateUI.san = 9
             // gameContext.showToast('鼠鼠会在暗中支持你！')
             this.showTalkBload(0, '鼠鼠会在暗中支持你！')
+            this.ratHead.active = true
             this.scheduleOnce(() => {
                 this.showTalkBload(2)
+                this.ratHead.active = false
+
             }, 3)
         }
     }
@@ -139,6 +146,10 @@ export default class NewClass extends cc.Component {
 
 
     Restart() {
+        this.ratHead.active = false
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI) operateUI.san = 10
+
         this.showTalkBload(2)
         this.unscheduleAllCallbacks()
         gameContext.moveType = 0
@@ -251,7 +262,8 @@ export default class NewClass extends cc.Component {
                     gameConfig.memoryLength = 4
                     gameConfig.currMemory = 4
                     gameConfig.maxLevel = 4
-                    EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {})
+                    EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+                    (gameContext.player as hero).state = State.standRight
                     this.scheduleOnce(() => {
                         cc.director.loadScene("startScene", () => {
                             gameContext.showMemoryUI(true)

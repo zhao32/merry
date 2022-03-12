@@ -2423,7 +2423,7 @@
       "ctor": "Float64Array",
       "array": [
         3006,
-        -190.85,
+        -197.85,
         0,
         0,
         0,
@@ -3966,10 +3966,10 @@
     "node": {
       "__id__": 104
     },
-    "_enabled": true,
+    "_enabled": false,
     "alignMode": 1,
     "_target": null,
-    "_alignFlags": 44,
+    "_alignFlags": 4,
     "_left": 2.5019999999999527,
     "_right": -2.5019999999999527,
     "_top": 0,

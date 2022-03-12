@@ -94,6 +94,8 @@ export default class NewClass extends cc.Component {
     }
     /**type 0 猴 1 鼠 2 隐藏  */
     showTalkBload(type: number, str?: string) {
+        this.talkBload.parent = this.node.parent.parent
+        this.talkBload.x = 0
         if (type == 0) {
             this.talkBload.active = true
             this.talkMon.active = true
@@ -131,6 +133,9 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI) operateUI.san = 10
+
         this.showTalkBload(2)
         this.unscheduleAllCallbacks()
         gameContext.moveType = 0
@@ -162,6 +167,7 @@ export default class NewClass extends cc.Component {
         gameConfig.currLevel = 7
         gameContext.playerNode.setPosition(100, -165)
         gameContext.playerNode.active = false
+        gameContext.playerNode.getChildByName('fllow').getChildByName('blood').active = false
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         this.preStart()
     }
@@ -271,6 +277,7 @@ export default class NewClass extends cc.Component {
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 2) {
             EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+            (gameContext.player as hero).state = State.standRight
             this.unscheduleAllCallbacks()
             this.arm.stopAllActions()
             GameTools.loadSound('sound/level/8/bgmFail', 0, false)//14
@@ -314,7 +321,6 @@ export default class NewClass extends cc.Component {
                     gameConfig.memoryLength = 8
                     gameConfig.currMemory = 8
                     cc.director.loadScene("startScene", () => {
-
                         gameContext.showMemoryUI(true)
                     });
                 })
@@ -393,7 +399,6 @@ export default class NewClass extends cc.Component {
         if (Math.abs(tankPos.x - gameContext.playerNode.x) < 100) {
             let player = gameContext.player as hero
             if (player && player.attack == true) {
-                console.log('攻击蝙蝠')
                 player.attack = false
                 this.tankHpNum -= 2
                 if (this.tankHpNum > 0) {
@@ -410,9 +415,9 @@ export default class NewClass extends cc.Component {
                     let callF = cc.callFunc(() => {
                         console.log('游戏完成')
                         gameConfig.maxLevel = 8
-                        cc.director.loadScene("startScene", () => {
-                            gameConfig.memoryLength = 8
-                            gameConfig.currMemory = 8
+                        gameConfig.memoryLength = 8
+                        gameConfig.currMemory = 8
+                        cc.director.loadScene("startScene", () => {        
                             gameContext.showMemoryUI(true)
                         });
                     })

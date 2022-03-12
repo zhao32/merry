@@ -515,7 +515,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 250,
+      "width": 200,
       "height": 750
     },
     "_anchorPoint": {
@@ -527,7 +527,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        2413.992,
+        2380.992,
         -0.47200000000003683,
         0,
         0,
@@ -564,7 +564,7 @@
     "_target": null,
     "_alignFlags": 37,
     "_left": 0,
-    "_right": 129.0079999999998,
+    "_right": 187.0079999999998,
     "_top": 0.47200000000002174,
     "_bottom": -0.47200000000002174,
     "_verticalCenter": 0,
@@ -595,7 +595,7 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 250,
+      "width": 200,
       "height": 750
     },
     "_id": ""
@@ -2170,7 +2170,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        2391.494,
+        2378.494,
         51.66,
         0,
         0,
@@ -4332,7 +4332,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
+        -34,
         0,
         0,
         0,
@@ -4684,7 +4684,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        99.363,
+        90.363,
         -88.057,
         0,
         0,
@@ -6817,7 +6817,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 104,
+      "width": 104.01,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -6869,8 +6869,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "森林梅果",
-    "_N$string": "森林梅果",
+    "_string": "一杯lai茶",
+    "_N$string": "一杯lai茶",
     "_fontSize": 26,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -6962,7 +6962,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        2610.577,
+        2636.577,
         -206.267,
         0,
         0,

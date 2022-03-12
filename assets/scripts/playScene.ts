@@ -39,7 +39,7 @@ export default class NewClass extends cc.Component {
 
         // gameConfig.currLevel = 0
         // gameConfig.maxLevel = 0
-        gameConfig.maxLevel = 9
+        // gameConfig.maxLevel = 9
 
 
         if (gameConfig.currLevel == 5) {
@@ -49,6 +49,7 @@ export default class NewClass extends cc.Component {
         }
         console.log('-------------------playScene--------------------')
 
+        gameContext.showOperateUI()
 
 
     }
@@ -57,8 +58,9 @@ export default class NewClass extends cc.Component {
         cc.director.preloadScene("startScene", function () {
             cc.log("Next scene startScene preloaded");
         });
+        // this.scheduleOnce(()=>{        gameContext.showLevel(gameConfig.currLevel)
+        // },0.1)
         gameContext.showLevel(gameConfig.currLevel)
-        gameContext.showOperateUI()
         GameTools.loadSound(`sound/bgm/bgm${gameConfig.currLevel + 1}`, 0, true)
 
 

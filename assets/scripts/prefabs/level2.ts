@@ -50,6 +50,8 @@ export default class NewClass extends cc.Component {
 
     callback: any
 
+    _start: boolean = false
+
     init(data: any, callback) {
         this.callback = callback
     }
@@ -71,6 +73,7 @@ export default class NewClass extends cc.Component {
         this.weChat = this.node.getChildByName('weChat')
         this.weChat.active = false
         this.weChat.parent = this.node.parent.parent
+        this._start = false
     }
 
     onDisable() {
@@ -91,11 +94,16 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        this.clear()
+        this._start = false
         this.weChat.x = 0
         gameConfig.currLevel = 2
         this.unscheduleAllCallbacks()
         this.node.setPosition(0, 0)
-        EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 10 });
+        this.setSyncPosition()
+        // EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 10 });
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI) operateUI.san = 10
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
 
         gameContext.playerNode.active = true
@@ -124,6 +132,7 @@ export default class NewClass extends cc.Component {
         this.unscheduleAllCallbacks()
         this.clear()
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
+        (gameContext.player as hero).state = State.standRight
         this.scheduleOnce(() => {
             cc.director.loadScene("startScene", () => {
                 // gameConfig.memoryLength = 3
@@ -166,6 +175,8 @@ export default class NewClass extends cc.Component {
             // GameTools.loadSound('sound/level/wechat0', 1, false)
             this.weChat.parent = this.node.parent.parent
             this.weChat.active = true
+            this.weChat.getChildByName('label').getComponent(cc.Label).string = '：鼠鼠醒醒！'
+
             // this.weChat.x = 667
 
             this.scheduleOnce(() => {
@@ -188,6 +199,7 @@ export default class NewClass extends cc.Component {
             GameTools.loadSound('sound/level/wechat0', 1, false)
             this.weChat.parent = this.node.parent.parent
             this.weChat.active = true
+            this.weChat.getChildByName('label').getComponent(cc.Label).string = '：鼠鼠醒醒！'
             // this.weChat.x = 667
 
             this.scheduleOnce(() => {
@@ -202,7 +214,17 @@ export default class NewClass extends cc.Component {
     }
 
     preStart() {
+
+        this.weChat.parent = this.node.parent.parent
+        this.weChat.active = true
+        this.weChat.getChildByName('label').getComponent(cc.Label).string = '一起去搞点好吃的吧！'
+        // this.weChat.x = 667
+
         this.scheduleOnce(() => {
+            this.weChat.active = false
+            this.weChat.removeFromParent()
+            this._start = true
+
             gameContext.playerNode.setPosition(300, -165)
             EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
                 left: true,
@@ -212,8 +234,19 @@ export default class NewClass extends cc.Component {
                 fight: false,
                 jump: true
             });
+        }, 3)
+        // this.scheduleOnce(() => {
+        //     gameContext.playerNode.setPosition(300, -165)
+        //     EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
+        //         left: true,
+        //         right: true,
+        //         top: false,
+        //         down: false,
+        //         fight: false,
+        //         jump: true
+        //     });
 
-        }, 1)
+        // }, 1)
     }
 
     update(dt) {
@@ -262,7 +295,7 @@ export default class NewClass extends cc.Component {
             // this.createrFood()
         }
 
-        if (this._bottleNum == 0) {
+        if (this._bottleNum == 0 && this._start == true) {
             this.createBottle()
         }
     }

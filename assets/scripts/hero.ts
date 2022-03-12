@@ -98,6 +98,10 @@ export default class NewClass extends cc.Component {
         this.state = State.standRight
         this._attack = false
         this.fllow = this.node.getChildByName('fllow')
+        let naicha = this.node.getChildByName('naicha')
+        if(naicha){
+            naicha.active = false
+        }
     }
 
     start() {
@@ -292,6 +296,13 @@ export default class NewClass extends cc.Component {
             this.node.x = 20
         } else if (this.node.x > this.node.parent.width - 20) {
             this.node.x = this.node.parent.width - 20
+        }
+        let body = this.node.getComponent(cc.RigidBody)
+        if (gameContext.moveType == 0) {
+            gameContext.viewSpeed = 0
+        } else {
+            body.linearVelocity = new cc.Vec2(0, body.linearVelocity.y)
+
         }
         // if (this.isMove && this._state != State.standLeft && this._state != State.standRight) {
         //     if (this.node.x < -500) {

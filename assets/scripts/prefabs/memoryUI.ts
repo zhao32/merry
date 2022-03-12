@@ -87,6 +87,7 @@ export default class NewClass extends cc.Component {
     doNext() {
         cc.director.loadScene("playScene", () => {
             gameConfig.currLevel += 1
+            gameConfig.currLevel = gameConfig.currLevel % 9
             // gameContext.showLevel(gameConfig.currLevel + 1)
         });
         GameTools.loadSound('sound/op/click', 1, false)
@@ -98,7 +99,12 @@ export default class NewClass extends cc.Component {
         // console.log('gameContext.memoryLength:' + gameContext.memoryLength)
         let data = new Array(gameConfig.memoryLength)
         if (this.isFromGame) {
-            this.scroll.scrollTo(cc.v2((gameConfig.currMemory) / 5, 0), 0.1);
+            // this.scroll.scrollTo(cc.v2((gameConfig.currMemory) / 9, 0), 0.1);
+            if (gameConfig.currMemory < 5) {
+                this.scroll.scrollToLeft();
+            } else {
+                this.scroll.scrollToRight();
+            }
         } else {
             this.scroll.scrollTo(cc.v2((gameConfig.memoryLength) / 5, 0), 0.1);
         }
@@ -109,7 +115,8 @@ export default class NewClass extends cc.Component {
             let itemMask = item.getChildByName('itemMask')
             let itemShow = item.getChildByName('item')
             GameTools.loadItemIcon(data[i], itemShow)
-            if (i == gameConfig.currMemory && this.isFromGame) {
+            if (i == gameConfig.currMemory - 1 && this.isFromGame) {
+                itemMask.active = true
                 itemMask.runAction(cc.sequence(cc.fadeOut(1), cc.callFunc(() => {
                     itemMask.active = false
                     itemMask.opacity = 255

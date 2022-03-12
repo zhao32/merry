@@ -206,11 +206,13 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI) operateUI.san = 10
         this.showTalkBload(-1)
 
         this.unscheduleAllCallbacks()
         gameContext.moveType = 0
-        EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 10 });
+        // EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 10 });
         let rat: cc.Node = gameContext.playerNode.getChildByName('fllow')
         let blood = rat.getChildByName('blood')
         blood.setScale(1)
@@ -242,11 +244,18 @@ export default class NewClass extends cc.Component {
     /**前情提要 */
     preStart() {
         let preTime = 1
-        this.death.runAction(cc.moveBy(3, new cc.Vec2(-300, 0)))
+        this.scheduleOnce(() => {
+            this.death.runAction(cc.moveBy(3, new cc.Vec2(-300, 0)))
+
+        }, 20)
 
         this.scheduleOnce(() => {
             this.showTalkBload(0)
-        }, preTime + 1)
+        }, 25)
+
+        // this.scheduleOnce(() => {
+        //     this.showTalkBload(0)
+        // }, preTime + 1)
         console.log('播放音效')
         this.scheduleOnce(() => {
             this.showTalkBload(-1)
@@ -268,7 +277,7 @@ export default class NewClass extends cc.Component {
 
                 this.schedule(this.hookAttack, 5)
             })))
-        }, preTime + 3)
+        }, 28)
     }
 
     touchArm() {

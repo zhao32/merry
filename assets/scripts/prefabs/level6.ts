@@ -268,7 +268,7 @@ export default class NewClass extends cc.Component {
             gameConfig.maxLevel = 7
             gameConfig.memoryLength = 7
             gameConfig.currMemory = 7
-            EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {})
+            EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
             this.scheduleOnce(() => {
                 cc.director.loadScene("startScene", () => {
                     gameContext.showMemoryUI(true)
@@ -312,6 +312,8 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        let operateUI: operateUI = gameContext.operateUI
+        if (operateUI) operateUI.san = 10
         this.showTalkBload(2)
         this.unscheduleAllCallbacks()
         gameContext.moveType = 0

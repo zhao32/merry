@@ -39,7 +39,7 @@ export default class NewClass extends cc.Component {
     }
 
     start() {
-        gameConfig.currMemory = -1
+        // gameConfig.currMemory = -1
     }
 
     showMemory() {
