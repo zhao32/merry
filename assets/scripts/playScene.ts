@@ -49,7 +49,6 @@ export default class NewClass extends cc.Component {
         }
         console.log('-------------------playScene--------------------')
 
-        gameContext.showOperateUI()
 
 
     }
@@ -63,6 +62,7 @@ export default class NewClass extends cc.Component {
         gameContext.showLevel(gameConfig.currLevel)
         GameTools.loadSound(`sound/bgm/bgm${gameConfig.currLevel + 1}`, 0, true)
 
+        gameContext.showOperateUI()
 
         let hero
         if (gameConfig.currLevel == 4) {

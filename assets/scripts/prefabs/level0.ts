@@ -289,12 +289,12 @@ export default class NewClass extends cc.Component {
     }
 
     touchVirus() {
-        GameTools.loadSound('sound/level/1/touchVirus', 1, false)
         console.log('触碰病毒回调')
         if (this.death) return
         if (this.hasMask) {
             console.log('免疫病毒')
         } else {
+            GameTools.loadSound('sound/level/1/touchVirus', 1, false)
             console.log('血量减少')
             this.failPage.active = true
             this.death = true

@@ -369,10 +369,12 @@ export default class NewClass extends cc.Component {
             gameContext.isPause = false
             frame = 'pic/kongzhi-3'
             cc.director.resume()
+            if (gameContext.isPlayMusic == true) cc.audioEngine.resumeMusic()
         } else {
             gameContext.isPause = true
             frame = 'pic/kongzhi-2'
             cc.director.pause()
+            cc.audioEngine.pauseMusic()
         }
         let sprite = this.btnPause.getComponent(cc.Sprite) as cc.Sprite;
         cc.resources.load(frame, cc.SpriteFrame, (err, spriteFrame) => {
