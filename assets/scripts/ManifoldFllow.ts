@@ -55,7 +55,7 @@ export default class NewClass extends cc.Component {
         // // 以下属性为 矩形 和 多边形 碰撞组件特有属性
         // var ps = world.points;
 
-        if (other.tag == 5) {//酒瓶
+        if (other.tag == 15) {//酒瓶
             console.log('老鼠接触酒瓶')
             other.node.opacity = 0
             EventMgr.getInstance().sendListener(EventMgr.TOUCHBOTTLE);
@@ -65,7 +65,7 @@ export default class NewClass extends cc.Component {
             EventMgr.getInstance().sendListener(EventMgr.TOUCHBERRL);
         } else if (other.tag == 7) {//食物
             console.log('老鼠接触食物')
-            other.node.opacity = 0
+            other.node.active = false
             EventMgr.getInstance().sendListener(EventMgr.TOUCHFOOD);
         }
     }

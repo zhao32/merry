@@ -181,22 +181,29 @@ export default class NewClass extends cc.Component {
             console.log('选择正确')
             this.chat.active = false
             this.selectMilk.active = false
-            GameTools.loadSound('sound/level/1/money', 1, false)
-
-            let naicha = gameContext.playerNode.getChildByName('naicha')
-            if (naicha) {
-                naicha.active = true
-                GameTools.loadSound('sound/level/1/touchMask', 1, false)
-                // this.scheduleOnce(() => {
-                //     naicha.active = false
-                // }, 1)
-            }
         } else {
             console.log('选择错误')
             this.chat.active = false
             this.selectMilk.active = false
-            gameContext.showToast('你谁啊！')
+            // gameContext.showToast('你谁啊！')
         }
+
+        let naicha = gameContext.playerNode.getChildByName('naicha')
+        if (naicha) {
+            naicha.active = true
+            GameTools.loadSound('sound/level/1/touchMask', 1, false)
+            this.scheduleOnce(() => {
+                naicha.active = false
+            }, 2)
+        }
+
+        GameTools.loadSound('sound/level/1/money', 1, false)
+        this.weChat.active = true
+        this.weChat.getChildByName('shop').active = true
+        this.scheduleOnce(() => {
+            this.weChat.active = false
+            this.weChat.getChildByName('shop').active = false
+        }, 2)
     }
 
     Restart() {
@@ -206,7 +213,7 @@ export default class NewClass extends cc.Component {
         gameContext.moveType = 1
         this.setSyncPosition()
 
-        this.node.setPosition(-400, 0)
+        this.node.setPosition(-500, 0)
         // this.weChat.x = 1067
         this.setSyncPosition()
 
@@ -218,6 +225,9 @@ export default class NewClass extends cc.Component {
         this.weChatLeft.active = false
         this.weChatRight.active = false
         this.weChat.parent = this.node.parent.parent
+        this.weChat.getChildByName('shop').active = false
+        this.weChat.getChildByName('rat').active = false
+
 
         this.selectMilk.active = false
         this.chat.active = false
@@ -258,7 +268,7 @@ export default class NewClass extends cc.Component {
 
         this.scheduleOnce(() => {
             this.weChat.active = false
-            this.weChat.removeFromParent()
+            // this.weChat.removeFromParent()
             this.weChatLeft.active = false
             this.weChatRight.active = false
             gameContext.playerNode.active = true;
@@ -284,8 +294,6 @@ export default class NewClass extends cc.Component {
         self.hasMask = true
         self.Mask.active = false;
         (gameContext.player as hero).aniType = 'mask'
-
-
     }
 
     touchVirus() {
@@ -311,12 +319,22 @@ export default class NewClass extends cc.Component {
     }
 
     touchFinish() {
-        if (this.answer != this.toggle2.node.name) return
-        let naicha = gameContext.playerNode.getChildByName('naicha')
-        if (naicha.active == false) return
-        else {
-            naicha.active = false
+        if (this.answer != this.toggle2.node.name) {
+            this.weChat.active = true
+            this.weChat.getChildByName('rat').active = true
+            GameTools.loadSound('sound/level/wechat0', 1, false)
+
+            this.scheduleOnce(() => {
+                this.weChat.active = false
+                this.weChat.getChildByName('rat').active = false
+            }, 2)
+            return
         }
+        // let naicha = gameContext.playerNode.getChildByName('naicha')
+        // if (naicha.active == false) return
+        // else {
+        //     naicha.active = false
+        // }
 
         console.log('达成通关')
         GameTools.loadSound('sound/level/1/touchFinish', 1, false)

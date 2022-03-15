@@ -47,7 +47,7 @@ export default class NewClass extends cc.Component {
             this.foodList.push(food)
             cc.tween(food)
                 .to(1.5, { y: -200 }, { easing: 'cubicIn' })
-                .call(() => { this.touchGround(); food.destroy() })
+                .call(() => { this.touchGround(food); food.destroy() })
                 .start()
         }, 1.5 - i * 20)
     }
@@ -71,7 +71,7 @@ export default class NewClass extends cc.Component {
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         gameContext.hasFllow = false
-        EventMgr.getInstance().registerListener(EventMgr.FOODGROUND, this, this.touchGround.bind(this))
+        // EventMgr.getInstance().registerListener(EventMgr.FOODGROUND, this, this.touchGround.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.FOODGPLAYER, this, this.touchPlayer.bind(this))
         EventMgr.getInstance().registerListener(EventMgr.RESTART, this, this.Restart.bind(this))
 
@@ -154,7 +154,8 @@ export default class NewClass extends cc.Component {
         }, preTime + 7)
     }
 
-    touchGround() {
+    touchGround(node: cc.Node) {
+        if (node.opacity == 0) return
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -1 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 0) {

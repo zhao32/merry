@@ -23,7 +23,6 @@ export default class NewClass extends cc.Component {
     onLoad() {
         gameContext.showStartUI()
         this.loadGameData()
-        GameTools.loadSound(`sound/bgm/bgmMain`, 0, true)
     }
 
     start() {

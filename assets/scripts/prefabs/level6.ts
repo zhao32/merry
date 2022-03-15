@@ -238,10 +238,12 @@ export default class NewClass extends cc.Component {
             EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -7 });
             let operateUI: operateUI = gameContext.operateUI
             if (operateUI.san <= 1) {
-                operateUI.san = 10
-                // gameContext.showToast('贴贴')
                 this.showTalkBload(1, ':贴贴')
                 GameTools.loadSound('sound/level/7/tietie', 1, false)
+                this.scheduleOnce(() => {
+                    this.showTalkBload(2)
+                    operateUI.san = 10
+                }, 1)
             }
             this._reachMuseum = true
             GameTools.loadSound('sound/level/7/tanqi', 1, false)
@@ -288,15 +290,17 @@ export default class NewClass extends cc.Component {
             EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -7 });
             let operateUI: operateUI = gameContext.operateUI
             if (operateUI.san <= 1) {
-                operateUI.san = 10
                 // gameContext.showToast('贴贴')
                 this.showTalkBload(1, ':贴贴')
                 GameTools.loadSound('sound/level/7/tietie', 1, false)
+                this.scheduleOnce(() => {
+                    this.showTalkBload(2)
+                    operateUI.san = 10
+                }, 1)
                 // GameTools.loadSound('sound/level/wechat0', 1, false)
             }
             this._reachYueYang = true
             GameTools.loadSound('sound/level/7/tanqi', 1, false)
-
         }
     }
 

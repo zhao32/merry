@@ -120,6 +120,12 @@ export default class NewClass extends cc.Component {
         this._foodNum = 0
         this.preStart()
 
+        for (let i = 0; i < 6; i++) {
+            let food = this.node.getChildByName(`food${i}`)
+            food.active = true
+
+        }
+
     }
 
     touchFinish() {
@@ -168,9 +174,7 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 0) {
-            operateUI.san = 2
             // gameContext.showToast('鼠鼠醒醒！')
-            GameTools.loadSound('sound/level/3/1blood', 1, false)
 
             // GameTools.loadSound('sound/level/wechat0', 1, false)
             this.weChat.parent = this.node.parent.parent
@@ -182,6 +186,8 @@ export default class NewClass extends cc.Component {
             this.scheduleOnce(() => {
                 this.weChat.active = false
                 this.weChat.removeFromParent()
+                GameTools.loadSound('sound/level/3/1blood', 1, false)
+                operateUI.san = 2
             }, 3)
         }
     }
@@ -192,11 +198,10 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -4 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 0) {
-            operateUI.san = 2
-            // gameContext.showToast('鼠鼠醒醒！')
-            // GameTools.loadSound('sound/level/3/1blood', 1, false)
 
-            GameTools.loadSound('sound/level/wechat0', 1, false)
+            // gameContext.showToast('鼠鼠醒醒！')
+
+            // GameTools.loadSound('sound/level/wechat0', 1, false)
             this.weChat.parent = this.node.parent.parent
             this.weChat.active = true
             this.weChat.getChildByName('label').getComponent(cc.Label).string = '：鼠鼠醒醒！'
@@ -205,12 +210,18 @@ export default class NewClass extends cc.Component {
             this.scheduleOnce(() => {
                 this.weChat.active = false
                 this.weChat.removeFromParent()
+                operateUI.san = 2
+                GameTools.loadSound('sound/level/3/1blood', 1, false)
+
             }, 3)
         }
     }
 
     touchFood() {
-        EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 2 });
+        console.log('老鼠吃到食物')
+        // let operateUI: operateUI = gameContext.operateUI
+        // operateUI.san += 1
+        EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 1 });
     }
 
     preStart() {
@@ -250,25 +261,41 @@ export default class NewClass extends cc.Component {
     }
 
     update(dt) {
-        // this.node.x += 1
-        // this.setSyncPosition()
+
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI && !operateUI.canOperate) return
-
-
-        if (gameContext.moveType == 1) {
-            this.node.x -= gameContext.viewSpeed
-            this.setSyncPosition()
-            this.distance += gameContext.viewSpeed
-        }
-
-        if (this.node.x > 0) {
+        // if (this.failPage.active == true) return
+        if (this.node.x >= 0) {
             this.node.x = 0
-            this.distance = 0
-            this.setSyncPosition()
+            if (gameContext.moveType == 1) {
+                gameContext.moveType = 0
+                // this.node.x = 0
+                let operateUI: operateUI = gameContext.operateUI
+                if ((gameContext.player as hero).state == State.walkRight) {
+                    operateUI.startRight()
+                } else if ((gameContext.player as hero).state == State.walkLeft) {
+                    operateUI.startLeft()
+                }
+
+            } else {
+                if (gameContext.playerNode.x > 500 && (gameContext.player as hero).state == State.walkRight) {
+                    gameContext.moveType = 1
+                    let operateUI: operateUI = gameContext.operateUI
+                    if ((gameContext.player as hero).state == State.walkRight) {
+                        operateUI.startRight()
+                    } else if ((gameContext.player as hero).state == State.walkLeft) {
+                        operateUI.startLeft()
+                    }
+                }
+            }
         }
 
-        if (this.distance > 1334) {
+        let nodeWidth = this.node.width
+        let sceneWidth = this.node.parent.width
+        let posRight = sceneWidth - nodeWidth
+
+        if (this.node.x <= posRight) {
+            this.node.x = posRight
             if (gameContext.moveType == 1) {
                 gameContext.moveType = 0
                 let operateUI: operateUI = gameContext.operateUI
@@ -277,21 +304,75 @@ export default class NewClass extends cc.Component {
                 } else if ((gameContext.player as hero).state == State.walkLeft) {
                     operateUI.startLeft()
                 }
+            } else {
+                if (gameContext.playerNode.x <= 1100 && (gameContext.player as hero).state == State.walkLeft) {
+                    gameContext.moveType = 1
+                    let operateUI: operateUI = gameContext.operateUI
+                    if ((gameContext.player as hero).state == State.walkRight) {
+                        operateUI.startRight()
+                    } else if ((gameContext.player as hero).state == State.walkLeft) {
+                        operateUI.startLeft()
+                    }
+                }
             }
         }
-        // console.log(this.distance)
 
-        if (gameContext.playerNode.x > 400 && this._barrelNum == 0) {
+
+        if (gameContext.moveType == 1 && gameContext.playerNode.active == true) {
+            this.node.x -= gameContext.viewSpeed
+            this.setSyncPosition()
+            // this.distance += gameContext.viewSpeed
+        }
+        // this.node.x += 1
+        // this.setSyncPosition()
+        // let operateUI: operateUI = gameContext.operateUI
+        // if (operateUI && !operateUI.canOperate) return
+
+
+        // if (gameContext.moveType == 1) {
+        //     this.node.x -= gameContext.viewSpeed
+        //     this.setSyncPosition()
+        //     this.distance += gameContext.viewSpeed
+        // }
+
+        // if (this.node.x > 0) {
+        //     this.node.x = 0
+        //     this.distance = 0
+        //     this.setSyncPosition()
+        // }
+
+        // if (this.distance > 1334) {
+        //     if (gameContext.moveType == 1) {
+        //         gameContext.moveType = 0
+        //         let operateUI: operateUI = gameContext.operateUI
+        //         if ((gameContext.player as hero).state == State.walkRight) {
+        //             operateUI.startRight()
+        //         } else if ((gameContext.player as hero).state == State.walkLeft) {
+        //             operateUI.startLeft()
+        //         }
+        //     }
+        // }
+        // console.log(this.distance)
+        // console.log('this.node.x:'+this.node.x )
+
+        if (this.node.x < -1000 && this._barrelNum == 0) {
             this._barrelNum = 1
-            this.createrBarrel(new cc.Vec2(this.distance + gameContext.playerNode.x, 500))
+            this.createrBarrel(new cc.Vec2(1500, 500))
             console.log('Barrel:' + (this.distance + 200))
-        } else if (gameContext.playerNode.x > 600 && this._barrelNum == 1) {
+            console.log('-----------------------1---------------------------')
+            console.log(gameContext.playerNode.x)
+        } else if (this.node.x < -1500 && this._barrelNum == 1) {
             this._barrelNum = 2
-            this.createrBarrel(new cc.Vec2(this.distance + gameContext.playerNode.x, 500))
-        } else if (gameContext.playerNode.x > 800 && this._barrelNum == 2) {
+            this.createrBarrel(new cc.Vec2(2000, 500))
+            console.log('-----------------------2---------------------------')
+            console.log(gameContext.playerNode.x)
+        } else if (this.node.x < -2000 && this._barrelNum == 2) {
             this._barrelNum = 3
-            this.createrBarrel(new cc.Vec2(this.distance + gameContext.playerNode.x, 500))
-        } else if (gameContext.playerNode.x >= 800 && this._foodNum == 0) {
+            console.log('-----------------------3---------------------------')
+            console.log(gameContext.playerNode.x + this.node.width - 500)
+
+            this.createrBarrel(new cc.Vec2(2500, 500))
+        } else if (this.node.x < -3000 && this._foodNum == 0) {
             // this.createrFood()
         }
 

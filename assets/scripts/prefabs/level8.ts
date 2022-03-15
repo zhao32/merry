@@ -218,7 +218,7 @@ export default class NewClass extends cc.Component {
         blood.setScale(1)
 
 
-        this.bullet.setPosition(320, -95)
+        this.bullet.setPosition(-20, -95)
         this.bullet.active = false
 
         this.page0.active = true

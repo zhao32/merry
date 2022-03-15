@@ -39,11 +39,13 @@ export default class NewClass extends cc.Component {
     init(data: any, callback) {
         this.callback = callback
         this.isFromGame = data
+        GameTools.loadSound(`sound/bgm/bgmMenoy`, 0, true)
     }
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+
         this.displayItem = this.node.getChildByName('itemShow')
         this.mask = this.node.getChildByName('mask')
 
@@ -76,7 +78,6 @@ export default class NewClass extends cc.Component {
             }, this)
             itemMask.active = true
         }
-        GameTools.loadSound(`sound/bgm/bgmMenoy`, 0, true)
     }
 
     doReturn() {

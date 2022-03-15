@@ -161,7 +161,6 @@ export default class NewClass extends cc.Component {
         this.tank.getChildByName('front').getComponent(cc.Animation).play('frontNo')
         this.tank.getChildByName('back').getComponent(cc.Animation).play('backNo')
 
-        this.schedule(this.tankMove, 10)
         this.armAttack()
 
         gameConfig.currLevel = 7
@@ -180,10 +179,15 @@ export default class NewClass extends cc.Component {
             // console.log('播放音效')
             // this.label0.string = '【猴】:装修太累了吧！'
             this.showTalkBload(0, ':装修太累了吧，睡一会儿休息一下zzz....')
-            GameTools.loadSound('sound/level/8/hulu', 1, false)
 
         }, preTime)
         console.log('播放音效')
+        this.scheduleOnce(() => {
+            this.showTalkBload(2)
+            GameTools.loadSound('sound/level/8/hulu', 1, false)
+            this.schedule(this.tankMove, 10)
+        }, preTime + 4)
+
         this.scheduleOnce(() => {
             this.page0.runAction(cc.sequence(cc.fadeOut(2), cc.callFunc(() => {
                 EventMgr.getInstance().sendListener(EventMgr.OPENOPERATE, {
@@ -197,10 +201,10 @@ export default class NewClass extends cc.Component {
                 gameContext.playerNode.active = true
                 gameContext.player.state = State.standRight
                 this.page1.active = true
-                this.showTalkBload(2)
             })))
 
-        }, preTime + 4)
+
+        }, 11)
 
     }
 
@@ -324,7 +328,7 @@ export default class NewClass extends cc.Component {
                         gameContext.showMemoryUI(true)
                     });
                 })
-                this.tank.runAction(cc.sequence(cc.delayTime(1), cc.blink(1.5, 5), callF))
+                this.tank.runAction(cc.sequence(cc.delayTime(1), cc.blink(2, 5), callF))
             }, 11)
 
         }
@@ -417,7 +421,7 @@ export default class NewClass extends cc.Component {
                         gameConfig.maxLevel = 8
                         gameConfig.memoryLength = 8
                         gameConfig.currMemory = 8
-                        cc.director.loadScene("startScene", () => {        
+                        cc.director.loadScene("startScene", () => {
                             gameContext.showMemoryUI(true)
                         });
                     })

@@ -48,9 +48,6 @@ export default class NewClass extends cc.Component {
             gameContext.isChaos = false
         }
         console.log('-------------------playScene--------------------')
-
-
-
     }
 
     start() {

@@ -122,10 +122,11 @@ export default class NewClass extends cc.Component {
         console.log('this._san:' + this._san)
         if (params.disSan > 0) {
             GameTools.loadSound('sound/op/huixie', 1, false)
-            cc.tween(this.blood).to(2, { width: 240 * (this._san / 10) })
+            console.log('回血')
+            cc.tween(this.blood).to(2, { width: 240 * (this._san / 10) }).start()
         } else {
             this.blood.width = 240 * (this._san / 10)
-            if (gameConfig.currLevel == 1) {//老鼠
+            if (gameConfig.currLevel == 2) {//老鼠
                 if (this._san <= 0) {
                     GameTools.loadSound('sound/level/3/1blood', 1, false)
                 } else {

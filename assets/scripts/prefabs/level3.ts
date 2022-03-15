@@ -131,15 +131,14 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -3 });
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 1) {
-            operateUI.san = 9
             // gameContext.showToast('鼠鼠会在暗中支持你！')
             this.showTalkBload(0, '鼠鼠会在暗中支持你！')
             this.ratHead.active = true
             this.scheduleOnce(() => {
                 this.showTalkBload(2)
                 this.ratHead.active = false
-
-            }, 3)
+                operateUI.san = 9
+            }, 2)
         }
     }
 
@@ -177,6 +176,11 @@ export default class NewClass extends cc.Component {
         this.wave0.active = false
         this.wave1.active = false
 
+        this.role0.getComponent(cc.Animation).stop('walkRight')
+        this.role1.getComponent(cc.Animation).stop('ratWalkRight')
+        GameTools.loadItemIcon('pic/level5_5',this.role0)
+        GameTools.loadItemIcon('pic/level5_6',this.role1)
+
         this.unscheduleAllCallbacks()
         this.role0.stopAllActions()
         this.role1.stopAllActions()
@@ -208,7 +212,7 @@ export default class NewClass extends cc.Component {
             });
             this.role0.runAction(cc.sequence(moveBy, callF))
             this.role1.runAction(moveBy.clone())
-        }, preTime + 1)
+        }, 8)
     }
 
 

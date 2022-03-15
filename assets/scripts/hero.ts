@@ -152,7 +152,7 @@ export default class NewClass extends cc.Component {
             }
             this.playJump()
         } else if (this._state == State.jumpRight) {
-            this.fllow.x = -180
+            this.fllow.x = -150
             aniFllow = "ratJumpRight"
             ani = this.aniObj[this._aniType].jumpRight
             if (this.isMove) {
@@ -164,7 +164,7 @@ export default class NewClass extends cc.Component {
             }
             this.playJump()
         } else if (this._state == State.walkLeft) {
-            this.fllow.x = 180
+            this.fllow.x = 150
 
             ani = this.aniObj[this._aniType].walkLeft
             aniFllow = "ratWalkLeft"
@@ -176,7 +176,7 @@ export default class NewClass extends cc.Component {
                 gameContext.viewSpeed = -this.Speed
             }
         } else if (this._state == State.walkRight) {
-            this.fllow.x = -180
+            this.fllow.x = -150
 
             ani = this.aniObj[this._aniType].walkRight
             aniFllow = "ratWalkRight"
@@ -189,7 +189,7 @@ export default class NewClass extends cc.Component {
                 gameContext.viewSpeed = this.Speed
             }
         } else if (this._state == State.standLeft) {
-            this.fllow.x = 180
+            this.fllow.x = 150
 
             this.isMove = false
             ani = this.aniObj[this._aniType].standLeft
@@ -202,7 +202,7 @@ export default class NewClass extends cc.Component {
             // this.node.getComponent(cc.Animation).stop()
             // this._dir = this.RIGHT
             aniFllow = "ratStandRight"
-            this.fllow.x = -180
+            this.fllow.x = -150
 
 
             this.isMove = false

@@ -124,18 +124,23 @@ export default class NewClass extends cc.Component {
     /**前情提要 */
     preStart() {
         let preTime = 1
+        this.page0.getChildByName('talkbg').active = true
         this.scheduleOnce(() => {
             this.label0.active = true
             GameTools.loadSound('sound/level/wechat0', 1, false)
         }, preTime)
-        this.scheduleOnce(() => {
-            GameTools.loadSound('sound/level/5/hulu', 1, false)
-        }, preTime + 1)
-        console.log('播放音效')
+       
         this.scheduleOnce(() => {
             this.label1.active = true
             GameTools.loadSound('sound/level/wechat1', 1, false)
         }, preTime + 3)
+
+        this.scheduleOnce(() => {
+            this.label0.active = false
+            this.label1.active = false
+            this.page0.getChildByName('talkbg').active = false
+            GameTools.loadSound('sound/level/5/hulu', 1, false)
+        }, preTime + 6)
 
         this.scheduleOnce(() => {
             this.page0.active = false
@@ -153,7 +158,7 @@ export default class NewClass extends cc.Component {
                 jump: true
             });
 
-        }, preTime + 8)
+        }, preTime + 12)
     }
 
     fight() {
@@ -172,10 +177,17 @@ export default class NewClass extends cc.Component {
         } else if (this.hpNum == 4) {
             GameTools.loadSound('sound/level/5/hp4', 1, false)
         } else if (this.hpNum == 1) {
-            let move0 = cc.moveBy(.5, new cc.Vec2(0, 50))
-            let move1 = cc.moveBy(.5, new cc.Vec2(0, -50))
+            let endPos0 = this.couldList[1].getPosition()
+            let endPos1 = this.couldList[2].getPosition()
+            let endPos2 = this.couldList[3].getPosition()
+            let endPos3 = new cc.Vec2(endPos2.x + 300,endPos2.y)
 
-            this.sheep.runAction(cc.sequence(move0, move1, move0, move1, cc.moveTo(2, new cc.Vec2(0, 500)), cc.callFunc(() => {
+            let move0 = cc.moveTo(.5, endPos0)
+            let move1 = cc.moveTo(.5, endPos1)
+            let move2 = cc.moveTo(.5, endPos2)
+            let move3 = cc.moveTo(.5, endPos3)
+
+            this.sheep.runAction(cc.sequence(move0, move1, move2, move3, cc.callFunc(() => {
                 console.log('追样结束')
                 this.page1.active = false
                 gameContext.playerNode.active = false

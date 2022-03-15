@@ -19,10 +19,18 @@ export default class NewClass extends cc.Component {
     @property
     text: string = 'hello';
 
+    @property(cc.Node)
+    baoMu: cc.Node = null;
+
+    @property(cc.Label)
+    infoDisplay: cc.Label = null;
+
+
     callback: any
 
     init(data: any, callback) {
         this.callback = callback
+        this.baoMu.active = false
     }
     _canTouch:boolean = true
 
@@ -47,6 +55,7 @@ export default class NewClass extends cc.Component {
             }
 
         }
+
     }
 
     start() {
@@ -64,10 +73,14 @@ export default class NewClass extends cc.Component {
         } else {
             console.log('打开关卡' + level)
             gameConfig.currLevel = level
-            GameTools.loadSound(`sound/level/${level + 1}/levelname`, 1, false, null, true)
+            GameTools.loadSound(`sound/level/${level + 1}/levelname`, 0, false, null, true)
+            this.baoMu.active = true
+            let indx = ['一','二','三','四','五','六','七','八','九',]
+            this.infoDisplay.string = `第${indx[level]}关 ${gameConfig.levelData[level].name}`
             this.scheduleOnce(()=>{
                 this._canTouch = true
                 cc.director.loadScene("playScene");
+                // this.baoMu.active = false
             },5)
 
             // console.log(cc.director.runScene())

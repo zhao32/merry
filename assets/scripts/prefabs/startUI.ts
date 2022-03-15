@@ -27,8 +27,10 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     btnStart: cc.Node = null;
 
+   
     init(data: any, callback) {
         this.callback = callback
+        GameTools.loadSound(`sound/bgm/bgmMain`, 0, true)
     }
 
     // LIFE-CYCLE CALLBACKS:

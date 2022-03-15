@@ -70,7 +70,7 @@ export default class NewClass extends cc.Component {
             EventMgr.getInstance().sendListener(EventMgr.TOUCHTHORNS);
         } else if (other.tag == 5) {//食物
             console.log('接触食物')
-            other.node.opacity = false
+            other.node.opacity = 0
             EventMgr.getInstance().sendListener(EventMgr.FOODGPLAYER);
         } else if (other.tag == 14) {//接触奶茶店
             console.log('接触奶茶店')
