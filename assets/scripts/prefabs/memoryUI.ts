@@ -36,18 +36,29 @@ export default class NewClass extends cc.Component {
     displayItem: cc.Node
     isFromGame: boolean
 
+    maskStart: cc.Node
+    itemStart: cc.Node
+
     init(data: any, callback) {
         this.callback = callback
         this.isFromGame = data
         GameTools.loadSound(`sound/bgm/bgmMenoy`, 0, true)
+
     }
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
 
+
         this.displayItem = this.node.getChildByName('itemShow')
         this.mask = this.node.getChildByName('mask')
+        this.maskStart = this.node.getChildByName('maskStart')
+        this.itemStart = this.node.getChildByName('itemStart')
+
+        this.maskStart.active = false
+        this.itemStart.active = false
+
 
         this.btnRetrun = this.node.getChildByName('btnRetrun')
         this.btnNext = this.node.getChildByName('btnNext')
@@ -95,6 +106,7 @@ export default class NewClass extends cc.Component {
     }
 
     start() {
+        GameTools.loadItemIcon(`pic/item${gameConfig.currMemory - 1}`, this.itemStart)
         // let data = [0, 1, 2, 3, 4, 5, 6]
         // gameContext.memoryLength = 6
         // console.log('gameContext.memoryLength:' + gameContext.memoryLength)
@@ -106,6 +118,12 @@ export default class NewClass extends cc.Component {
             } else {
                 this.scroll.scrollToRight();
             }
+            this.itemStart.active = true
+            this.itemStart.runAction(cc.sequence(cc.delayTime(1), cc.scaleTo(2, 0), cc.callFunc(() => {
+                this.itemStart.setScale(0, 0)
+                this.itemStart.active = true
+            })))
+            // this.maskStart.active = true
         } else {
             this.scroll.scrollTo(cc.v2((gameConfig.memoryLength) / 5, 0), 0.1);
         }
@@ -118,10 +136,20 @@ export default class NewClass extends cc.Component {
             GameTools.loadItemIcon(data[i], itemShow)
             if (i == gameConfig.currMemory - 1 && this.isFromGame) {
                 itemMask.active = true
+                itemShow.opacity = 0
+
                 itemMask.runAction(cc.sequence(cc.fadeOut(1), cc.callFunc(() => {
                     itemMask.active = false
                     itemMask.opacity = 255
-                    itemShow.runAction(cc.sequence(cc.delayTime(.5), cc.blink(1, 3)))
+                    let callF = cc.callFunc(() => {
+                        itemShow.opacity = 255
+
+                    })
+                    if (this.isFromGame) {
+                        itemShow.runAction(cc.sequence(cc.delayTime(2), callF, cc.blink(1, 3)))
+                    } else {
+                        itemShow.runAction(cc.sequence(cc.delayTime(0.5), callF, cc.blink(1, 3)))
+                    }
                 })))
             } else {
                 itemMask.active = false

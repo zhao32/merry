@@ -1,9 +1,9 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "angleRat",
+  "_name": "angleRatRight1",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.2,
+  "_duration": 0.3,
   "sample": 10,
   "speed": 1,
   "wrapMode": 2,
@@ -14,31 +14,23 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "485f7b81-2884-4e2f-b906-085b16feb415"
+              "__uuid__": "f0f5c85a-53ee-41c6-8086-49ac63545e26"
             }
           },
           {
             "frame": 0.1,
             "value": {
-              "__uuid__": "c0ff82c9-6181-4217-8ff7-65a5d87b5e6d"
+              "__uuid__": "21d598a0-2db3-4b0c-80c1-527def1bf0e6"
+            }
+          },
+          {
+            "frame": 0.2,
+            "value": {
+              "__uuid__": "9752ffaa-6fe6-4b0d-b2cb-9c4c242bac1b"
             }
           }
         ]
       }
-    },
-    "props": {
-      "width": [
-        {
-          "frame": 0,
-          "value": 98
-        }
-      ],
-      "height": [
-        {
-          "frame": 0,
-          "value": 148
-        }
-      ]
     }
   },
   "events": []

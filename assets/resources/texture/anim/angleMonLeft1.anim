@@ -1,9 +1,9 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "angleRat",
+  "_name": "angleMonLeft1",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.2,
+  "_duration": 0.3,
   "sample": 10,
   "speed": 1,
   "wrapMode": 2,
@@ -14,31 +14,23 @@
           {
             "frame": 0,
             "value": {
-              "__uuid__": "485f7b81-2884-4e2f-b906-085b16feb415"
+              "__uuid__": "f4f1530d-cc8e-425c-ba3b-5f236b7e2217"
             }
           },
           {
             "frame": 0.1,
             "value": {
-              "__uuid__": "c0ff82c9-6181-4217-8ff7-65a5d87b5e6d"
+              "__uuid__": "594a6241-336e-4f90-bcaf-7a9c2a1b1236"
+            }
+          },
+          {
+            "frame": 0.2,
+            "value": {
+              "__uuid__": "9bc8ce0e-63f1-4651-bf0f-e3edf2aef3a0"
             }
           }
         ]
       }
-    },
-    "props": {
-      "width": [
-        {
-          "frame": 0,
-          "value": 98
-        }
-      ],
-      "height": [
-        {
-          "frame": 0,
-          "value": 148
-        }
-      ]
     }
   },
   "events": []

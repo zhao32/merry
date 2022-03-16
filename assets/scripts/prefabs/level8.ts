@@ -40,6 +40,9 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     btnHome: cc.Node = null;
 
+    @property(cc.Node)
+    ratBlood: cc.Node = null;
+
 
     callback: any
 
@@ -83,6 +86,8 @@ export default class NewClass extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        gameConfig.openPhysics(true)
+
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         // this.setSyncPosition()
@@ -105,13 +110,37 @@ export default class NewClass extends cc.Component {
         }, this)
 
         this.btnGiveUp.on(cc.Node.EventType.TOUCH_END, () => {
-            this.page2.active = false
-            this.page1.active = true
+            this.page2.active = true
+            this.page1.active = false
+            gameConfig.openPhysics(false)
 
-            gameContext.playerNode.getComponent(cc.Animation).play('angleMonkey').repeatCount = Infinity
+            let player = gameContext.player as hero
+            let animMon = []
+            let ratanim = ''
+            if (player.state == State.standLeft || player.state == State.walkLeft) {
+                ratanim = 'angleRatLeft1'
+                animMon = ['angleMonRight0', "angleMonRight1"]
+            } else {
+                animMon = ['angleMonLeft0', "angleMonLeft1"]
+
+                ratanim = 'angleRatRight1'
+
+            }
+
+            gameContext.playerNode.getComponent(cc.Animation).play(animMon[0]).repeatCount = Infinity
             EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
             let moveBy = cc.moveBy(3, new cc.Vec2(0, 400))
             let moveBy1 = cc.moveBy(3, new cc.Vec2(0, -400))
+
+            let callF0 = cc.callFunc(() => {
+                let rat = gameContext.playerNode.getChildByName('fllow')
+                // rat.y -= 400
+                rat.getComponent(cc.Animation).play(ratanim)
+                gameContext.playerNode.getComponent(cc.Animation).play(animMon[1])
+
+            })
+
+
 
             let callF = cc.callFunc(() => {
                 let rat = gameContext.playerNode.getChildByName('fllow')
@@ -128,7 +157,7 @@ export default class NewClass extends cc.Component {
                 });
                 // rat.spriteFrame = new cc.SpriteFrame()
             })
-            gameContext.playerNode.runAction(cc.sequence(moveBy, callF))
+            gameContext.playerNode.runAction(cc.sequence(moveBy, callF0, cc.delayTime(5), callF))
             gameContext.playerNode.getChildByName('fllow').runAction(moveBy1)
         }, this)
         this.btnContine.on(cc.Node.EventType.TOUCH_END, () => {
@@ -167,6 +196,8 @@ export default class NewClass extends cc.Component {
     }
 
     showTalkBload(type) {
+        this.talkBload.parent = this.node.parent.parent
+        this.talkBload.x = 0
         if (type == 0) {
             this.talkBload.active = true
             this.talkDeath.active = true
@@ -206,6 +237,8 @@ export default class NewClass extends cc.Component {
     }
 
     Restart() {
+        GameTools.loadSound('sound/bgm/bgm9', 0, true)
+
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI) operateUI.san = 10
         this.showTalkBload(-1)
@@ -215,7 +248,8 @@ export default class NewClass extends cc.Component {
         // EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 10 });
         let rat: cc.Node = gameContext.playerNode.getChildByName('fllow')
         let blood = rat.getChildByName('blood')
-        blood.setScale(1)
+        blood.active = false
+        this.ratBlood.setScale(1)
 
 
         this.bullet.setPosition(-20, -95)
@@ -230,13 +264,14 @@ export default class NewClass extends cc.Component {
         this.enemyHpNum = 20
         this.enemyHp.scaleX = 1
         this.death.x = 800
-        this.enemy.x = 550
+        this.enemy.x = 180
         gameContext.playerNode.active = false
         this._touchArm = false
 
         gameConfig.currLevel = 8
         gameContext.playerNode.setPosition(100, -165)
         gameContext.playerNode.active = false
+        this.hook.setPosition(15, 50)
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         this.preStart()
     }
@@ -318,7 +353,7 @@ export default class NewClass extends cc.Component {
         // bullet.setPosition(320, -95)
         // console.log('生成子弹')
         this.bullet.active = true
-        this.bullet.setPosition(320, -95)
+        this.bullet.setPosition(-20, -95)
         GameTools.loadSound('sound/level/9/bossAttack', 1, false)
 
         // this.bulletList.push(bullet)
@@ -382,18 +417,19 @@ export default class NewClass extends cc.Component {
                     // gameContext.showToast('坦然面对死亡吧')
                     this.showTalkBload(1)
                     GameTools.loadSound('sound/level/9/bossAttackBig', 1, false)
-                    cc.tween(this.hook)
-                        .by(.5, { position: cc.v3(200, -45, 0), angle: -100 })
-                        .delay(1)
-                        .by(1, { position: cc.v3(-200, 45, 0), angle: 100 })
-                        .start()
+                    // cc.tween(this.hook)
+                    //     .by(.5, { position: cc.v3(200, -45, 0), angle: -100 })
+                    //     .delay(1)
+                    //     .by(1, { position: cc.v3(-200, 45, 0), angle: 100 })
+                    //     .start()
+
+
+                    this.hook.runAction(cc.spawn(cc.rotateBy(3, 720), cc.moveBy(4, new cc.Vec2(-2000, 0))))
 
                     let rat = gameContext.playerNode.getChildByName('fllow')
-
-                    let blood = rat.getChildByName('blood')
-
+                    // let blood = rat.getChildByName('blood')
                     this.page1.runAction(cc.sequence(cc.delayTime(2), cc.blink(2, 5), cc.callFunc(() => {
-                        blood.runAction(cc.scaleTo(2, 0, 1))
+                        this.ratBlood.runAction(cc.scaleTo(2, 0, 1))
                     })))
 
 
@@ -406,10 +442,17 @@ export default class NewClass extends cc.Component {
                         this.showTalkBload(-1)
                         this.page2.active = true
                     })
+                    let player = gameContext.player as hero
+                    let anim = ''
+                    if (player.state == State.standLeft || player.state == State.walkLeft) {
+                        anim = 'angleRatLeft2'
+                    } else {
+                        anim = 'angleRatRight2'
+                    }
                     let moveBy = cc.moveBy(3, new cc.Vec2(0, 400))
                     let delay = cc.delayTime(6)
                     let callF0 = cc.callFunc(() => {
-                        rat.getComponent(cc.Animation).play('angleRat').repeatCount = Infinity
+                        rat.getComponent(cc.Animation).play(anim).repeatCount = Infinity
                     })
                     rat.runAction(cc.sequence(delay, callF0, moveBy, callF))
 

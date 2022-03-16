@@ -1,10 +1,10 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "angleMonkey",
+  "_name": "angleMonRight0",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.4,
-  "sample": 5,
+  "_duration": 0.2,
+  "sample": 10,
   "speed": 1,
   "wrapMode": 2,
   "curveData": {
@@ -18,28 +18,13 @@
             }
           },
           {
-            "frame": 0.2,
+            "frame": 0.1,
             "value": {
               "__uuid__": "a0ad3410-9c65-4f0c-9bf3-5d80da919b5f"
             }
           }
         ]
       }
-    },
-    "props": {
-      "width": [
-        {
-          "frame": 0,
-          "value": 127
-        }
-      ],
-      "height": [],
-      "scaleX": [
-        {
-          "frame": 0,
-          "value": 1
-        }
-      ]
     }
   },
   "events": []
