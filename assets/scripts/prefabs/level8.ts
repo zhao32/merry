@@ -122,9 +122,7 @@ export default class NewClass extends cc.Component {
                 animMon = ['angleMonRight0', "angleMonRight1"]
             } else {
                 animMon = ['angleMonLeft0', "angleMonLeft1"]
-
                 ratanim = 'angleRatRight1'
-
             }
 
             gameContext.playerNode.getComponent(cc.Animation).play(animMon[0]).repeatCount = Infinity
@@ -168,7 +166,6 @@ export default class NewClass extends cc.Component {
             })))
 
             gameContext.playerNode.active = false
-
             // let rat = gameContext.playerNode.getChildByName('fllow')
             // rat.y -= 400
             // rat.getComponent(cc.Animation).play('ratstandRight')

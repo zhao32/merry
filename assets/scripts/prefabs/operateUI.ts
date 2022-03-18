@@ -244,7 +244,7 @@ export default class NewClass extends cc.Component {
         } else {
             (gameContext.player as hero).state = State.walkLeft
         }
-
+        if (cc.director.isPaused) return
         if (gameConfig.currLevel == 4) {//老鼠
             GameTools.loadSound('sound/op/ratback', 1, false)
         } else {//猴子
@@ -273,7 +273,7 @@ export default class NewClass extends cc.Component {
             (gameContext.player as hero).state = State.walkRight
         }
         // (gameContext.player as hero).state = State.walkRight
-
+        if (cc.director.isPaused) return
         if (gameConfig.currLevel == 4) {//老鼠
             GameTools.loadSound('sound/op/ratfront', 1, false)
         } else {//猴子
@@ -310,6 +310,7 @@ export default class NewClass extends cc.Component {
             (gameContext.player as hero).isMove = false;
             (gameContext.player as hero).state = State.jumpRight
         }
+        if (cc.director.isPaused) return
         GameTools.loadSound('sound/op/jump', 1, false)
 
     }
@@ -330,7 +331,7 @@ export default class NewClass extends cc.Component {
             // gameContext.showToast('冷却时间1s')
 
         }
-
+        if (cc.director.isPaused) return
         if (gameConfig.currLevel == 4) {//老鼠
             GameTools.loadSound('sound/op/ratAttack', 1, false)
         } else {//猴子
@@ -360,6 +361,7 @@ export default class NewClass extends cc.Component {
         cc.resources.load(frame, cc.SpriteFrame, (err, spriteFrame) => {
             sprite.spriteFrame = spriteFrame as any;
         });
+        if (cc.director.isPaused) return
         GameTools.loadSound('sound/op/click', 1, false)
 
     }

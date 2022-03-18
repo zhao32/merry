@@ -7049,7 +7049,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -18,
+        -22,
         124,
         0,
         0,
@@ -7157,8 +7157,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -35.251,
-        88.057,
+        -9,
+        76,
         0,
         0,
         0,

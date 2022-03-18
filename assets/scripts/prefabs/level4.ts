@@ -219,7 +219,7 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         (gameContext.player as hero).state = State.standRight
         cc.tween(this.water)
-            .to(10, { height: 350 }, { easing: 'cubicIn' })
+            .to(3, { height: 350 }, { easing: 'cubicIn' })
             .delay(1)
             .call(() => {
                 gameConfig.maxLevel = 5

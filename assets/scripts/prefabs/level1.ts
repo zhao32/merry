@@ -253,6 +253,8 @@ export default class NewClass extends cc.Component {
                 .string = ':老鼠需要猴子！'
             this.scheduleOnce(() => {
                 operateUI.san = 9
+                GameTools.loadSound('sound/op/huixie', 1, false)
+                console.log('回血')
                 // this.weChat.parent = this.node
                 this.weChat.active = false
                 this.weChat.removeFromParent()

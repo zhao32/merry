@@ -217,6 +217,7 @@ var GameTools = {
     cb: Function = null,
     isRelease: boolean = false
   ) {
+    cc.audioEngine.stopAll()
     var soundProperty = ["playMusic", "playEffect"][soundType];
     if (gameContext.soundCache[soundPath]) {
       cc.audioEngine[soundProperty](gameContext.soundCache[soundPath], loop);

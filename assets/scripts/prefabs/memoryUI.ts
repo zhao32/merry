@@ -27,6 +27,13 @@ export default class NewClass extends cc.Component {
     @property({ type: cc.ScrollView })
     scroll: cc.ScrollView = null;
 
+    @property(cc.Node)
+    baoMu: cc.Node = null;
+
+    @property(cc.Label)
+    infoDisplay: cc.Label = null;
+
+
     callback: any
 
     btnRetrun: cc.Node
@@ -58,6 +65,7 @@ export default class NewClass extends cc.Component {
 
         this.maskStart.active = false
         this.itemStart.active = false
+        this.baoMu.active = false
 
 
         this.btnRetrun = this.node.getChildByName('btnRetrun')
@@ -97,11 +105,23 @@ export default class NewClass extends cc.Component {
     }
 
     doNext() {
-        cc.director.loadScene("playScene", () => {
-            gameConfig.currLevel += 1
-            gameConfig.currLevel = gameConfig.currLevel % 9
-            // gameContext.showLevel(gameConfig.currLevel + 1)
-        });
+        gameConfig.currLevel += 1
+        gameConfig.currLevel = gameConfig.currLevel % 9
+
+        GameTools.loadSound(`sound/level/${gameConfig.currLevel + 1}/levelname`, 0, false, null, true)
+        this.baoMu.active = true
+        let indx = ['一','二','三','四','五','六','七','八','九',]
+        this.infoDisplay.string = `第${indx[gameConfig.currLevel]}关 ${gameConfig.levelData[gameConfig.currLevel].name}`
+        this.scheduleOnce(()=>{
+            // this._canTouch = true
+            // this.baoMu.active = false
+
+            cc.director.loadScene("playScene", () => {
+                // gameConfig.currLevel += 1
+                // gameConfig.currLevel = gameConfig.currLevel % 9
+            });
+        },5)
+       
         GameTools.loadSound('sound/op/click', 1, false)
     }
 
