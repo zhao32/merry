@@ -191,13 +191,15 @@ export default class NewClass extends cc.Component {
         this._fightTouch = true
 
         let frame: string
-        if (gameContext.isPause) {
-            gameContext.isPause = false
-            frame = 'pic/kongzhi-3'
-        } else {
-            gameContext.isPause = true
-            frame = 'pic/kongzhi-2'
-        }
+        // if (gameContext.isPause) {
+        //     gameContext.isPause = false
+        //     frame = 'pic/kongzhi-3'
+        // } else {
+        //     gameContext.isPause = true
+        //     frame = 'pic/kongzhi-2'
+        // }
+        frame = 'pic/kongzhi-3'
+        gameContext.isPause = false
         let sprite = this.btnPause.getComponent(cc.Sprite) as cc.Sprite;
         cc.resources.load(frame, cc.SpriteFrame, (err, spriteFrame) => {
             sprite.spriteFrame = spriteFrame as any;
@@ -244,7 +246,10 @@ export default class NewClass extends cc.Component {
         } else {
             (gameContext.player as hero).state = State.walkLeft
         }
-        if (cc.director.isPaused) return
+        console.log('cc.director.isPaused():'+cc.director.isPaused())
+        if (cc.director.isPaused()) return
+        console.log('---------------------')
+
         if (gameConfig.currLevel == 4) {//老鼠
             GameTools.loadSound('sound/op/ratback', 1, false)
         } else {//猴子
@@ -273,7 +278,8 @@ export default class NewClass extends cc.Component {
             (gameContext.player as hero).state = State.walkRight
         }
         // (gameContext.player as hero).state = State.walkRight
-        if (cc.director.isPaused) return
+        if (cc.director.isPaused()) return
+        console.log('---------------------')
         if (gameConfig.currLevel == 4) {//老鼠
             GameTools.loadSound('sound/op/ratfront', 1, false)
         } else {//猴子
@@ -310,7 +316,7 @@ export default class NewClass extends cc.Component {
             (gameContext.player as hero).isMove = false;
             (gameContext.player as hero).state = State.jumpRight
         }
-        if (cc.director.isPaused) return
+        if (cc.director.isPaused()) return
         GameTools.loadSound('sound/op/jump', 1, false)
 
     }
@@ -331,7 +337,7 @@ export default class NewClass extends cc.Component {
             // gameContext.showToast('冷却时间1s')
 
         }
-        if (cc.director.isPaused) return
+        if (cc.director.isPaused()) return
         if (gameConfig.currLevel == 4) {//老鼠
             GameTools.loadSound('sound/op/ratAttack', 1, false)
         } else {//猴子
@@ -361,7 +367,7 @@ export default class NewClass extends cc.Component {
         cc.resources.load(frame, cc.SpriteFrame, (err, spriteFrame) => {
             sprite.spriteFrame = spriteFrame as any;
         });
-        if (cc.director.isPaused) return
+        if (cc.director.isPaused()) return
         GameTools.loadSound('sound/op/click', 1, false)
 
     }
@@ -372,12 +378,12 @@ export default class NewClass extends cc.Component {
             gameContext.isPause = false
             frame = 'pic/kongzhi-3'
             cc.director.resume()
-            if (gameContext.isPlayMusic == true) cc.audioEngine.resumeMusic()
+            // if (gameContext.isPlayMusic == true) cc.audioEngine.resumeMusic()
         } else {
             gameContext.isPause = true
             frame = 'pic/kongzhi-2'
             cc.director.pause()
-            cc.audioEngine.pauseMusic()
+            // cc.audioEngine.pauseMusic()
         }
         let sprite = this.btnPause.getComponent(cc.Sprite) as cc.Sprite;
         cc.resources.load(frame, cc.SpriteFrame, (err, spriteFrame) => {

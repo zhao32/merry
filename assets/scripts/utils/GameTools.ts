@@ -217,13 +217,14 @@ var GameTools = {
     cb: Function = null,
     isRelease: boolean = false
   ) {
-    cc.audioEngine.stopAll()
+    if(soundType == 0) cc.audioEngine.stopMusic()
     var soundProperty = ["playMusic", "playEffect"][soundType];
     if (gameContext.soundCache[soundPath]) {
       cc.audioEngine[soundProperty](gameContext.soundCache[soundPath], loop);
     } else {
       GameTools.load(soundPath, cc.AudioClip, function (err, res) {
         if (!err) {
+          if(soundType == 0)cc.audioEngine.resumeMusic()
           if (isRelease && !loop) {
             var id = cc.audioEngine.play(res, false, gameContext.volume);
             cc.audioEngine.setFinishCallback(id, () => {

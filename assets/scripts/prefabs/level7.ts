@@ -66,6 +66,7 @@ export default class NewClass extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        cc.audioEngine.stopAll()
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)
         // this.setSyncPosition()
@@ -328,7 +329,7 @@ export default class NewClass extends cc.Component {
                         gameContext.showMemoryUI(true)
                     });
                 })
-                this.tank.runAction(cc.sequence(cc.delayTime(1), cc.blink(2, 5), callF))
+                this.tank.runAction(cc.sequence(cc.delayTime(1), cc.blink(2, 5),cc.delayTime(1), callF))
             }, 11)
 
         }

@@ -56,8 +56,8 @@ export default class NewClass extends cc.Component {
         });
         // this.scheduleOnce(()=>{        gameContext.showLevel(gameConfig.currLevel)
         // },0.1)
-        gameContext.showLevel(gameConfig.currLevel)
         GameTools.loadSound(`sound/bgm/bgm${gameConfig.currLevel + 1}`, 0, true)
+        gameContext.showLevel(gameConfig.currLevel)
 
         gameContext.showOperateUI()
 
