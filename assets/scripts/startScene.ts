@@ -23,6 +23,21 @@ export default class NewClass extends cc.Component {
     onLoad() {
         gameContext.showStartUI()
         this.loadGameData()
+        cc.loader.loadResDir("sound", function (err, assets) {
+            cc.log(`加载音效${err ? '失败' : '成功'}`)
+            if (!err) {
+                // console.log(JSON.stringify(assets))
+            }
+        });
+        let jindu
+        cc.loader.onProgress = (completedCount, totalCount, item) => {
+            if (totalCount !== 0) {
+                console.log('completedCount:' + completedCount)
+                jindu = completedCount / totalCount;
+
+            }
+        }
+
     }
 
     start() {

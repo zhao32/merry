@@ -30,6 +30,13 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     baoMu: cc.Node = null;
 
+    @property(cc.Node)
+    videoArea: cc.Node = null;
+
+    @property({ type: cc.VideoPlayer })
+    videoPlayer: cc.VideoPlayer = null;
+
+
     @property(cc.Label)
     infoDisplay: cc.Label = null;
 
@@ -50,13 +57,32 @@ export default class NewClass extends cc.Component {
         this.callback = callback
         this.isFromGame = data
         GameTools.loadSound(`sound/bgm/bgmMenoy`, 0, true)
+        this.videoArea.active = false
+    }
 
+    onVideoPlayerEvent(sender, event) {
+        // this.statusLabel.string = 'Status: ' + getStatus(event);
+        if (event === cc.VideoPlayer.EventType.CLICKED) {
+            if (this.videoPlayer.isPlaying()) {
+                this.videoPlayer.pause();
+                console.log('点击暂停')
+            } else {
+                this.videoPlayer.play();
+                console.log('点击播放')
+            }
+        } else if (event === cc.VideoPlayer.EventType.COMPLETED) {
+            console.log('播放完成')
+            this.videoArea.active = false
+            gameContext.showStartUI()
+            GameTools.destroyNode(this.node)
+        }
     }
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
 
+        this.node.zIndex = 2
 
         this.displayItem = this.node.getChildByName('itemShow')
         this.mask = this.node.getChildByName('mask')
@@ -97,6 +123,11 @@ export default class NewClass extends cc.Component {
             }, this)
             itemMask.active = true
         }
+        if (gameConfig.currLevel == 8) {
+            this.btnNext.getChildByName('label').getComponent(cc.Label).string = '最后的话'
+        } else {
+            this.btnNext.getChildByName('label').getComponent(cc.Label).string = '下一局'
+        }
     }
 
     doReturn() {
@@ -105,14 +136,24 @@ export default class NewClass extends cc.Component {
     }
 
     doNext() {
+        if (gameConfig.nextIsVedio) {
+            gameContext.showVideoPlayerUI()
+            return
+        }
+        if (gameConfig.currLevel == 8) {
+            this.videoArea.active = true
+            this.videoPlayer.play()
+            cc.audioEngine.stopMusic();
+            return
+        }
         gameConfig.currLevel += 1
         gameConfig.currLevel = gameConfig.currLevel % 9
 
         GameTools.loadSound(`sound/level/${gameConfig.currLevel + 1}/levelname`, 0, false, null, true)
         this.baoMu.active = true
-        let indx = ['一','二','三','四','五','六','七','八','九',]
+        let indx = ['一', '二', '三', '四', '五', '六', '七', '八', '九',]
         this.infoDisplay.string = `第${indx[gameConfig.currLevel]}关 ${gameConfig.levelData[gameConfig.currLevel].name}`
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             // this._canTouch = true
             // this.baoMu.active = false
 
@@ -120,8 +161,8 @@ export default class NewClass extends cc.Component {
                 // gameConfig.currLevel += 1
                 // gameConfig.currLevel = gameConfig.currLevel % 9
             });
-        },5)
-       
+        }, 5)
+
         GameTools.loadSound('sound/op/click', 1, false)
     }
 

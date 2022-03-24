@@ -44,6 +44,14 @@ export default class NewClass extends cc.Component {
     ratBlood: cc.Node = null;
 
 
+    @property(cc.Node)
+    videoArea: cc.Node = null;
+
+    @property({ type: cc.VideoPlayer })
+    videoPlayer: cc.VideoPlayer = null;
+
+
+
     callback: any
 
     page0: cc.Node
@@ -81,6 +89,7 @@ export default class NewClass extends cc.Component {
 
     init(data: any, callback) {
         this.callback = callback
+        this.videoArea.active = false
     }
 
     // LIFE-CYCLE CALLBACKS:
@@ -148,8 +157,8 @@ export default class NewClass extends cc.Component {
                 gameContext.playerNode.y -= 400
                 gameContext.playerNode.getComponent(cc.Animation).play('standRight')
                 gameConfig.maxLevel = 9
-                gameConfig.memoryLength = 9
-                gameConfig.currMemory = 9
+                gameConfig.memoryLength = 10
+                gameConfig.currMemory = 10
                 cc.director.loadScene("startScene", () => {
                     gameContext.showMemoryUI(true)
                 });
@@ -162,7 +171,12 @@ export default class NewClass extends cc.Component {
             this.page2.active = false
             this.page1.active = true
             this.enemy.runAction(cc.sequence(cc.moveBy(1, new cc.Vec2(300, 0)), cc.callFunc(() => {
-                this.page3.active = true
+                this.page3.active = true;
+                this.scheduleOnce(() => {
+                    this.videoArea.active = true
+                    this.videoPlayer.play()
+                    cc.audioEngine.stopMusic();
+                }, 5)
             })))
 
             gameContext.playerNode.active = false
@@ -190,6 +204,23 @@ export default class NewClass extends cc.Component {
         this.angleRat = this.page1.getChildByName('angleRat')
         this.bullet = cc.instantiate(this.bulletPfb)
         this.page1.addChild(this.bullet)
+    }
+
+    onVideoPlayerEvent(sender, event) {
+        // this.statusLabel.string = 'Status: ' + getStatus(event);
+        if (event === cc.VideoPlayer.EventType.CLICKED) {
+            if (this.videoPlayer.isPlaying()) {
+                this.videoPlayer.pause();
+                console.log('点击暂停')
+            } else {
+                this.videoPlayer.play();
+                console.log('点击播放')
+            }
+        } else if (event === cc.VideoPlayer.EventType.COMPLETED) {
+            console.log('播放完成')
+            this.videoArea.active = false
+            cc.director.loadScene("startScene");
+        }
     }
 
     showTalkBload(type) {

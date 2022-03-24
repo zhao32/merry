@@ -36,6 +36,7 @@ export default class NewClass extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.node.zIndex = 0
         this.btnMemory.on(cc.Node.EventType.TOUCH_END, this.showMemory, this)
         this.btnStart.on(cc.Node.EventType.TOUCH_END, this.showLevel, this)
     }

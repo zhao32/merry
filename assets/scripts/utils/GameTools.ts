@@ -101,6 +101,19 @@ var gameContext = {
     });
   },
 
+  showVideoPlayerUI(data?: any, callback?: Function) {
+    var resName = "prefabs/VideoPlayerUI"
+    gameContext.getPrefabByResName(resName, (prefab) => {
+      PoolUtil.getItemShowNode(prefab, (node) => {
+        node.getComponent('VideoPlayerUI').init(data, callback)
+        let UIPanel = cc.director.getScene()
+          .getChildByName("Canvas")
+          .getChildByName("UIPanel");
+        UIPanel.addChild(node);
+      })
+    });
+  },
+
   showLevel(idx: number, callback?: Function) {
     var resName = `prefabs/level${idx}`
     gameContext.getPrefabByResName(resName, (prefab) => {
@@ -109,7 +122,7 @@ var gameContext = {
         let gameUI = cc.director.getScene()
           .getChildByName("Canvas")
           .getChildByName("gameUI");
-          console.log()
+        console.log()
         gameUI.addChild(node);
       })
     });
@@ -157,7 +170,8 @@ var gameConfig = {
 
   levelData: null,
   currLevel: 0,
-  currMemory:0,
+  currMemory: 0,
+  nextIsVedio: false,
 
 
   get maxLevel() {
@@ -217,14 +231,14 @@ var GameTools = {
     cb: Function = null,
     isRelease: boolean = false
   ) {
-    if(soundType == 0) cc.audioEngine.stopMusic()
+    if (soundType == 0) cc.audioEngine.stopMusic()
     var soundProperty = ["playMusic", "playEffect"][soundType];
     if (gameContext.soundCache[soundPath]) {
       cc.audioEngine[soundProperty](gameContext.soundCache[soundPath], loop);
     } else {
       GameTools.load(soundPath, cc.AudioClip, function (err, res) {
         if (!err) {
-          if(soundType == 0)cc.audioEngine.resumeMusic()
+          if (soundType == 0) cc.audioEngine.resumeMusic()
           if (isRelease && !loop) {
             var id = cc.audioEngine.play(res, false, gameContext.volume);
             cc.audioEngine.setFinishCallback(id, () => {

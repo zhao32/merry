@@ -322,9 +322,10 @@ export default class NewClass extends cc.Component {
                 GameTools.loadSound('sound/level/8/boxfall', 1, false)
                 let callF = cc.callFunc(() => {
                     console.log('游戏完成')
-                    gameConfig.maxLevel = 8
+                    // gameConfig.maxLevel = 8
                     gameConfig.memoryLength = 8
                     gameConfig.currMemory = 8
+                    gameConfig.nextIsVedio = true
                     cc.director.loadScene("startScene", () => {
                         gameContext.showMemoryUI(true)
                     });
@@ -419,7 +420,7 @@ export default class NewClass extends cc.Component {
 
                     let callF = cc.callFunc(() => {
                         console.log('游戏完成')
-                        gameConfig.maxLevel = 8
+                        // gameConfig.maxLevel = 8
                         gameConfig.memoryLength = 8
                         gameConfig.currMemory = 8
                         cc.director.loadScene("startScene", () => {

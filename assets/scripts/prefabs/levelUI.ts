@@ -37,6 +37,7 @@ export default class NewClass extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.node.zIndex = 1
         this._canTouch = true
         for (let i = 0; i < 9; i++) {
             let box = this.node.getChildByName(`box${i}`)
