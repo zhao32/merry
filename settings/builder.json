@@ -1,7 +1,7 @@
 {
   "title": "merry",
   "packageName": "org.cocos2d.demo",
-  "startScene": "a612c388-91ef-4a5b-a4c2-0a860f7fbd1b",
+  "startScene": "66dd88de-f4f3-4195-9e4c-ea2855cf0f9d",
   "excludeScenes": [],
   "orientation": {
     "landscapeRight": true,

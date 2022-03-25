@@ -131,6 +131,7 @@ export default class NewClass extends cc.Component {
     }
 
     doReturn() {
+        GameTools.destroyNode(this.node)
         gameContext.showStartUI()
         GameTools.loadSound('sound/op/click', 1, false)
     }
