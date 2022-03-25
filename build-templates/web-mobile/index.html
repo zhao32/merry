@@ -39,17 +39,17 @@
   <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
 
   <link rel="stylesheet" type="text/css" href="style-mobile.css" />
-  <link rel="icon" href="favicon.8de18.ico" />
+  <link rel="icon" href="favicon.ico" />
   <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
 </head>
 
-<body>
+<body  style="background-color:#E3EEE9;">
   <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
-  <div id="splash">
+  <!-- <div id="splash">
     <div class="progress-bar stripes">
       <span style="width: 0%"></span>
     </div>
-  </div>
+  </div> -->
   <script src="https://cdn.jsdelivr.net/eruda/1.0.5/eruda.min.js"></script>
 
   <script src="src/settings.js" charset="utf-8"></script>
@@ -66,8 +66,8 @@
       }
 
       var debug = window._CCSettings.debug;
-      var splash = document.getElementById('splash');
-      splash.style.display = 'block';
+      // var splash = document.getElementById('splash');
+      // splash.style.display = 'block';
 
       function loadScript(moduleName, cb) {
         function scriptLoaded() {
