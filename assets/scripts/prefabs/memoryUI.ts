@@ -138,7 +138,8 @@ export default class NewClass extends cc.Component {
 
     doNext() {
         if (gameConfig.nextIsVedio) {
-            gameContext.showVideoPlayerUI()
+            gameContext.showVideoPlayerUI();
+            GameTools.destroyNode(this.node)
             return
         }
         if (gameConfig.currLevel == 8) {

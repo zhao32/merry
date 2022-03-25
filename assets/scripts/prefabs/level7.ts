@@ -162,7 +162,6 @@ export default class NewClass extends cc.Component {
         this.tank.getChildByName('front').getComponent(cc.Animation).play('frontNo')
         this.tank.getChildByName('back').getComponent(cc.Animation).play('backNo')
 
-        this.armAttack()
 
         gameConfig.currLevel = 7
         gameContext.playerNode.setPosition(100, -165)
@@ -202,6 +201,7 @@ export default class NewClass extends cc.Component {
                 gameContext.playerNode.active = true
                 gameContext.player.state = State.standRight
                 this.page1.active = true
+                this.armAttack()
             })))
 
 
@@ -331,7 +331,7 @@ export default class NewClass extends cc.Component {
                     });
                 })
                 this.tank.runAction(cc.sequence(cc.delayTime(1), cc.blink(2, 5),cc.delayTime(1), callF))
-            }, 11)
+            }, 12)
 
         }
     }
@@ -423,6 +423,7 @@ export default class NewClass extends cc.Component {
                         // gameConfig.maxLevel = 8
                         gameConfig.memoryLength = 8
                         gameConfig.currMemory = 8
+                        gameConfig.nextIsVedio = true
                         cc.director.loadScene("startScene", () => {
                             gameContext.showMemoryUI(true)
                         });

@@ -232,6 +232,7 @@ var GameTools = {
     isRelease: boolean = false
   ) {
     if (soundType == 0) cc.audioEngine.stopMusic()
+    console.log('播放：'+soundPath)
     var soundProperty = ["playMusic", "playEffect"][soundType];
     if (gameContext.soundCache[soundPath]) {
       cc.audioEngine[soundProperty](gameContext.soundCache[soundPath], loop);

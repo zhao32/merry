@@ -64,6 +64,7 @@ export default class NewClass extends cc.Component {
         // });
         this.videoArea.active = true
         this.choiseArea.active = false
+        this.videoPlayer.play()
         this.btnNo.on(cc.Node.EventType.TOUCH_END, () => {
             console.log('不愿意')
             cc.director.loadScene("startScene", () => {
@@ -99,7 +100,7 @@ export default class NewClass extends cc.Component {
                 console.log('点击播放')
             }
         } else if (event === cc.VideoPlayer.EventType.COMPLETED) {
-            console.log('播放完成')
+            console.log('VideoPlayer视频播放完成')
             this.videoArea.active = false
             this.choiseArea.active = true
         }
