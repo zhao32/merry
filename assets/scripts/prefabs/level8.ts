@@ -115,7 +115,9 @@ export default class NewClass extends cc.Component {
         this.btnRestart = this.page2.getChildByName('btnRestart')
 
         this.btnHome.on(cc.Node.EventType.TOUCH_END, () => {
-            cc.director.loadScene("startScene");
+            cc.director.loadScene("startScene", () => {
+                gameContext.showMemoryUI(true)
+            });
         }, this)
 
         this.btnGiveUp.on(cc.Node.EventType.TOUCH_END, () => {
@@ -219,7 +221,9 @@ export default class NewClass extends cc.Component {
         } else if (event === cc.VideoPlayer.EventType.COMPLETED) {
             console.log('播放完成')
             this.videoArea.active = false
-            cc.director.loadScene("startScene");
+            cc.director.loadScene("startScene", () => {
+                gameContext.showMemoryUI(true)
+            });
         }
     }
 

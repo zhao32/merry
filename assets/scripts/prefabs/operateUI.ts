@@ -400,7 +400,9 @@ export default class NewClass extends cc.Component {
     }
 
     doHome() {
-        cc.director.loadScene("startScene");
+        cc.director.loadScene("startScene",()=>{
+            gameContext.showStartUI(true)
+        });
 
     }
 

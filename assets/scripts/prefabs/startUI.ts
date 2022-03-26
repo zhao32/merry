@@ -36,7 +36,11 @@ export default class NewClass extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        console.log('进入开始页')
         this.node.zIndex = 0
+        this.btnMemory =this.node.getChildByName('btnMemory')
+        this.btnStart =this.node.getChildByName('btnStart')
+
         this.btnMemory.on(cc.Node.EventType.TOUCH_END, this.showMemory, this)
         this.btnStart.on(cc.Node.EventType.TOUCH_END, this.showLevel, this)
     }

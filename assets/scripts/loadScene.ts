@@ -33,6 +33,7 @@ export default class NewClass extends cc.Component {
         // this.loadtext.node.active = false;
         cc.loader.onProgress = null
         cc.director.loadScene("startScene");
+        gameContext.hasLoad = true
         //cc.vv.AudioAction.PlayBGM('bg_one.mp3');
 
     }

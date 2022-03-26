@@ -32,7 +32,7 @@ export default class NewClass extends cc.Component {
         this.callback = callback
         this.baoMu.active = false
     }
-    _canTouch:boolean = true
+    _canTouch: boolean = true
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -65,7 +65,7 @@ export default class NewClass extends cc.Component {
 
     selectPass(touch: any) {
         // console.log(touch)
-        if(this._canTouch == false)return
+        if (this._canTouch == false) return
         this._canTouch = false
         let name: string = touch.target.name
         let level = parseInt(name.charAt(name.length - 1))
@@ -76,13 +76,15 @@ export default class NewClass extends cc.Component {
             gameConfig.currLevel = level
             GameTools.loadSound(`sound/level/${level + 1}/levelname`, 0, false, null, true)
             this.baoMu.active = true
-            let indx = ['一','二','三','四','五','六','七','八','九',]
+            let indx = ['一', '二', '三', '四', '五', '六', '七', '八', '九',]
             this.infoDisplay.string = `第${indx[level]}关 ${gameConfig.levelData[level].name}`
-            this.scheduleOnce(()=>{
+            this.scheduleOnce(() => {
                 this._canTouch = true
-                cc.director.loadScene("playScene");
+                cc.director.loadScene("playScene", () => {
+                    gameContext.showStartUI(true)
+                });
                 // this.baoMu.active = false
-            },5)
+            }, 5)
 
             // console.log(cc.director.runScene())
         }

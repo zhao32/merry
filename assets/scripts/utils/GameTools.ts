@@ -30,6 +30,7 @@ var gameContext = {
   memoryLength: 0,
   hasFllow: false,
   isChaos: false,
+  hasLoad:false,
 
   getPrefabByResName(resName: string, callback?: Function) {
     if (!gameContext.prefabs[resName]) {
