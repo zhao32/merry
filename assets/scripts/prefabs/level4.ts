@@ -8,6 +8,7 @@
 import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import hero, { State } from "../hero";
+import { Logger } from "../Logger";
 
 
 const { ccclass, property } = cc._decorator;
@@ -81,7 +82,7 @@ export default class NewClass extends cc.Component {
     }
 
     onDisable() {
-        console.log('------------------第6关注销监听------------------')
+        Logger.log('------------------第6关注销监听------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHSHEEP, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
         GameTools.destroyNode(this.node)
@@ -165,7 +166,7 @@ export default class NewClass extends cc.Component {
         this._touchSheep = false
         this.idX++
         let endPos = this.couldList[(this.idX) % this.couldList.length].getPosition()
-        console.log('碰到小羊')
+        Logger.log('碰到小羊')
         GameTools.loadSound('sound/level/5/sheepjump', 1, false)
 
         endPos.y += 60
@@ -188,7 +189,7 @@ export default class NewClass extends cc.Component {
             let move3 = cc.moveTo(.5, endPos3)
 
             this.sheep.runAction(cc.sequence(move0, move1, move2, move3, cc.callFunc(() => {
-                console.log('追样结束')
+                Logger.log('追样结束')
                 this.page1.active = false
                 gameContext.playerNode.active = false
                 this.showOverPage()
@@ -198,8 +199,8 @@ export default class NewClass extends cc.Component {
     }
 
     touchSheep() {
-        console.log('gameContext.player.x:' + gameContext.playerNode.x)
-        console.log('sheep.x:' + this.sheep.x)
+        Logger.log('gameContext.player.x:' + gameContext.playerNode.x)
+        Logger.log('sheep.x:' + this.sheep.x)
 
         // if ((gameContext.player as hero).state != State.fight) return
         this._touchSheep = true
@@ -241,14 +242,14 @@ export default class NewClass extends cc.Component {
 
 
         // let sheepPos = this.page1.convertToWorldSpaceAR(this.sheep.getPosition())
-        // console.log('heroX:'+ gameContext.playerNode.x)
-        // console.log('sheepX:'+ sheepPos.x)
-        // console.log('heroY:'+ gameContext.playerNode.y)
-        // console.log('sheepY:'+ sheepPos.y)
+        // Logger.log('heroX:'+ gameContext.playerNode.x)
+        // Logger.log('sheepX:'+ sheepPos.x)
+        // Logger.log('heroY:'+ gameContext.playerNode.y)
+        // Logger.log('sheepY:'+ sheepPos.y)
         // if (this._touchSheep == false && Math.abs(sheepPos.x - gameContext.playerNode.x) < 100 && Math.abs(sheepPos.y - gameContext.playerNode.y) < 120) {
         //     let endPos = this.couldList[(this.idX++) % this.couldList.length].getPosition()
         //     this._touchSheep = true
-        //     console.log('碰到小羊')
+        //     Logger.log('碰到小羊')
         //     this.sheep.runAction(cc.sequence(cc.moveTo(1, endPos), cc.callFunc(() => { this._touchSheep = false })))
         // }
     }

@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import hero from "../hero";
+import { Logger } from "../Logger";
 import { State } from "../rat";
 import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
@@ -76,7 +77,7 @@ export default class NewClass extends cc.Component {
         let self = this
         this.scheduleOnce(() => {
             self.weChat.active = true
-            console.log('start weChat0：' + self.weChat)
+            Logger.log('start weChat0：' + self.weChat)
             // GameTools.loadSound('sound/level/wechat0', 1, false)
             GameTools.loadSound('sound/level/2/start/help', 1, false)
         }, 3)
@@ -97,7 +98,7 @@ export default class NewClass extends cc.Component {
             gameContext.playerNode.setPosition(300, -165);
             (gameContext.player as hero).state = State.standRight
 
-            console.log('start weChat1：' + self.weChat)
+            Logger.log('start weChat1：' + self.weChat)
 
         }, 5)
     }
@@ -204,7 +205,7 @@ export default class NewClass extends cc.Component {
 
 
     onDisable() {
-        console.log('------------------第2关销毁------------------')
+        Logger.log('------------------第2关销毁------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHTHORNS, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHFINISH, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
@@ -230,7 +231,7 @@ export default class NewClass extends cc.Component {
     }
 
     touchThorns() {
-        console.log('触碰荆棘')
+        Logger.log('触碰荆棘')
         GameTools.loadSound('sound/level/2/attacked', 1, false)
 
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -1 });
@@ -254,7 +255,7 @@ export default class NewClass extends cc.Component {
             this.scheduleOnce(() => {
                 operateUI.san = 9
                 GameTools.loadSound('sound/op/huixie', 1, false)
-                console.log('回血')
+                Logger.log('回血')
                 // this.weChat.parent = this.node
                 this.weChat.active = false
                 this.weChat.removeFromParent()
@@ -263,7 +264,7 @@ export default class NewClass extends cc.Component {
     }
 
     touchFinish() {
-        console.log('达成通关')
+        Logger.log('达成通关')
         GameTools.loadSound('sound/level/2/finish', 1, false)
 
         gameConfig.maxLevel = 2
@@ -272,7 +273,7 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
         (gameContext.player as hero).state = State.standRight
         this.scheduleOnce(() => {
-            console.log('游戏完成')
+            Logger.log('游戏完成')
             // gameContext.showToast('进入记忆宝典')
             cc.director.loadScene("startScene", () => {
                 gameContext.showMemoryUI(true)

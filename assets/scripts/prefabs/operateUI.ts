@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import hero, { State } from "../hero";
+import { Logger } from "../Logger";
 import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 
@@ -75,9 +76,9 @@ export default class NewClass extends cc.Component {
     }
 
     public openOperate(self, parms) {
-        console.log('执行OPENOPERATE')
+        Logger.log('执行OPENOPERATE')
         this._canOperate = true
-        console.log('重置按钮状态')
+        Logger.log('重置按钮状态')
         this.btnLeft.active = parms.left
         this.btnRight.active = parms.right
         this.btnUp.active = parms.up
@@ -119,10 +120,10 @@ export default class NewClass extends cc.Component {
         this._san += params.disSan
         this._san = Math.min(10, this._san)
         this._san = Math.max(0, this._san)
-        console.log('this._san:' + this._san)
+        Logger.log('this._san:' + this._san)
         if (params.disSan > 0) {
             GameTools.loadSound('sound/op/huixie', 1, false)
-            console.log('回血')
+            Logger.log('回血')
             cc.tween(this.blood).to(2, { width: 240 * (this._san / 10) }).start()
         } else {
             this.blood.width = 240 * (this._san / 10)
@@ -147,7 +148,7 @@ export default class NewClass extends cc.Component {
     //     let btnBg0 = this.node.getChildByName('btnBg0')
     //     let btnBg1 = this.node.getChildByName('btnBg1')
     //     btnBg0.active = btnBg1.active = true
-    //     console.log('打开玩家操作')
+    //     Logger.log('打开玩家操作')
     // }
 
     private closeOperate() {
@@ -155,7 +156,7 @@ export default class NewClass extends cc.Component {
         let btnBg0 = this.node.getChildByName('btnBg0')
         let btnBg1 = this.node.getChildByName('btnBg1')
         btnBg0.active = btnBg1.active = false
-        console.log('关闭玩家操作')
+        Logger.log('关闭玩家操作')
 
         this.btnLeft.off(cc.Node.EventType.TOUCH_START, this.startLeft, this)
         this.btnLeft.off(cc.Node.EventType.TOUCH_END, this.endLeft, this)
@@ -214,7 +215,7 @@ export default class NewClass extends cc.Component {
         EventMgr.getInstance().registerListener(EventMgr.CLOSEOPERATE, this, this.closeOperate.bind(this))
 
         EventMgr.getInstance().registerListener(EventMgr.UPDATESAN, this, this.updateSan.bind(this))
-        console.log('注册OPENOPERATE')
+        Logger.log('注册OPENOPERATE')
         EventMgr.getInstance().registerListener(EventMgr.OPENOPERATE, this, this.openOperate.bind(this))
 
         let btnBg0 = this.node.getChildByName('btnBg0')
@@ -225,7 +226,7 @@ export default class NewClass extends cc.Component {
     }
 
     onDisable() {
-        console.log('注销OP监听')
+        Logger.log('注销OP监听')
         EventMgr.getInstance().unRegisterListener(EventMgr.CLOSEOPERATE, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.UPDATESAN, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.OPENOPERATE, this)
@@ -246,9 +247,9 @@ export default class NewClass extends cc.Component {
         } else {
             (gameContext.player as hero).state = State.walkLeft
         }
-        console.log('cc.director.isPaused():'+cc.director.isPaused())
+        Logger.log('cc.director.isPaused():'+cc.director.isPaused())
         if (cc.director.isPaused()) return
-        console.log('---------------------')
+        Logger.log('---------------------')
 
         if (gameConfig.currLevel == 4) {//老鼠
             GameTools.loadSound('sound/op/ratback', 1, false)
@@ -279,7 +280,7 @@ export default class NewClass extends cc.Component {
         }
         // (gameContext.player as hero).state = State.walkRight
         if (cc.director.isPaused()) return
-        console.log('---------------------')
+        Logger.log('---------------------')
         if (gameConfig.currLevel == 4) {//老鼠
             GameTools.loadSound('sound/op/ratfront', 1, false)
         } else {//猴子
@@ -395,7 +396,7 @@ export default class NewClass extends cc.Component {
 
     doReplay() {
         EventMgr.getInstance().sendListener(EventMgr.RESTART, {});
-        console.log('重新开始游戏')
+        Logger.log('重新开始游戏')
         GameTools.loadSound('sound/op/click', 1, false)
     }
 

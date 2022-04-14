@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import hero from "../hero";
+import { Logger } from "../Logger";
 import { State } from "../rat";
 import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
@@ -77,7 +78,7 @@ export default class NewClass extends cc.Component {
     }
 
     onDisable() {
-        console.log('------------------第3关注销监听------------------')
+        Logger.log('------------------第3关注销监听------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHFINISH, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHTHORNS, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHBOTTLE, this)
@@ -129,7 +130,7 @@ export default class NewClass extends cc.Component {
     }
 
     touchFinish() {
-        console.log('游戏结束')
+        Logger.log('游戏结束')
         GameTools.loadSound('sound/level/3/finish', 1, false)
 
         gameConfig.maxLevel = 3
@@ -153,18 +154,18 @@ export default class NewClass extends cc.Component {
         while (this.barrelList.length > 0) {
             let node = this.barrelList.pop()
             if (node) node.destroy()
-            console.log('删除水桶')
+            Logger.log('删除水桶')
         }
         while (this.foodList.length > 0) {
             let node = this.foodList.pop()
             if (node) node.destroy()
-            console.log('删除食物')
+            Logger.log('删除食物')
         }
         while (this.bottleList.length > 0) {
             let node = this.bottleList.pop()
             if (node) node.destroy()
-            console.log('删除酒瓶')
-
+            Logger.log('删除酒瓶')
+            
         }
     }
 
@@ -186,7 +187,7 @@ export default class NewClass extends cc.Component {
             this.scheduleOnce(() => {
                 this.weChat.active = false
                 this.weChat.removeFromParent()
-                GameTools.loadSound('sound/level/3/1blood', 1, false)
+                GameTools.loadSound('sound/level/3/huixie', 1, false)
                 operateUI.san = 2
             }, 3)
         }
@@ -211,14 +212,14 @@ export default class NewClass extends cc.Component {
                 this.weChat.active = false
                 this.weChat.removeFromParent()
                 operateUI.san = 2
-                GameTools.loadSound('sound/level/3/1blood', 1, false)
+                GameTools.loadSound('sound/level/3/huixie', 1, false)
 
             }, 3)
         }
     }
 
     touchFood() {
-        console.log('老鼠吃到食物')
+        Logger.log('老鼠吃到食物')
         // let operateUI: operateUI = gameContext.operateUI
         // operateUI.san += 1
         EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': 1 });
@@ -352,24 +353,24 @@ export default class NewClass extends cc.Component {
         //         }
         //     }
         // }
-        // console.log(this.distance)
-        // console.log('this.node.x:'+this.node.x )
+        // Logger.log(this.distance)
+        // Logger.log('this.node.x:'+this.node.x )
 
         if (this.node.x < -1000 && this._barrelNum == 0) {
             this._barrelNum = 1
             this.createrBarrel(new cc.Vec2(1500, 500))
-            console.log('Barrel:' + (this.distance + 200))
-            console.log('-----------------------1---------------------------')
-            console.log(gameContext.playerNode.x)
+            Logger.log('Barrel:' + (this.distance + 200))
+            Logger.log('-----------------------1---------------------------')
+            Logger.log(gameContext.playerNode.x)
         } else if (this.node.x < -1500 && this._barrelNum == 1) {
             this._barrelNum = 2
             this.createrBarrel(new cc.Vec2(2000, 500))
-            console.log('-----------------------2---------------------------')
-            console.log(gameContext.playerNode.x)
+            Logger.log('-----------------------2---------------------------')
+            Logger.log(gameContext.playerNode.x)
         } else if (this.node.x < -2000 && this._barrelNum == 2) {
             this._barrelNum = 3
-            console.log('-----------------------3---------------------------')
-            console.log(gameContext.playerNode.x + this.node.width - 500)
+            Logger.log('-----------------------3---------------------------')
+            Logger.log(gameContext.playerNode.x + this.node.width - 500)
 
             this.createrBarrel(new cc.Vec2(2500, 500))
         } else if (this.node.x < -3000 && this._foodNum == 0) {
@@ -407,7 +408,7 @@ export default class NewClass extends cc.Component {
         this._bottleNum = 4
         for (let i = 0; i < 4; i++) {
             this.scheduleOnce(() => {
-                console.log('生成水瓶')
+                Logger.log('生成水瓶')
                 let bottle = cc.instantiate(this.bottlePfb)
                 // bottle.opacity = 255
                 this.node.addChild(bottle)

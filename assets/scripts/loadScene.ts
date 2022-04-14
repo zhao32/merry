@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { Logger } from "./Logger";
 import GameTools, { gameConfig, gameContext } from "./utils/GameTools";
 
 const { ccclass, property } = cc._decorator;
@@ -44,10 +45,11 @@ export default class NewClass extends cc.Component {
     
         cc.loader.onProgress = (completedCount, totalCount, item) => {
             // if (totalCount < 10) return
-            console.log('totalCount:' + totalCount)
+            Logger.log('totalCount:' + totalCount)
+            
             if (totalCount !== 0 && this.is_loading === true) {
-                console.log('completedCount:' + completedCount)
-                console.log('totalCount:' + totalCount)
+                Logger.log('completedCount:' + completedCount)
+                Logger.log('totalCount:' + totalCount)
                 jindu = completedCount / totalCount;
             }
             this.loadbar.progress = jindu;
@@ -57,12 +59,12 @@ export default class NewClass extends cc.Component {
 
         cc.loader.loadResDir("sound", (err, assets, urls) => {
             if (!err) {
-                // console.log(JSON.stringify(assets))
+                // Logger.log(JSON.stringify(assets))
                 cc.log(`加载资源${err ? '失败' : '成功'}`)
                 this.onLoadComplete();
-                console.log(JSON.stringify(urls))
+                // Logger.log(JSON.stringify(urls))
             }else{
-                console.error('err:'+err)
+                Logger.err('err:'+err)
             }
         });
 

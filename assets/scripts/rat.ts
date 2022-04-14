@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { Logger } from "./Logger";
 import { gameConfig, gameContext } from "./utils/GameTools";
 
 const { ccclass, property } = cc._decorator;
@@ -78,7 +79,7 @@ export default class NewClass extends cc.Component {
 
         }
         this._aniType = 'normal'
-        console.log('aniType：' + this.aniObj[this._aniType].jumpLeft)
+        Logger.log('aniType：' + this.aniObj[this._aniType].jumpLeft)
 
         this.isMove = true
         this.state = State.standRight
@@ -114,7 +115,7 @@ export default class NewClass extends cc.Component {
             } else if (preState == State.walkRight || preState == State.standRight) {
                 ani = 'ratFightRight'
             }
-            console.log('ani:' + ani)
+            Logger.log('ani:' + ani)
             this.attack = true
         } else if (this._state == State.jumpLeft) {
             ani = this.aniObj[this._aniType].jumpLeft
@@ -173,7 +174,7 @@ export default class NewClass extends cc.Component {
         }
         if (ani) {
             this.node.getComponent(cc.Animation).play(ani).repeatCount = repeatCount
-            console.log('播放：' + ani)
+            Logger.log('播放：' + ani)
         }
     }
 

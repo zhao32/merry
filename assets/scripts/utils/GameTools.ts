@@ -1,3 +1,4 @@
+import { Logger } from "../Logger";
 import PoolUtil from "./PoolUtil";
 
 export interface itemInfo {
@@ -31,6 +32,7 @@ var gameContext = {
   hasFllow: false,
   isChaos: false,
   hasLoad:false,
+  loadComplete:false,
 
   getPrefabByResName(resName: string, callback?: Function) {
     if (!gameContext.prefabs[resName]) {
@@ -39,7 +41,7 @@ var gameContext = {
           gameContext.prefabs[resName] = prefab
           callback && callback(prefab), callback = null
         } else {
-          console.log(resName)
+          Logger.log(resName)
           cc.log('加载预设失败：', err)
         }
       })
@@ -123,7 +125,7 @@ var gameContext = {
         let gameUI = cc.director.getScene()
           .getChildByName("Canvas")
           .getChildByName("gameUI");
-        console.log()
+        Logger.log()
         gameUI.addChild(node);
       })
     });
@@ -233,7 +235,7 @@ var GameTools = {
     isRelease: boolean = false
   ) {
     if (soundType == 0) cc.audioEngine.stopMusic()
-    console.log('播放：'+soundPath)
+    Logger.log('播放：'+soundPath)
     var soundProperty = ["playMusic", "playEffect"][soundType];
     if (gameContext.soundCache[soundPath]) {
       cc.audioEngine[soundProperty](gameContext.soundCache[soundPath], loop);

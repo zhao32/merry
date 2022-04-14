@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { Logger } from "../Logger";
 import { gameConfig, gameContext } from "../utils/GameTools";
 
 const { ccclass, property } = cc._decorator;
@@ -60,13 +61,13 @@ export default class NewClass extends cc.Component {
         cc.audioEngine.stopMusic();
         // this.playVideoArea.on('touchend', () => {
         //     this.videoPlayer.play();
-        //     console.log('点击播放')
+        //     Logger.log('点击播放')
         // });
         this.videoArea.active = true
         this.choiseArea.active = false
         this.videoPlayer.play()
         this.btnNo.on(cc.Node.EventType.TOUCH_END, () => {
-            console.log('不愿意')
+            Logger.log('不愿意')
             cc.director.loadScene("startScene", () => {
                 gameContext.showStartUI()
                 gameConfig.maxLevel = 0
@@ -74,13 +75,13 @@ export default class NewClass extends cc.Component {
             });
         }, this)
         this.btnYes.on(cc.Node.EventType.TOUCH_END, () => {
-            console.log('愿意')
+            Logger.log('愿意')
             gameConfig.maxLevel = 8
             gameConfig.memoryLength = 9
             gameConfig.currMemory = 9
             gameConfig.nextIsVedio = false
             cc.director.loadScene("startScene", () => {
-                console.log('切换到开始页面')
+                Logger.log('切换到开始页面')
                 this.scheduleOnce(()=>{
                     gameContext.showMemoryUI(true)
                 },.5)
@@ -94,13 +95,13 @@ export default class NewClass extends cc.Component {
         if (event === cc.VideoPlayer.EventType.CLICKED) {
             if (this.videoPlayer.isPlaying()) {
                 this.videoPlayer.pause();
-                console.log('点击暂停')
+                Logger.log('点击暂停')
             } else {
                 this.videoPlayer.play();
-                console.log('点击播放')
+                Logger.log('点击播放')
             }
         } else if (event === cc.VideoPlayer.EventType.COMPLETED) {
-            console.log('VideoPlayer视频播放完成')
+            Logger.log('VideoPlayer视频播放完成')
             this.videoArea.active = false
             this.choiseArea.active = true
         }

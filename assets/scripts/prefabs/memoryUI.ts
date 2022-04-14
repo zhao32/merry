@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import List from "../ListView/List";
+import { Logger } from "../Logger";
 import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 
@@ -65,13 +66,13 @@ export default class NewClass extends cc.Component {
         if (event === cc.VideoPlayer.EventType.CLICKED) {
             if (this.videoPlayer.isPlaying()) {
                 this.videoPlayer.pause();
-                console.log('点击暂停')
+                Logger.log('点击暂停')
             } else {
                 this.videoPlayer.play();
-                console.log('点击播放')
+                Logger.log('点击播放')
             }
         } else if (event === cc.VideoPlayer.EventType.COMPLETED) {
-            console.log('播放完成')
+            Logger.log('播放完成')
             this.videoArea.active = false
             gameContext.showStartUI()
             GameTools.destroyNode(this.node)
@@ -126,7 +127,7 @@ export default class NewClass extends cc.Component {
         if (gameConfig.currLevel == 8) {
             this.btnNext.getChildByName('label').getComponent(cc.Label).string = '最后的话'
         } else {
-            this.btnNext.getChildByName('label').getComponent(cc.Label).string = '下一局'
+            this.btnNext.getChildByName('label').getComponent(cc.Label).string = '下一关'
         }
     }
 
@@ -172,7 +173,7 @@ export default class NewClass extends cc.Component {
         GameTools.loadItemIcon(`pic/item${gameConfig.currMemory - 1}`, this.itemStart)
         // let data = [0, 1, 2, 3, 4, 5, 6]
         // gameContext.memoryLength = 6
-        // console.log('gameContext.memoryLength:' + gameContext.memoryLength)
+        // Logger.log('gameContext.memoryLength:' + gameContext.memoryLength)
         let data = new Array(gameConfig.memoryLength)
         if (this.isFromGame) {
             // this.scroll.scrollTo(cc.v2((gameConfig.currMemory) / 9, 0), 0.1);
@@ -234,16 +235,16 @@ export default class NewClass extends cc.Component {
     }
 
     // selectPass(touch: any) {
-    //     // console.log(touch)
+    //     // Logger.log(touch)
     //     let name: string = touch.target.name
     //     let level = parseInt(name.charAt(name.length - 1))
     //     if (level > gameConfig.maxLevel) {
     //         gameContext.showToast('请先通关之前关卡')
     //     } else {
-    //         console.log('打开关卡' + level)
+    //         Logger.log('打开关卡' + level)
     //         gameConfig.currLevel = level
     //         cc.director.loadScene("playScene");
-    //         // console.log(cc.director.runScene())
+    //         // Logger.log(cc.director.runScene())
     //     }
     // }
 

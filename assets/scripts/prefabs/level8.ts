@@ -10,6 +10,7 @@ import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
 import { State } from "../hero";
+import { Logger } from "../Logger";
 
 const { ccclass, property } = cc._decorator;
 
@@ -175,9 +176,12 @@ export default class NewClass extends cc.Component {
             this.enemy.runAction(cc.sequence(cc.moveBy(1, new cc.Vec2(300, 0)), cc.callFunc(() => {
                 this.page3.active = true;
                 this.scheduleOnce(() => {
-                    this.videoArea.active = true
-                    this.videoPlayer.play()
+                    // this.videoArea.active = true
+                    // this.videoPlayer.play()
                     cc.audioEngine.stopMusic();
+
+                    cc.director.loadScene("startScene", () => {
+                    });
                 }, 5)
             })))
 
@@ -213,13 +217,13 @@ export default class NewClass extends cc.Component {
         if (event === cc.VideoPlayer.EventType.CLICKED) {
             if (this.videoPlayer.isPlaying()) {
                 this.videoPlayer.pause();
-                console.log('点击暂停')
+                Logger.log('点击暂停')
             } else {
                 this.videoPlayer.play();
-                console.log('点击播放')
+                Logger.log('点击播放')
             }
         } else if (event === cc.VideoPlayer.EventType.COMPLETED) {
-            console.log('播放完成')
+            Logger.log('播放完成')
             this.videoArea.active = false
             cc.director.loadScene("startScene", () => {
                 gameContext.showMemoryUI(true)
@@ -253,7 +257,7 @@ export default class NewClass extends cc.Component {
 
 
     onDisable() {
-        console.log('------------------第9关注销监听------------------')
+        Logger.log('------------------第9关注销监听------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHBULLET, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
 
@@ -323,7 +327,7 @@ export default class NewClass extends cc.Component {
         // this.scheduleOnce(() => {
         //     this.showTalkBload(0)
         // }, preTime + 1)
-        console.log('播放音效')
+        Logger.log('播放音效')
         this.scheduleOnce(() => {
             this.showTalkBload(-1)
             this.page0.runAction(cc.sequence(cc.fadeOut(2), cc.callFunc(() => {
@@ -339,7 +343,7 @@ export default class NewClass extends cc.Component {
                 gameContext.player.state = State.standRight
 
                 this.page1.active = true
-                console.log('启用生成子弹回调')
+                Logger.log('启用生成子弹回调')
                 GameTools.loadSound('sound/level/9/bossbgm', 0, true)
 
                 this.schedule(this.hookAttack, 5)
@@ -348,7 +352,7 @@ export default class NewClass extends cc.Component {
     }
 
     touchArm() {
-        // console.log('手臂攻击')
+        // Logger.log('手臂攻击')
         // if (this.arm.opacity == 255) {
         //     this.arm.opacity = 254
         //     EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
@@ -383,7 +387,7 @@ export default class NewClass extends cc.Component {
         // let bullet = cc.instantiate(this.bulletPfb)
         // this.page1.addChild(bullet)
         // bullet.setPosition(320, -95)
-        // console.log('生成子弹')
+        // Logger.log('生成子弹')
         this.bullet.active = true
         this.bullet.setPosition(-20, -95)
         GameTools.loadSound('sound/level/9/bossAttack', 1, false)
@@ -398,10 +402,10 @@ export default class NewClass extends cc.Component {
 
 
         // let armPos = this.page1.convertToWorldSpaceAR(this.arm.getPosition())
-        // // console.log('heroX:'+ gameContext.playerNode.x)
-        // // console.log('sheepX:'+ sheepPos.x)
-        // // console.log('heroY:'+ gameContext.playerNode.y)
-        // // console.log('sheepY:'+ sheepPos.y)
+        // // Logger.log('heroX:'+ gameContext.playerNode.x)
+        // // Logger.log('sheepX:'+ sheepPos.x)
+        // // Logger.log('heroY:'+ gameContext.playerNode.y)
+        // // Logger.log('sheepY:'+ sheepPos.y)
         // if (this._touchArm == false && Math.abs(armPos.x - gameContext.playerNode.x) < 100) {
         //     this._touchArm = true
         //     EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
@@ -420,7 +424,7 @@ export default class NewClass extends cc.Component {
         //                         this.arm.opacity = 0
         //                         this.arm.stopAllActions()
         //                         this.enemy.stopAllActions()
-        //                         console.log('游戏完成')
+        //                         Logger.log('游戏完成')
         //                         gameConfig.currLevel = 6
         //                         gameConfig.maxLevel = 6
         //                         EventMgr.getInstance().sendListener(EventMgr.CLOSEOPERATE, {});
@@ -436,7 +440,7 @@ export default class NewClass extends cc.Component {
         if (Math.abs(enemyPos.x - gameContext.playerNode.x) < 100) {
             let player = gameContext.player as hero
             if (player && player.attack == true) {
-                console.log('攻击死神')
+                Logger.log('攻击死神')
                 player.attack = false
                 this.enemyHpNum -= 2
                 if (this.enemyHpNum >= 3) {

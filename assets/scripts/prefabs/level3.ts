@@ -10,6 +10,7 @@ import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
 import { State } from "../hero";
+import { Logger } from "../Logger";
 
 const { ccclass, property } = cc._decorator;
 
@@ -99,7 +100,7 @@ export default class NewClass extends cc.Component {
     }
 
     onDisable() {
-        console.log('------------------第5关注销监听------------------')
+        Logger.log('------------------第5关注销监听------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHWAVE, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
         GameTools.destroyNode(this.node)
@@ -112,17 +113,17 @@ export default class NewClass extends cc.Component {
 
     // touchBat() {
     //     // let player = gameContext.player as hero
-    //     // console.log('攻击蝙蝠')
-    //     // console.log('attack:' + player.attack)
+    //     // Logger.log('攻击蝙蝠')
+    //     // Logger.log('attack:' + player.attack)
     //     // if (player && player.attack == true) {
-    //     //     console.log('攻击蝙蝠')
+    //     //     Logger.log('攻击蝙蝠')
     //     //     player.attack = false
     //     //     this.batHpNum -= 2
     //     //     if (this.batHpNum > 0) {
     //     //         this.batHp.scaleX = this.batHpNum / 20
     //     //     } else {
     //     //         this.batHp.scaleX = 0
-    //     //         console.log('打死蝙蝠，通关！')
+    //     //         Logger.log('打死蝙蝠，通关！')
     //     //     }
     //     // }
     // }
@@ -138,7 +139,7 @@ export default class NewClass extends cc.Component {
                 this.showTalkBload(2)
                 this.ratHead.active = false
                 operateUI.san = 9
-                GameTools.loadSound('sound/level/4/1monblood', 0, true)
+                GameTools.loadSound('sound/level/4/1monblood', 0, false)
             }, 2)
         }
     }
@@ -248,7 +249,7 @@ export default class NewClass extends cc.Component {
         if (gameContext.playerNode.x > 980 && gameContext.playerNode.x < 1110) {
             let player = gameContext.player as hero
             if (player && player.attack == true) {
-                console.log('攻击蝙蝠')
+                Logger.log('攻击蝙蝠')
                 player.attack = false
                 this.batHpNum -= 2
                 if (this.batHpNum > 0) {
@@ -261,7 +262,7 @@ export default class NewClass extends cc.Component {
                     cc.tween(this.bat).by(2, { y: -500 }, { easing: 'cubicIn' }).start()
 
                     this.bat.runAction(moveby)
-                    console.log('打死蝙蝠，通关！')
+                    Logger.log('打死蝙蝠，通关！')
                     GameTools.loadSound('sound/level/4/finish', 1, false)
 
                     gameConfig.memoryLength = 4

@@ -7,6 +7,7 @@
 
 import { gameConfig, gameContext } from "./utils/GameTools";
 import operateUI from "./prefabs/operateUI";
+import { Logger } from "./Logger";
 
 const { ccclass, property } = cc._decorator;
 
@@ -92,7 +93,7 @@ export default class NewClass extends cc.Component {
             }
         }
         this._aniType = 'normal'
-        console.log('aniType：' + this.aniObj[this._aniType].jumpLeft)
+        Logger.log('aniType：' + this.aniObj[this._aniType].jumpLeft)
 
         this.isMove = true
         this.state = State.standRight
@@ -138,7 +139,7 @@ export default class NewClass extends cc.Component {
             } else if (preState == State.walkRight || preState == State.standRight) {
                 ani = 'fightRight'
             }
-            console.log('ani:' + ani)
+            Logger.log('ani:' + ani)
             this.attack = true
         } else if (this._state == State.jumpLeft) {
             ani = this.aniObj[this._aniType].jumpLeft
@@ -234,7 +235,8 @@ export default class NewClass extends cc.Component {
 
             if (play) play.repeatCount = repeatCount
             if (aniFllow) this.fllow.getComponent(cc.Animation).play(aniFllow).repeatCount = repeatCount
-            console.log('播放：' + ani)
+            Logger.log('播放：' + ani)
+            
 
             this.scheduleOnce(() => {
                 let ani

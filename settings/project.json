@@ -8,7 +8,15 @@
     ]
   ],
   "excluded-modules": [
-    "3D Physics/Builtin"
+    "DragonBones",
+    "ParticleSystem",
+    "Spine Skeleton",
+    "WebView",
+    "3D",
+    "3D Primitive",
+    "3D Physics/cannon.js",
+    "3D Physics/Builtin",
+    "3D Particle"
   ],
   "preview-port": 7456,
   "design-resolution-width": 1334,
@@ -33,6 +41,6 @@
       "enable": false
     }
   },
-  "last-module-event-record-time": 1648203266522,
+  "last-module-event-record-time": 1649919208906,
   "start-scene": "a612c388-91ef-4a5b-a4c2-0a860f7fbd1b"
 }

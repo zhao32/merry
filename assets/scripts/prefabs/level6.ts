@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { Logger } from "../Logger";
 import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 export enum DIR {
@@ -153,7 +154,7 @@ export default class NewClass extends cc.Component {
 
 
     onDisable() {
-        console.log('------------------第7关注销监听------------------')
+        Logger.log('------------------第7关注销监听------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.MISSSTONE, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.MISSSMUSEUM, this)
@@ -358,7 +359,7 @@ export default class NewClass extends cc.Component {
         GameTools.loadSound('sound/level/7/fly', 1, false)
 
 
-        console.log('播放音效')
+        Logger.log('播放音效')
         this.scheduleOnce(() => {
             this.page1.active = true
             this.op.active = true
@@ -370,16 +371,16 @@ export default class NewClass extends cc.Component {
     update(dt) {
         if (this._dir == DIR.UP) {
             if (this.player.y < 750) this.player.y += this._dis
-            // console.log('this.player.y:' + this.player.y)
+            // Logger.log('this.player.y:' + this.player.y)
         } else if (this._dir == DIR.DOWN) {
             if (this.player.y > -750) this.player.y -= this._dis
-            // console.log('this.player.y:' + this.player.y)
+            // Logger.log('this.player.y:' + this.player.y)
         } else if (this._dir == DIR.LEFT) {
             if (this.player.x > -1334) this.player.x -= this._dis
-            // console.log('this.player.x:' + this.player.x)
+            // Logger.log('this.player.x:' + this.player.x)
         } else if (this._dir == DIR.RIGHT) {
             if (this.player.x < 1334) this.player.x += this._dis
-            // console.log('this.player.x:' + this.player.x)
+            // Logger.log('this.player.x:' + this.player.x)
         }
 
         if (this._dir == DIR.RIGHT && this.page1.x == 1334 && this.player.x >= 0) {

@@ -10,6 +10,7 @@ import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
 import { State } from "../hero";
+import { Logger } from "../Logger";
 
 const { ccclass, property } = cc._decorator;
 
@@ -115,7 +116,7 @@ export default class NewClass extends cc.Component {
     }
 
     onDisable() {
-        console.log('------------------第8关注销监听------------------')
+        Logger.log('------------------第8关注销监听------------------')
         EventMgr.getInstance().unRegisterListener(EventMgr.TOUCHTANKARM, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
 
@@ -176,12 +177,12 @@ export default class NewClass extends cc.Component {
         let preTime = 1
         this.scheduleOnce(() => {
             // this.weChatLeft.active = true
-            // console.log('播放音效')
+            // Logger.log('播放音效')
             // this.label0.string = '【猴】:装修太累了吧！'
             this.showTalkBload(0, ':装修太累了吧，睡一会儿休息一下zzz....')
 
         }, preTime)
-        console.log('播放音效')
+        Logger.log('播放音效')
         this.scheduleOnce(() => {
             this.showTalkBload(2)
             GameTools.loadSound('sound/level/8/hulu', 1, false)
@@ -203,14 +204,14 @@ export default class NewClass extends cc.Component {
                 this.page1.active = true
                 this.armAttack()
             })))
-
+            GameTools.loadSound(`sound/bgm/bgm7`, 0, true)
 
         }, 11)
 
     }
 
     touchArm() {
-        // console.log('手臂攻击')
+        // Logger.log('手臂攻击')
         // if (this.arm.opacity == 1) {
         //     this.arm.opacity = 0
         //     EventMgr.getInstance().sendListener(EventMgr.UPDATESAN, { 'disSan': -2 });
@@ -317,11 +318,12 @@ export default class NewClass extends cc.Component {
 
             this.scheduleOnce(() => {
                 this.fallBox()
+                cc.tween(this.tankHp).to(1, { scaleX: 0 }).start()
                 operateUI.san = 10
                 gameContext.showToast('淘宝达鼠')
                 GameTools.loadSound('sound/level/8/boxfall', 1, false)
                 let callF = cc.callFunc(() => {
-                    console.log('游戏完成')
+                    Logger.log('游戏完成')
                     // gameConfig.maxLevel = 8
                     gameConfig.memoryLength = 8
                     gameConfig.currMemory = 8
@@ -344,7 +346,7 @@ export default class NewClass extends cc.Component {
                 .call(() => {
                     box.y += 1400
                     // if (i == 0) {
-                    //     console.log('游戏完成')
+                    //     Logger.log('游戏完成')
                     //     gameConfig.maxLevel = 8
 
                     //     cc.director.loadScene("startScene", () => {
@@ -385,7 +387,7 @@ export default class NewClass extends cc.Component {
             //             .call(() => {
             //                 box.y += 1400
             //                 if (i == 0) {
-            //                     console.log('游戏完成')
+            //                     Logger.log('游戏完成')
             //                     gameConfig.maxLevel = 8
 
             //                     cc.director.loadScene("startScene", () => {
@@ -411,7 +413,7 @@ export default class NewClass extends cc.Component {
                     this.tankHp.scaleX = this.tankHpNum / 20
                 } else {
                     this.tankHp.scaleX = 0
-                    // console.log('打死装修怪，通关！')
+                    // Logger.log('打死装修怪，通关！')
                     // gameConfig.maxLevel = 8
                     // cc.director.loadScene("startScene", () => {
                     //     gameContext.memoryLength = 8
@@ -419,7 +421,7 @@ export default class NewClass extends cc.Component {
                     // });
 
                     let callF = cc.callFunc(() => {
-                        console.log('游戏完成')
+                        Logger.log('游戏完成')
                         // gameConfig.maxLevel = 8
                         gameConfig.memoryLength = 8
                         gameConfig.currMemory = 8

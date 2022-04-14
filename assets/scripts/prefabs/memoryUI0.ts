@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import List from "../ListView/List";
+import { Logger } from "../Logger";
 import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 
@@ -71,7 +72,7 @@ export default class NewClass extends cc.Component {
 
     start() {
         // let data = [0, 1, 2, 3, 4, 5, 6]
-        console.log('gameContext.memoryLength:' + gameContext.memoryLength)
+        Logger.log('gameContext.memoryLength:' + gameContext.memoryLength)
         let data = new Array(gameContext.memoryLength)
         for (let i = 0; i < data.length; i++) {
             data[i] = `pic/item${i}`
@@ -93,23 +94,23 @@ export default class NewClass extends cc.Component {
     }
 
     selectPass(touch: any) {
-        // console.log(touch)
+        // Logger.log(touch)
         let name: string = touch.target.name
         let level = parseInt(name.charAt(name.length - 1))
         if (level > gameConfig.maxLevel) {
             gameContext.showToast('请先通关之前关卡')
         } else {
-            console.log('打开关卡' + level)
+            Logger.log('打开关卡' + level)
             gameConfig.currLevel = level
             cc.director.loadScene("playScene");
-            // console.log(cc.director.runScene())
+            // Logger.log(cc.director.runScene())
         }
     }
 
     showItem(self, param) {
         this.displayItem.active = true
         this.mask.active = true
-        console.log('param:' + param)
+        Logger.log('param:' + param)
         GameTools.loadItemIcon(param.data, this.displayItem)
     }
 

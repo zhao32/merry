@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { State } from "../hero";
+import { Logger } from "../Logger";
 import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
@@ -37,7 +38,7 @@ export default class NewClass extends cc.Component {
     callback: any
 
     initFood() {
-        console.log('初始化食物')
+        Logger.log('初始化食物')
         let i = 0
         this.schedule(() => {
             let food = cc.instantiate(this.foodPfb)
@@ -56,7 +57,7 @@ export default class NewClass extends cc.Component {
         while (this.foodList.length > 0) {
             let node = this.foodList.pop()
             if (node) node.destroy()
-            console.log('删除食物')
+            Logger.log('删除食物')
         }
         this.foodList = []
     }
@@ -88,7 +89,7 @@ export default class NewClass extends cc.Component {
     }
 
     onDisable() {
-        console.log('------------------第4关注销监听------------------')
+        Logger.log('------------------第4关注销监听------------------')
         // EventMgr.getInstance().unRegisterListener(EventMgr.FOODGROUND, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.FOODGPLAYER, this)
         EventMgr.getInstance().unRegisterListener(EventMgr.RESTART, this)
@@ -126,13 +127,13 @@ export default class NewClass extends cc.Component {
         }, 1)
         this.scheduleOnce(() => {
             this.weChatLeft.active = true
-            console.log('播放音效')
+            Logger.log('播放音效')
             GameTools.loadSound('sound/level/wechat0', 1, false)
         }, preTime + 1)
-        console.log('播放音效')
+        Logger.log('播放音效')
         this.scheduleOnce(() => {
             this.weChatRight.active = true
-            console.log('播放音效')
+            Logger.log('播放音效')
             GameTools.loadSound('sound/level/wechat1', 1, false)
         }, preTime + 4)
 
@@ -165,7 +166,7 @@ export default class NewClass extends cc.Component {
             GameTools.loadSound('sound/level/wechat0', 1, false)
             GameTools.loadSound('sound/level/6/finish', 5, false)
 
-            console.log('游戏结束')
+            Logger.log('游戏结束')
             // this.unscheduleAllCallbacks()
             gameContext.playerNode.active = false
             this.destoryFood()

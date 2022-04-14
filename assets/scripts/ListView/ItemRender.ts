@@ -1,3 +1,4 @@
+import { Logger } from "../Logger";
 import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import List, { ListType } from "./List";
@@ -17,7 +18,7 @@ export default class ItemRender extends cc.Component {
     }
 
     doClick() {
-        console.log('data:' + this.data)
+        Logger.log('data:' + this.data)
         EventMgr.getInstance().sendListener(EventMgr.SHOWMEMRY, { data: this.data });
 
 

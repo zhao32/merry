@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import hero, { State } from "../hero";
+import { Logger } from "../Logger";
 import EventMgr from "../utils/EventMgr";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 import operateUI from "./operateUI";
@@ -106,11 +107,13 @@ export default class NewClass extends cc.Component {
         this.selectMilk = this.shop.getChildByName('select')
         this.btnOk = this.selectMilk.getChildByName('btnOk')
         this.toggle = this.selectMilk.getChildByName('toggle')
-        console.log('toggle:' + this.toggle)
+        Logger.log('toggle:' + this.toggle)
         this.toggle0 = this.toggle.getChildByName('toggle0').getComponent(cc.Toggle)
         this.toggle1 = this.toggle.getChildByName('toggle1').getComponent(cc.Toggle)
         this.toggle2 = this.toggle.getChildByName('toggle2').getComponent(cc.Toggle)
         this.toggle3 = this.toggle.getChildByName('toggle3').getComponent(cc.Toggle)
+
+        this.weChat.getChildByName('rule').active = false
 
         this.toggle0.node.on('toggle', this.doToggle, this)
         this.toggle1.node.on('toggle', this.doToggle, this)
@@ -128,7 +131,7 @@ export default class NewClass extends cc.Component {
 
 
     onDisable() {
-        console.log('------------------第一关销毁------------------')
+        Logger.log('------------------第一关销毁------------------')
         this.toggle0.node.off('toggle')
         this.toggle1.node.off('toggle')
         this.toggle2.node.off('toggle')
@@ -178,11 +181,11 @@ export default class NewClass extends cc.Component {
         if (!this.answer) {
             gameContext.showToast('请选择答案')
         } else if (this.answer == this.toggle2.node.name) {
-            console.log('选择正确')
+            Logger.log('选择正确')
             this.chat.active = false
             this.selectMilk.active = false
         } else {
-            console.log('选择错误')
+            Logger.log('选择错误')
             this.chat.active = false
             this.selectMilk.active = false
             // gameContext.showToast('你谁啊！')
@@ -212,6 +215,7 @@ export default class NewClass extends cc.Component {
         this.distance = 0
         gameContext.moveType = 1
         this.setSyncPosition()
+        this.weChat.getChildByName('rule').active = false
 
         this.node.setPosition(-500, 0)
         // this.weChat.x = 1067
@@ -251,20 +255,29 @@ export default class NewClass extends cc.Component {
             this.weChat.active = true
             this.weChat.x = 0
         }, 1)
-        console.log('播放音效')
+        Logger.log('播放音效')
 
         this.scheduleOnce(() => {
             this.weChatLeft.active = true
-            console.log('播放音效')
+            Logger.log('播放音效')
             GameTools.loadSound('sound/level/wechat0', 1, false)
 
         }, preTime + 1)
-        console.log('播放音效')
+        Logger.log('播放音效')
         this.scheduleOnce(() => {
             this.weChatRight.active = true
-            console.log('播放音效')
+            Logger.log('播放音效')
             GameTools.loadSound('sound/level/wechat1', 1, false)
         }, preTime + 2)
+
+        this.scheduleOnce(()=>{
+            this.weChat.getChildByName('rule').active = true
+        },preTime + 3)
+
+        this.scheduleOnce(()=>{
+            this.weChat.getChildByName('rule').active = false
+        },preTime + 5)
+
 
         this.scheduleOnce(() => {
             this.weChat.active = false
@@ -288,7 +301,7 @@ export default class NewClass extends cc.Component {
     }
 
     touchMask(self: this, params) {
-        console.log('触碰口罩回调')
+        Logger.log('触碰口罩回调')
         GameTools.loadSound('sound/level/1/touchMask', 1, false)
 
         self.hasMask = true
@@ -297,13 +310,13 @@ export default class NewClass extends cc.Component {
     }
 
     touchVirus() {
-        console.log('触碰病毒回调')
+        Logger.log('触碰病毒回调')
         if (this.death) return
         if (this.hasMask) {
-            console.log('免疫病毒')
+            Logger.log('免疫病毒')
         } else {
             GameTools.loadSound('sound/level/1/touchVirus', 1, false)
-            console.log('血量减少')
+            Logger.log('血量减少')
             this.failPage.active = true
             this.death = true
             gameContext.playerNode.active = false
@@ -336,7 +349,7 @@ export default class NewClass extends cc.Component {
         //     naicha.active = false
         // }
 
-        console.log('达成通关')
+        Logger.log('达成通关')
         GameTools.loadSound('sound/level/1/touchFinish', 1, false)
         gameConfig.maxLevel = 1
         gameConfig.memoryLength = 1
@@ -353,7 +366,7 @@ export default class NewClass extends cc.Component {
 
     touchShop() {
         if (this.answer == this.toggle2.node.name) return
-        console.log('到达商店')
+        Logger.log('到达商店')
         this.chat.active = true
         this.scheduleOnce(() => {
             this.selectMilk.active = true

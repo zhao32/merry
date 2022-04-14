@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { Logger } from "../Logger";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 
 
@@ -64,7 +65,7 @@ export default class NewClass extends cc.Component {
     }
 
     selectPass(touch: any) {
-        // console.log(touch)
+        // Logger.log(touch)
         if (this._canTouch == false) return
         this._canTouch = false
         let name: string = touch.target.name
@@ -72,7 +73,7 @@ export default class NewClass extends cc.Component {
         if (level > gameConfig.maxLevel) {
             gameContext.showToast('请先通关之前关卡')
         } else {
-            console.log('打开关卡' + level)
+            Logger.log('打开关卡' + level)
             gameConfig.currLevel = level
             GameTools.loadSound(`sound/level/${level + 1}/levelname`, 0, false, null, true)
             this.baoMu.active = true
@@ -86,7 +87,7 @@ export default class NewClass extends cc.Component {
                 // this.baoMu.active = false
             }, 5)
 
-            // console.log(cc.director.runScene())
+            // Logger.log(cc.director.runScene())
         }
         GameTools.loadSound('sound/op/click', 1, false)
     }

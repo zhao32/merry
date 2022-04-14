@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { Logger } from "../Logger";
 import ItemRender from "./ItemRender"
 
 const { ccclass, property } = cc._decorator;
@@ -170,7 +171,7 @@ export default class List extends cc.Component {
                 if (this.padding_left + this.padding_right + this.itemWidth + this.spaceX > this.content.width) {
                     this.padding_left = 0;
                     this.padding_right = 0;
-                    console.error("padding_left或padding_right过大");
+                    Logger.err("padding_left或padding_right过大");
                 }
 
                 this.gridCol = Math.floor((this.content.width - this.padding_left - this.padding_right) / (this.itemWidth + this.spaceX));
@@ -188,7 +189,7 @@ export default class List extends cc.Component {
                 if (this.padding_top + this.padding_buttom + this.itemHeight + this.spaceY > this.content.height) {
                     this.padding_top = 0;
                     this.padding_buttom = 0;
-                    console.error("padding_top或padding_buttom过大");
+                    Logger.err("padding_top或padding_buttom过大");
                 }
 
                 this.gridRow = Math.floor((this.content.height - this.padding_top - this.padding_buttom) / (this.itemHeight + this.spaceY));
@@ -278,7 +279,7 @@ export default class List extends cc.Component {
             }
         }
         t.currentTarget.getChildByName('itemSelect').active = true
-        console.log(t)
+        Logger.log(t)
 
     }
 

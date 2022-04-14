@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { Logger } from "../Logger";
 import GameTools, { gameConfig, gameContext } from "../utils/GameTools";
 
 
@@ -36,7 +37,7 @@ export default class NewClass extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        console.log('进入开始页')
+        Logger.log('进入开始页')
         this.node.zIndex = 0
         this.btnMemory =this.node.getChildByName('btnMemory')
         this.btnStart =this.node.getChildByName('btnStart')
