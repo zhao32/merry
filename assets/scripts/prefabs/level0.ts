@@ -74,6 +74,8 @@ export default class NewClass extends cc.Component {
 
     callback: any
 
+    rule:cc.Node
+
     init(data: any, callback) {
         this.callback = callback
         // this.Restart()
@@ -113,8 +115,8 @@ export default class NewClass extends cc.Component {
         this.toggle2 = this.toggle.getChildByName('toggle2').getComponent(cc.Toggle)
         this.toggle3 = this.toggle.getChildByName('toggle3').getComponent(cc.Toggle)
 
-        this.weChat.getChildByName('rule').active = false
-
+        this.rule =  this.node.getChildByName('rule')
+        this.rule.active = false
         this.toggle0.node.on('toggle', this.doToggle, this)
         this.toggle1.node.on('toggle', this.doToggle, this)
         this.toggle2.node.on('toggle', this.doToggle, this)
@@ -215,7 +217,7 @@ export default class NewClass extends cc.Component {
         this.distance = 0
         gameContext.moveType = 1
         this.setSyncPosition()
-        this.weChat.getChildByName('rule').active = false
+        this.rule.active = false
 
         this.node.setPosition(-500, 0)
         // this.weChat.x = 1067
@@ -231,7 +233,7 @@ export default class NewClass extends cc.Component {
         this.weChat.parent = this.node.parent.parent
         this.weChat.getChildByName('shop').active = false
         this.weChat.getChildByName('rat').active = false
-
+        this.rule.parent = this.node.parent.parent
 
         this.selectMilk.active = false
         this.chat.active = false
@@ -254,6 +256,7 @@ export default class NewClass extends cc.Component {
         this.scheduleOnce(() => {
             this.weChat.active = true
             this.weChat.x = 0
+            this.rule.x = 0
         }, 1)
         Logger.log('播放音效')
 
@@ -270,20 +273,22 @@ export default class NewClass extends cc.Component {
             GameTools.loadSound('sound/level/wechat1', 1, false)
         }, preTime + 2)
 
-        this.scheduleOnce(()=>{
-            this.weChat.getChildByName('rule').active = true
-        },preTime + 3)
+        this.scheduleOnce(() => {
+           this.rule.active = true
+           
+            // this.weChat.removeFromParent()
+            this.weChat.active = false
+            this.weChatLeft.active = false
+            this.weChatRight.active = false
+        }, preTime + 4)
 
-        this.scheduleOnce(()=>{
-            this.weChat.getChildByName('rule').active = false
-        },preTime + 5)
+        // this.scheduleOnce(() => {
+        //     this.weChat.getChildByName('rule').active = false
+        // }, preTime + 5)
 
 
         this.scheduleOnce(() => {
-            this.weChat.active = false
-            // this.weChat.removeFromParent()
-            this.weChatLeft.active = false
-            this.weChatRight.active = false
+            this.rule.active = false
             gameContext.playerNode.active = true;
             (gameContext.player as hero).aniType = 'normal'
             gameContext.playerNode.setPosition(400, -165);
@@ -297,7 +302,7 @@ export default class NewClass extends cc.Component {
                 jump: true
             });
 
-        }, preTime + 4)
+        }, preTime + 7)
     }
 
     touchMask(self: this, params) {

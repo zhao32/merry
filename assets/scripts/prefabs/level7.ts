@@ -204,7 +204,7 @@ export default class NewClass extends cc.Component {
                 this.page1.active = true
                 this.armAttack()
             })))
-            GameTools.loadSound(`sound/bgm/bgm7`, 0, true)
+            GameTools.loadSound(`sound/bgm/bgm8`, 0, true)
 
         }, 11)
 

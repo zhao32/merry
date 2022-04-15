@@ -82,7 +82,7 @@ export default class NewClass extends cc.Component {
             this.scheduleOnce(() => {
                 this._canTouch = true
                 cc.director.loadScene("playScene", () => {
-                    gameContext.showStartUI(true)
+                    // gameContext.showStartUI(true)
                 });
                 // this.baoMu.active = false
             }, 5)

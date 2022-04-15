@@ -414,8 +414,8 @@
     },
     "_volume": 1,
     "_mute": false,
-    "_isFullscreen": true,
-    "_N$isFullscreen": true,
+    "_isFullscreen": false,
+    "_N$isFullscreen": false,
     "_stayOnBottom": false,
     "videoPlayerEvent": [
       {

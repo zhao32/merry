@@ -56,7 +56,10 @@ export default class NewClass extends cc.Component {
         });
         // this.scheduleOnce(()=>{        gameContext.showLevel(gameConfig.currLevel)
         // },0.1)
-        if (gameConfig.currLevel + 1 != 4 && gameConfig.currLevel + 1 != 8) GameTools.loadSound(`sound/bgm/bgm${gameConfig.currLevel + 1}`, 0, true)
+        if (gameConfig.currLevel + 1 != 5 && gameConfig.currLevel + 1 != 8) GameTools.loadSound(`sound/bgm/bgm${gameConfig.currLevel + 1}`, 0, true)
+        else {
+            cc.audioEngine.stopMusic()
+        }
         gameContext.showLevel(gameConfig.currLevel)
 
         gameContext.showOperateUI()
