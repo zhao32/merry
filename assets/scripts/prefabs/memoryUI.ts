@@ -139,16 +139,22 @@ export default class NewClass extends cc.Component {
 
     doNext() {
         if (gameConfig.nextIsVedio) {
+            console.log('---------------------------')
+
             gameContext.showVideoPlayerUI();
-            GameTools.destroyNode(this.node)
+            this.scheduleOnce(() => {
+                GameTools.destroyNode(this.node)
+            }, 1)
             return
         }
         if (gameConfig.currLevel == 8) {
+            console.log('***************************')
             this.videoArea.active = true
             this.videoPlayer.play()
             cc.audioEngine.stopMusic();
             return
         }
+
         gameConfig.currLevel += 1
         gameConfig.currLevel = gameConfig.currLevel % 9
 

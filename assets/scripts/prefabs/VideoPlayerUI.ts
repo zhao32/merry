@@ -82,9 +82,10 @@ export default class NewClass extends cc.Component {
             gameConfig.nextIsVedio = false
             cc.director.loadScene("startScene", () => {
                 Logger.log('切换到开始页面')
-                this.scheduleOnce(()=>{
-                    gameContext.showMemoryUI(true)
-                },.5)
+                // this.scheduleOnce(()=>{
+                //     gameContext.showMemoryUI(true)
+                // },.5)
+                gameContext.showMemoryUI(true)
             });
         }, this)
 

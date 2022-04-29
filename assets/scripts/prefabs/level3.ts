@@ -133,13 +133,15 @@ export default class NewClass extends cc.Component {
         let operateUI: operateUI = gameContext.operateUI
         if (operateUI.san <= 1) {
             // gameContext.showToast('鼠鼠会在暗中支持你！')
-            this.showTalkBload(0, '我会暗中支持你的。')                                   
+            this.showTalkBload(0, '我会暗中支持你的。')   
+            GameTools.loadSound('sound/level/4/zhichi', 1, false)
+                                
             this.ratHead.active = true
             this.scheduleOnce(() => {
                 this.showTalkBload(2)
                 this.ratHead.active = false
                 operateUI.san = 9
-                GameTools.loadSound('sound/level/4/1monblood', 0, false)
+                GameTools.loadSound('sound/level/4/1monblood', 1, false)
             }, 2)
         }
     }
