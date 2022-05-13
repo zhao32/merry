@@ -302,7 +302,7 @@ export default class NewClass extends cc.Component {
                 jump: true
             });
 
-        }, preTime + 7)
+        }, preTime + 9)
     }
 
     touchMask(self: this, params) {
