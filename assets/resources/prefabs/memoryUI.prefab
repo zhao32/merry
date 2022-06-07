@@ -61,10 +61,13 @@
     "_components": [
       {
         "__id__": 205
+      },
+      {
+        "__id__": 206
       }
     ],
     "_prefab": {
-      "__id__": 206
+      "__id__": 207
     },
     "_opacity": 255,
     "_color": {
@@ -88,8 +91,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        0,
+        667,
+        375,
         0,
         0,
         0,
@@ -792,7 +795,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 117,
       "height": 197
     },
     "_anchorPoint": {
@@ -1221,7 +1224,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 117,
       "height": 197
     },
     "_anchorPoint": {
@@ -1650,7 +1653,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 117,
       "height": 197
     },
     "_anchorPoint": {
@@ -2079,7 +2082,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 117,
       "height": 197
     },
     "_anchorPoint": {
@@ -2508,7 +2511,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 117,
       "height": 197
     },
     "_anchorPoint": {
@@ -2937,7 +2940,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 117,
       "height": 197
     },
     "_anchorPoint": {
@@ -3366,7 +3369,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 117,
       "height": 197
     },
     "_anchorPoint": {
@@ -3795,7 +3798,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 117,
       "height": 197
     },
     "_anchorPoint": {
@@ -4224,7 +4227,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 117,
       "height": 197
     },
     "_anchorPoint": {
@@ -4653,7 +4656,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 117,
       "height": 197
     },
     "_anchorPoint": {
@@ -5458,7 +5461,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 117,
       "height": 197
     },
     "_anchorPoint": {
@@ -6785,11 +6788,9 @@
       "__id__": 198
     },
     "_enabled": true,
-    "_resourceType": 1,
-    "_remoteURL": "",
-    "_clip": {
-      "__uuid__": "f4a60098-9eaa-4e91-ab0c-801e6357c839"
-    },
+    "_resourceType": 0,
+    "_remoteURL": "http://game.vip.hnhxzkj.com/Merry/propose.mp4",
+    "_clip": {},
     "_volume": 1,
     "_mute": false,
     "_isFullscreen": false,
@@ -6900,6 +6901,33 @@
     "infoDisplay": {
       "__id__": 190
     },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.Widget",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "alignMode": 1,
+    "_target": null,
+    "_alignFlags": 45,
+    "_left": 0,
+    "_right": 0,
+    "_top": 0,
+    "_bottom": 0,
+    "_verticalCenter": 0,
+    "_horizontalCenter": 0,
+    "_isAbsLeft": true,
+    "_isAbsRight": true,
+    "_isAbsTop": true,
+    "_isAbsBottom": true,
+    "_isAbsHorizontalCenter": true,
+    "_isAbsVerticalCenter": true,
+    "_originalWidth": 1334,
+    "_originalHeight": 750,
     "_id": ""
   },
   {

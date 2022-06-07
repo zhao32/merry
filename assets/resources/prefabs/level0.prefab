@@ -73,10 +73,13 @@
     "_components": [
       {
         "__id__": 195
+      },
+      {
+        "__id__": 196
       }
     ],
     "_prefab": {
-      "__id__": 196
+      "__id__": 197
     },
     "_opacity": 255,
     "_color": {
@@ -101,7 +104,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        0,
+        375,
         0,
         0,
         0,
@@ -778,8 +781,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 201,
-      "height": 173
+      "width": 198,
+      "height": 172
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -7091,6 +7094,33 @@
     "_enabled": true,
     "label": null,
     "text": "hello",
+    "_id": ""
+  },
+  {
+    "__type__": "cc.Widget",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "alignMode": 1,
+    "_target": null,
+    "_alignFlags": 5,
+    "_left": 0,
+    "_right": 0,
+    "_top": 0,
+    "_bottom": 0,
+    "_verticalCenter": 0,
+    "_horizontalCenter": 0,
+    "_isAbsLeft": true,
+    "_isAbsRight": true,
+    "_isAbsTop": true,
+    "_isAbsBottom": true,
+    "_isAbsHorizontalCenter": true,
+    "_isAbsVerticalCenter": true,
+    "_originalWidth": 0,
+    "_originalHeight": 750,
     "_id": ""
   },
   {

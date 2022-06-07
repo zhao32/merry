@@ -31,8 +31,8 @@ var gameContext = {
   memoryLength: 0,
   hasFllow: false,
   isChaos: false,
-  hasLoad:false,
-  loadComplete:false,
+  hasLoad: false,
+  loadComplete: false,
 
   getPrefabByResName(resName: string, callback?: Function) {
     if (!gameContext.prefabs[resName]) {
@@ -235,7 +235,7 @@ var GameTools = {
     isRelease: boolean = false
   ) {
     if (soundType == 0) cc.audioEngine.stopMusic()
-    Logger.log('播放：'+soundPath)
+    Logger.log('播放：' + soundPath)
     var soundProperty = ["playMusic", "playEffect"][soundType];
     if (gameContext.soundCache[soundPath]) {
       cc.audioEngine[soundProperty](gameContext.soundCache[soundPath], loop);
@@ -257,6 +257,9 @@ var GameTools = {
 
           cb && cb(res);
           cb = null;
+        } else {
+          console.error('err:'+err)
+
         }
       });
     }
@@ -272,6 +275,7 @@ var GameTools = {
       cb && cb(err, res), (cb = null);
     });
   },
+
   /**
    * 资源释放
    * @param path

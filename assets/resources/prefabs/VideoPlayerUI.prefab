@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "VideoPlayerUI",
+    "_name": "videoPlayer",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -28,10 +28,13 @@
     "_components": [
       {
         "__id__": 41
+      },
+      {
+        "__id__": 42
       }
     ],
     "_prefab": {
-      "__id__": 42
+      "__id__": 43
     },
     "_opacity": 255,
     "_color": {
@@ -55,8 +58,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        0,
+        667,
+        375,
         0,
         0,
         0,
@@ -174,9 +177,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 212,
-      "g": 250,
-      "b": 235,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_contentSize": {
@@ -407,11 +410,9 @@
       "__id__": 8
     },
     "_enabled": true,
-    "_resourceType": 1,
-    "_remoteURL": "",
-    "_clip": {
-      "__uuid__": "ecadfd9b-8b6e-4ad7-bc19-2aaf1e4896a6"
-    },
+    "_resourceType": 0,
+    "_remoteURL": "http://game.vip.hnhxzkj.com/Merry/menony.mp4",
+    "_clip": null,
     "_volume": 1,
     "_mute": false,
     "_isFullscreen": false,
@@ -1427,6 +1428,33 @@
     "btnNo": {
       "__id__": 32
     },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.Widget",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "alignMode": 1,
+    "_target": null,
+    "_alignFlags": 45,
+    "_left": 0,
+    "_right": 0,
+    "_top": 0,
+    "_bottom": 0,
+    "_verticalCenter": 0,
+    "_horizontalCenter": 0,
+    "_isAbsLeft": true,
+    "_isAbsRight": true,
+    "_isAbsTop": true,
+    "_isAbsBottom": true,
+    "_isAbsHorizontalCenter": true,
+    "_isAbsVerticalCenter": true,
+    "_originalWidth": 1334,
+    "_originalHeight": 750,
     "_id": ""
   },
   {
