@@ -240,7 +240,7 @@ var GameTools = {
     if (gameContext.soundCache[soundPath]) {
       cc.audioEngine[soundProperty](gameContext.soundCache[soundPath], loop);
     } else {
-      GameTools.load(soundPath, cc.AudioClip, function (err, res) {
+      GameTools.load1(soundPath, cc.AudioClip, function (err, res) {
         if (!err) {
           if (soundType == 0) cc.audioEngine.resumeMusic()
           if (isRelease && !loop) {
@@ -258,7 +258,7 @@ var GameTools = {
           cb && cb(res);
           cb = null;
         } else {
-          console.error('err:'+err)
+          console.error('err:' + err)
 
         }
       });
@@ -275,6 +275,14 @@ var GameTools = {
       cb && cb(err, res), (cb = null);
     });
   },
+
+  load1(path: string, type, cb: Function) {
+    cc.assetManager.loadRemote(`http://game.vip.hnhxzkj.com/Merry/${path}.mp3` + path, (err, res) => {
+      cb && cb(err, res), (cb = null);
+    });
+  },
+
+
 
   /**
    * 资源释放
