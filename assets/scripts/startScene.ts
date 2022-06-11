@@ -93,7 +93,7 @@ export default class NewClass extends cc.Component {
             }
         });
 
-        cc.assetManager.loadRemote(`http://game.vip.hnhxzkj.com/Merry/menony.mp4`, function (err, video) {
+        cc.assetManager.loadRemote(`https://game.vip.hnhxzkj.com/Merry/menony.mp4`, function (err, video) {
             if(!err){
                 console.log('加载远程视频成功')
                 console.log(video)
@@ -101,7 +101,7 @@ export default class NewClass extends cc.Component {
             }
         });
 
-        cc.assetManager.loadRemote(`http://game.vip.hnhxzkj.com/Merry/propose.mp4`, function (err, video) {
+        cc.assetManager.loadRemote(`https://game.vip.hnhxzkj.com/Merry/propose.mp4`, function (err, video) {
             // play audio clip
             console.log('加载远程视频成功')
             console.log(video)
