@@ -36,7 +36,7 @@ export default class NewClass extends cc.Component {
                     this.runAction(scaleDownAction);
                 };
 
-                GameTools.loadSound(_clickMusic, 1, false)
+                // GameTools.loadSound(_clickMusic, 1, false)
             };
         };
         function onTouchUp(event) {

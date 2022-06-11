@@ -277,10 +277,12 @@ var GameTools = {
   },
 
   load1(path: string, type, cb: Function) {
-    cc.assetManager.loadRemote(`http://game.vip.hnhxzkj.com/Merry/${path}.mp3` + path, (err, res) => {
+    cc.assetManager.loadRemote(`https://game.vip.hnhxzkj.com/Merry/${path}.mp3`, (err, res) => {
       cb && cb(err, res), (cb = null);
     });
   },
+
+
 
 
 
