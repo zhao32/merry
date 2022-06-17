@@ -47,14 +47,14 @@ export default class NewClass extends cc.Component {
             idxDisplay.string = String(i + 1)
 
             let nameLabel = box.getChildByName('name')
-            if (i > gameConfig.maxLevel) {
+            // if (i > gameConfig.maxLevel) {
                 nameLabel.active = false
                 box.active = false
-            } else {
+            // } else {
                 nameLabel.active = true
                 box.active = true
                 nameLabel.getComponent(cc.Label).string = gameConfig.levelData[i].name
-            }
+            // }
 
         }
 
@@ -70,9 +70,9 @@ export default class NewClass extends cc.Component {
         this._canTouch = false
         let name: string = touch.target.name
         let level = parseInt(name.charAt(name.length - 1))
-        if (level > gameConfig.maxLevel) {
+        // if (level > gameConfig.maxLevel) {
             gameContext.showToast('请先通关之前关卡')
-        } else {
+        // } else {
             Logger.log('打开关卡' + level)
             gameConfig.currLevel = level
             GameTools.loadSound(`sound/level/${level + 1}/levelname`, 0, false, null, true)
@@ -88,7 +88,7 @@ export default class NewClass extends cc.Component {
             }, 5)
 
             // Logger.log(cc.director.runScene())
-        }
+        // }
         GameTools.loadSound('sound/op/click', 1, false)
     }
 

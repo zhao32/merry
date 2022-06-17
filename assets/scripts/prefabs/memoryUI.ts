@@ -54,6 +54,10 @@ export default class NewClass extends cc.Component {
     maskStart: cc.Node
     itemStart: cc.Node
 
+
+
+    loaded = false
+
     init(data: any, callback) {
         this.callback = callback
         this.isFromGame = data
@@ -64,6 +68,7 @@ export default class NewClass extends cc.Component {
     onVideoPlayerEvent(sender, event) {
         // this.statusLabel.string = 'Status: ' + getStatus(event);
         if (event === cc.VideoPlayer.EventType.CLICKED) {
+            if (!this.loaded) return
             if (this.videoPlayer.isPlaying()) {
                 this.videoPlayer.pause();
                 Logger.log('点击暂停')
@@ -148,9 +153,23 @@ export default class NewClass extends cc.Component {
             return
         }
         if (gameConfig.currLevel == 8) {
-            console.log('***************************')
+            console.log('*********Menony**************')
             this.videoArea.active = true
-            this.videoPlayer.play()
+            // this.scheduleOnce(
+            //     () => {
+            //         console.log(this.videoPlayer)
+            //         this.videoPlayer.play()
+            //     },
+            //     0.1)
+
+            let self = this
+            cc.assetManager.loadRemote(`https://game.vip.hnhxzkj.com/Merry/propose.mp4`, function (err, video) {
+                if (!err) {
+                    console.log('加载远程视频propose成功')
+                    console.log(video)
+                    self.loaded = true
+                }
+            });
             cc.audioEngine.stopMusic();
             return
         }

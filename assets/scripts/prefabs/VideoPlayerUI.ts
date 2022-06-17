@@ -48,6 +48,8 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     btnNo: cc.Node = null;
 
+    loaded: boolean = false
+
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -65,7 +67,27 @@ export default class NewClass extends cc.Component {
         // });
         this.videoArea.active = true
         this.choiseArea.active = false
-        this.videoPlayer.play()
+        this.node.on(cc.Node.EventType.TOUCH_END, () => {
+            console.log('点击')
+            if (this.loaded) {
+                this.videoPlayer.play()
+            }
+        }, this)
+
+        let self = this
+        cc.assetManager.loadRemote(`https://game.vip.hnhxzkj.com/Merry/menony.mp4`, function (err, video) {
+            if (!err) {
+                console.log('加载menony远程视频成功')
+                self.videoPlayer.play()
+                self.loaded = true
+            }
+        });
+
+        this.scheduleOnce(
+            () => {
+                this.videoPlayer.play()
+            },
+            0.5)
         this.btnNo.on(cc.Node.EventType.TOUCH_END, () => {
             Logger.log('不愿意')
             cc.director.loadScene("startScene", () => {
@@ -94,6 +116,7 @@ export default class NewClass extends cc.Component {
     onVideoPlayerEvent(sender, event) {
         // this.statusLabel.string = 'Status: ' + getStatus(event);
         if (event === cc.VideoPlayer.EventType.CLICKED) {
+            if (!this.loaded) return
             if (this.videoPlayer.isPlaying()) {
                 this.videoPlayer.pause();
                 Logger.log('点击暂停')
