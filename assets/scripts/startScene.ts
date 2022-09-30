@@ -52,7 +52,7 @@ export default class NewClass extends cc.Component {
 
     }
     start() {
-        if(gameContext.hasLoad){
+        if (gameContext.hasLoad) {
             this.LoadUI.active = false
             gameContext.showStartUI()
             return
@@ -93,20 +93,36 @@ export default class NewClass extends cc.Component {
             }
         });
 
-        cc.assetManager.loadRemote(`https://game.vip.hnhxzkj.com/Merry/menony.mp4`, function (err, video) {
-            if(!err){
-                console.log('加载远程视频成功')
-                console.log(video)
+        // cc.resources.preload('video/menony', (error, items) => {
+        //     if (!error) {
+        //         console.log("预加载视频menony成功")
+        //         console.error(JSON.stringify(items))
+        //     }
+        //     console.error("预加载视频menony")
+        // })
 
-            }
-        });
+        // cc.resources.preload('video/propose', (error, items) => {
+        //     if (!error) {
+        //         console.log("预加载视频propose成功")
+        //         console.error(JSON.stringify(items))
+        //     }
+        //     console.error("预加载视频propose")
+        // })
 
-        cc.assetManager.loadRemote(`https://game.vip.hnhxzkj.com/Merry/propose.mp4`, function (err, video) {
-            // play audio clip
-            console.log('加载远程视频成功')
-            console.log(video)
+        // cc.assetManager.loadRemote(`https://game.vip.hnhxzkj.com/Merry/menony.mp4`, function (err, video) {
+        //     if(!err){
+        //         console.log('加载远程视频成功')
+        //         console.log(video)
 
-        });
+        //     }
+        // });
+
+        // cc.assetManager.loadRemote(`https://game.vip.hnhxzkj.com/Merry/propose.mp4`, function (err, video) {
+        //     // play audio clip
+        //     console.log('加载远程视频成功')
+        //     console.log(video)
+
+        // });
 
     }
 

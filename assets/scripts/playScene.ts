@@ -41,6 +41,8 @@ export default class NewClass extends cc.Component {
         // gameConfig.maxLevel = 0
         // gameConfig.maxLevel = 9
 
+      
+
 
         if (gameConfig.currLevel == 5) {
             gameContext.isChaos = true

@@ -72,6 +72,10 @@ export default class NewClass extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        
+        let manager = cc.director.getCollisionManager();
+        manager.enabled = true;
+        
         this._dis = 5
         this.node.setAnchorPoint(0, 0.5)
         this.node.setPosition(0, 0)

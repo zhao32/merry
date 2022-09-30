@@ -1,10 +1,11 @@
 {
   "title": "merry",
   "packageName": "org.cocos2d.demo",
-  "startScene": "a612c388-91ef-4a5b-a4c2-0a860f7fbd1b",
+  "startScene": "49d8e624-5a83-49d6-84b9-4ea28b88f891",
   "excludeScenes": [
     "66dd88de-f4f3-4195-9e4c-ea2855cf0f9d",
-    "49d8e624-5a83-49d6-84b9-4ea28b88f891"
+    "9bc35cd4-d6d2-41d9-b623-0f6e6857a4a0",
+    "a612c388-91ef-4a5b-a4c2-0a860f7fbd1b"
   ],
   "orientation": {
     "landscapeRight": true,
@@ -18,7 +19,7 @@
   "mainCompressionType": "default",
   "mainIsRemote": false,
   "optimizeHotUpdate": false,
-  "md5Cache": true,
+  "md5Cache": false,
   "nativeMd5Cache": true,
   "encryptJs": true,
   "xxteaKey": "95b75638-45e5-42",

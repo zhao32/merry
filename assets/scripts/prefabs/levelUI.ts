@@ -48,8 +48,8 @@ export default class NewClass extends cc.Component {
 
             let nameLabel = box.getChildByName('name')
             // if (i > gameConfig.maxLevel) {
-                nameLabel.active = false
-                box.active = false
+                // nameLabel.active = false
+                // box.active = false
             // } else {
                 nameLabel.active = true
                 box.active = true
@@ -71,7 +71,7 @@ export default class NewClass extends cc.Component {
         let name: string = touch.target.name
         let level = parseInt(name.charAt(name.length - 1))
         // if (level > gameConfig.maxLevel) {
-            gameContext.showToast('请先通关之前关卡')
+            // gameContext.showToast('请先通关之前关卡')
         // } else {
             Logger.log('打开关卡' + level)
             gameConfig.currLevel = level

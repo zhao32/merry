@@ -62,6 +62,7 @@ export default class NewClass extends cc.Component {
         this.callback = callback
         this.isFromGame = data
         GameTools.loadSound(`sound/bgm/bgmMenoy`, 0, true)
+        if (!this.videoArea) this.videoArea = this.node.getChildByName('playVideo')
         this.videoArea.active = false
     }
 
@@ -153,6 +154,7 @@ export default class NewClass extends cc.Component {
             return
         }
         if (gameConfig.currLevel == 8) {
+            cc.audioEngine.stopMusic();
             console.log('*********Menony**************')
             this.videoArea.active = true
             // this.scheduleOnce(
@@ -161,16 +163,35 @@ export default class NewClass extends cc.Component {
             //         this.videoPlayer.play()
             //     },
             //     0.1)
-
+            // GameTools.destroyNode(this.node)
+            // gameContext.showMemoryVideo()
             let self = this
-            cc.assetManager.loadRemote(`https://game.vip.hnhxzkj.com/Merry/propose.mp4`, function (err, video) {
-                if (!err) {
-                    console.log('加载远程视频propose成功')
-                    console.log(video)
-                    self.loaded = true
-                }
-            });
-            cc.audioEngine.stopMusic();
+            // cc.assetManager.loadRemote(`https://game.vip.hnhxzkj.com/Merry/propose.mp4`, function (err, video) {
+            //     if (!err) {
+            //         console.log('加载propose远程视频成功')
+            //         self.videoPlayer.play()
+            //         self.loaded = true
+            //     }
+            // });
+
+            if (!this.videoPlayer) this.videoPlayer = this.videoArea.getChildByName('VideoPlayer').getComponent(cc.VideoPlayer)
+            this.scheduleOnce(() => {
+                this.videoPlayer.play()
+                console.log(this.videoPlayer)
+            }, 0.5)
+            // cc.resources.load('video/propose', (error, assets) => {
+            //     if (!error) {
+            //         console.log("载视频propose成功")
+            //         console.error(JSON.stringify(assets))
+
+            //         self.videoPlayer.play()
+            //         console.log(self.videoPlayer)
+            //     }
+            //     console.error("载视频propose")
+            // })
+
+
+
             return
         }
 

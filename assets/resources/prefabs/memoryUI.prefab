@@ -6818,13 +6818,15 @@
       "__id__": 199
     },
     "_enabled": true,
-    "_resourceType": 0,
+    "_resourceType": 1,
     "_remoteURL": "https://game.vip.hnhxzkj.com/Merry/propose.mp4",
-    "_clip": {},
+    "_clip": {
+      "__uuid__": "f4a60098-9eaa-4e91-ab0c-801e6357c839"
+    },
     "_volume": 1,
     "_mute": false,
-    "_isFullscreen": true,
-    "_N$isFullscreen": true,
+    "_isFullscreen": false,
+    "_N$isFullscreen": false,
     "_stayOnBottom": false,
     "videoPlayerEvent": [
       {
@@ -6889,7 +6891,7 @@
     "node": {
       "__id__": 195
     },
-    "_enabled": false,
+    "_enabled": true,
     "_id": ""
   },
   {

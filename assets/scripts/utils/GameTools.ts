@@ -117,6 +117,19 @@ var gameContext = {
     });
   },
 
+  showMemoryVideo(data?: any, callback?: Function) {
+    var resName = "prefabs/memoryVideo"
+    gameContext.getPrefabByResName(resName, (prefab) => {
+      PoolUtil.getItemShowNode(prefab, (node) => {
+        node.getComponent('memoryVideo').init(data, callback)
+        let UIPanel = cc.director.getScene()
+          .getChildByName("Canvas")
+          .getChildByName("UIPanel");
+        UIPanel.addChild(node);
+      })
+    });
+  },
+
   showLevel(idx: number, callback?: Function) {
     var resName = `prefabs/level${idx}`
     gameContext.getPrefabByResName(resName, (prefab) => {

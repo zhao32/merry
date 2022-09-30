@@ -75,6 +75,8 @@ export default class NewClass extends cc.Component {
         }, this)
 
         let self = this
+        self.videoPlayer.remoteURL = `https://game.vip.hnhxzkj.com/Merry/menony.mp4`
+
         cc.assetManager.loadRemote(`https://game.vip.hnhxzkj.com/Merry/menony.mp4`, function (err, video) {
             if (!err) {
                 console.log('加载menony远程视频成功')
@@ -83,11 +85,11 @@ export default class NewClass extends cc.Component {
             }
         });
 
-        this.scheduleOnce(
-            () => {
-                this.videoPlayer.play()
-            },
-            0.5)
+        // this.scheduleOnce(
+        //     () => {
+        //         this.videoPlayer.play()
+        //     },
+        //     0.5)
         this.btnNo.on(cc.Node.EventType.TOUCH_END, () => {
             Logger.log('不愿意')
             cc.director.loadScene("startScene", () => {
